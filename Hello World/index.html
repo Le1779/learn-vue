@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        {{content}}
+        <div class="click-event" v-on:click="getTime">{{button_content}}</div>
+    </div>
+</body>
+
+</html>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript">
+    let viewModel = {
+        content: 'Hello World!',
+        button_content: 'Click me!'
+    }
+
+    let viewMethods = {
+        getTime: () => {
+            console.log(String(new Date()))
+        },
+    }
+
+
+    let vue = new Vue({
+        el: '#app',
+        data: viewModel,
+        methods: viewMethods,
+    })
+
+</script>
