@@ -58,6 +58,7 @@
         padding: 8px 24px;
         font-weight: 500;
         text-align: left;
+        color: rgba(0,0,0,0.54);
     }
     
     tbody:hover {

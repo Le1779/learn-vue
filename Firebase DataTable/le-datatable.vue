@@ -2,6 +2,7 @@
     <div class="container">
         <le-toolbar></le-toolbar>
         <le-table :table_data="table_data"></le-table>
+        <le-footer></le-footer>
     </div>
 </template>
 
@@ -18,7 +19,8 @@
         },
         components: {
             'le-toolbar': httpVueLoader('le-toolbar.vue'),
-            'le-table': httpVueLoader('le-table.vue')
+            'le-table': httpVueLoader('le-table.vue'),
+            'le-footer': httpVueLoader('le-footer.vue')
         }
     }
 

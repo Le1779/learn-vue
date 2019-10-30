@@ -19,7 +19,7 @@
 <script>
     let viewModel = {
         input_hint: '依電子郵件地址、電話號碼或使用者 UID 搜尋',
-        show_edit: false,
+        show_edit: true,
         create_new_user: '新增使用者',
     };
     module.exports = {
