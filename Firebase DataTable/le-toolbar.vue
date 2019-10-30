@@ -19,7 +19,7 @@
 <script>
     let viewModel = {
         input_hint: '依電子郵件地址、電話號碼或使用者 UID 搜尋',
-        show_edit: true,
+        show_edit: false,
         create_new_user: '新增使用者',
     };
     module.exports = {
@@ -52,6 +52,7 @@
         padding-left: 16px;
         padding-right: 8px;
         background-color: #FAFAFA;
+        z-index: 2;
     }
 
     .toolbar-container.editing {
