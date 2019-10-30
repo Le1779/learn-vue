@@ -5,20 +5,8 @@
 </template>
 
 <script>
-    let viewModel = {
-
-    };
     module.exports = {
-        props: ["show_text"],
-        data: function() {
-            return viewModel
-        },
-        methods: {
-
-        },
-        components: {
-            'le-button': httpVueLoader('le-button.vue')
-        }
+        props: ["show_text"]
     }
 
 </script>
