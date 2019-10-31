@@ -8,20 +8,12 @@
                 <th>last login time</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody v-for="data in table_data">
             <tr>
-                <td>le8419951779@gmail.com</td>
-                <td>facebook</td>
-                <td>2019/10/28</td>
-                <td>2019/11/11</td>
-            </tr>
-        </tbody>
-        <tbody>
-            <tr>
-                <td>le8419951779@gmail.com</td>
-                <td>google</td>
-                <td>2019/10/28</td>
-                <td>2019/11/11</td>
+                <td>{{data.Email}}</td>
+                <td>{{data.Item}}</td>
+                <td>{{data.Date}}</td>
+                <td>{{data.Expired}}</td>
             </tr>
         </tbody>
     </table>
@@ -58,9 +50,13 @@
         padding: 8px 24px;
         font-weight: 500;
         text-align: left;
-        color: rgba(0,0,0,0.54);
+        color: rgba(0, 0, 0, 0.54);
     }
-    
+
+    tbody {
+        background-color: #FFFFFF;
+    }
+
     tbody:hover {
         background-color: #F0F0F0;
     }

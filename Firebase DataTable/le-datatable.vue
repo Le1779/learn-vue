@@ -2,24 +2,67 @@
     <div class="container">
         <le-toolbar></le-toolbar>
         <le-table :table_data="table_data"></le-table>
-        <le-footer></le-footer>
+        <le-footer :table_info="table_info"></le-footer>
     </div>
 </template>
 
 <script>
     let viewModel = {
-        who: 'world',
-        table_data: 'null'
+        table_data: '',
+        table_info: {
+            current_page: 0,
+            per_page_length: 25,
+            data_size: 4,
+        }
     };
     module.exports = {
         data: function() {
             return viewModel
         },
-        methods: {},
+        methods: {
+            getData() {
+                viewModel.table_data = [{
+                    Amount: 0,
+                    Customer_id: 0,
+                    Date: "2019/09/24",
+                    Email: "kevinle4@dynacw.com",
+                    Expired: "1753/01/01",
+                    Item: "測試品名",
+                    Money: 0
+                }, {
+                    Amount: 0,
+                    Customer_id: 0,
+                    Date: "2019/09/24",
+                    Email: "kevinle4@dynacw.com",
+                    Expired: "1753/01/01",
+                    Item: "測試品名",
+                    Money: 0
+                }, {
+                    Amount: 0,
+                    Customer_id: 0,
+                    Date: "2019/09/24",
+                    Email: "kevinle4@dynacw.com",
+                    Expired: "1753/01/01",
+                    Item: "測試品名",
+                    Money: 0
+                }, {
+                    Amount: 0,
+                    Customer_id: 0,
+                    Date: "2019/09/24",
+                    Email: "kevinle4@dynacw.com",
+                    Expired: "1753/01/01",
+                    Item: "測試品名",
+                    Money: 0
+                }];
+            }
+        },
         components: {
             'le-toolbar': httpVueLoader('le-toolbar.vue'),
             'le-table': httpVueLoader('le-table.vue'),
             'le-footer': httpVueLoader('le-footer.vue')
+        },
+        mounted: function() {
+            this.getData();
         }
     }
 
