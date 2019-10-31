@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        #app{
+            top: 0;
+            left: 0;
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <left-container></left-container>
+    </div>
+</body>
+
+</html>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/http-vue-loader"></script>
+
+<script type="text/javascript">
+    let viewModel = {
+        content: 'Hello World!',
+        button_content: 'Click me!'
+    }
+
+    let viewMethods = {
+        getTime: () => {
+            console.log(String(new Date()))
+        },
+    }
+
+    new Vue({
+        el: '#app',
+        data: viewModel,
+        methods: viewMethods,
+        components:{
+            'left-container':httpVueLoader('left-container.vue')
+        }
+    })
+
+</script>
