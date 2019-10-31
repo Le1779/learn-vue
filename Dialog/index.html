@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        #app {
+            position: absolute;
+            width: 100vw;
+        }
+
+    </style>
+    <link rel="stylesheet" href="../vue/css/font-awesome.min.css">
+</head>
+
+<body>
+    <div id="app">
+        <le-button :show_text="create_new_user"></le-button>
+        <le-dialog :dialog_info="dialog_info"></le-dialog>
+    </div>
+</body>
+
+</html>
+<script src="../vue/js/vue.js"></script>
+<script src="../vue/js/httpVueLoader.js"></script>
+
+<script type="text/javascript">
+    
+    let viewModel = {
+        create_new_user: '新增使用者',
+        showDialog: true,
+        dialog_info: {
+            title: 'Title',
+            type: 'purchase',
+            content: {
+                Email: 'le8419951779',
+                Item: '華康中黑體',
+                Data: '2019/10/31',
+                Expired: '2019/11/02'
+            }
+        }
+    };
+    
+    new Vue({
+        el: '#app',
+        data: function() {
+            return viewModel
+        },
+        methods: {
+            
+        },
+        components: {
+            'le-button': httpVueLoader('le-button.vue'),
+            'le-dialog': httpVueLoader('le-dialog.vue')
+        }
+    })
+
+</script>
