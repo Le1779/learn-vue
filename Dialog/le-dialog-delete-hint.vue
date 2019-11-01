@@ -42,7 +42,7 @@
             }
         },
         components: {
-            'le-button': httpVueLoader('le-button.vue')
+            'le-button': httpVueLoader('../Dialog/le-button.vue')
         }
     }
 

@@ -1,31 +1,44 @@
 <template>
-    <table class="user-table">
-        <thead>
-            <tr>
-                <th>account</th>
-                <th>platform</th>
-                <th>creat date</th>
-                <th>last login time</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody v-for="data in table_data">
-            <tr>
-                <td>{{data.Email}}</td>
-                <td>{{data.Item}}</td>
-                <td>{{data.Date}}</td>
-                <td>{{data.Expired}}</td>
-                <td>
-                <div class="fa fa-trash button_icon"></div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div>
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>account</th>
+                    <th>platform</th>
+                    <th>creat date</th>
+                    <th>last login time</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody v-for="data in table_data">
+                <tr>
+                    <td>{{data.Email}}</td>
+                    <td>{{data.Item}}</td>
+                    <td>{{data.Date}}</td>
+                    <td>{{data.Expired}}</td>
+                    <td>
+                        <div class="fa fa-trash button_icon" @click="showDeleteDialog(data.Email)"></div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <le-dialog :dialog_info="dialog_info"></le-dialog>
+    </div>
 </template>
 
 <script>
     let viewModel = {
-
+        dialog_info: {
+            showDialog: false,
+            title: '刪除紀錄',
+            type: 'delete_hint',
+            content: {
+                Email: 'kevinle@dynacw.com',
+                Item: '華康中黑體',
+                Data: '2019/10/31',
+                Expired: '2019/11/02'
+            }
+        }
     };
     module.exports = {
         props: ["table_data"],
@@ -33,7 +46,13 @@
             return viewModel
         },
         methods: {
-
+            showDeleteDialog(email) {
+                viewModel.dialog_info.showDialog = true;
+                viewModel.dialog_info.content.Email = email;
+            }
+        },
+        components: {
+            'le-dialog': httpVueLoader('../Dialog/le-dialog.vue')
         }
     }
 
@@ -78,11 +97,11 @@
         text-overflow: ellipsis;
         white-space: nowrap;
     }
-    
-    tbody:hover .button_icon{
+
+    tbody:hover .button_icon {
         opacity: 1;
     }
-    
+
     .button_icon {
         opacity: 0;
         font-size: 16px;

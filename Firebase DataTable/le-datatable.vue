@@ -33,7 +33,7 @@
                     Amount: 0,
                     Customer_id: 0,
                     Date: "2019/09/24",
-                    Email: "kevinle4@dynacw.com",
+                    Email: "kevinle@dynacw.com",
                     Expired: "1753/01/01",
                     Item: "測試品名",
                     Money: 0
@@ -41,7 +41,7 @@
                     Amount: 0,
                     Customer_id: 0,
                     Date: "2019/09/24",
-                    Email: "kevinle4@dynacw.com",
+                    Email: "kevinle2@dynacw.com",
                     Expired: "1753/01/01",
                     Item: "測試品名",
                     Money: 0
@@ -49,7 +49,7 @@
                     Amount: 0,
                     Customer_id: 0,
                     Date: "2019/09/24",
-                    Email: "kevinle4@dynacw.com",
+                    Email: "kevinle50@dynacw.com",
                     Expired: "1753/01/01",
                     Item: "測試品名",
                     Money: 0

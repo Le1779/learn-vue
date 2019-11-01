@@ -40,8 +40,8 @@
         },
         components: {
             'le-button': httpVueLoader('le-button.vue'),
-            'le-dialog-purchase': httpVueLoader('le-dialog-purchase.vue'),
-            'le-dialog-delete-hint': httpVueLoader('le-dialog-delete-hint.vue')
+            'le-dialog-purchase': httpVueLoader('../Dialog/le-dialog-purchase.vue'),
+            'le-dialog-delete-hint': httpVueLoader('../Dialog/le-dialog-delete-hint.vue')
         }
     }
 
@@ -54,7 +54,8 @@
         height: 100vh;
         top: 0;
         left: 0;
-        background-color: rgba(0, 0, 0, 0.25)
+        background-color: rgba(0, 0, 0, 0.25);
+        z-index: 6;
     }
 
     .dialog-container {
@@ -67,7 +68,7 @@
         left: 0;
         height: 100%;
         width: 100%;
-        z-index: 1;
+        z-index: 7;
 
     }
 
