@@ -13,7 +13,8 @@
             </div>
         </div>
         <div class="dialog-actions">
-            <le-button :show_text="delete_text" :type="button_type"></le-button>
+            <le-button :show_text="cancel_text" :type="cancel_button_type"></le-button>
+            <le-button :show_text="delete_text" :type="delete_button_type"></le-button>
         </div>
     </div>
 </template>
@@ -22,7 +23,9 @@
     let viewModel = {
         delete_hint: '資料一經刪除後即無法復原。',
         delete_text: '刪除',
-        button_type: 'delete'
+        delete_button_type: 'delete',
+        cancel_text: '取消',
+        cancel_button_type: 'cancel'
     };
 
     module.exports = {

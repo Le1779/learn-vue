@@ -24,32 +24,46 @@
         position: relative;
         cursor: pointer;
         min-height: 36px;
-        min-width: 88px;
         line-height: 36px;
         vertical-align: middle;
         align-items: center;
         text-align: center;
-        padding: 0 6px;
-        margin: 6px 8px;
+        margin: 6px 6px;
+        padding-left: 16px;
+        padding-right: 16px;
     }
-    
-    .button-container:hover{
+
+    .button-container:hover {
         background-color: #1765cc;
     }
-    
-    .button-container:active{
+
+    .button-container:active {
         background-color: #1457b0;
     }
 
-    .button-container.delete{
+    .button-container.delete {
         background-color: #d32f2f;
     }
-    
-    .button-container.delete:hover{
-        background-color: #d22821;
+
+    .button-container.delete:hover {
+        background-color: #ba2929;
     }
-    
-    .button-container.delete:active{
-        background-color: #d02113;
+
+    .button-container.delete:active {
+        background-color: #a02424;
     }
+
+    .button-container.cancel {
+        background-color: transparent;
+        color: #767676;
+    }
+
+    .button-container.cancel:hover {
+        background-color: #e8e8e8;
+    }
+
+    .button-container.cancel:active {
+        background-color: #c8c8c8;
+    }
+
 </style>
