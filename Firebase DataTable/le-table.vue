@@ -6,6 +6,7 @@
                 <th>platform</th>
                 <th>creat date</th>
                 <th>last login time</th>
+                <th></th>
             </tr>
         </thead>
         <tbody v-for="data in table_data">
@@ -14,6 +15,9 @@
                 <td>{{data.Item}}</td>
                 <td>{{data.Date}}</td>
                 <td>{{data.Expired}}</td>
+                <td>
+                <div class="fa fa-trash button_icon"></div>
+                </td>
             </tr>
         </tbody>
     </table>
@@ -73,6 +77,29 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+    }
+    
+    tbody:hover .button_icon{
+        opacity: 1;
+    }
+    
+    .button_icon {
+        opacity: 0;
+        font-size: 16px;
+        vertical-align: middle;
+        align-items: center;
+        text-align: center;
+        border-radius: 50%;
+        cursor: pointer;
+        color: rgba(0, 0, 0, .52);
+        line-height: 40px;
+        background: none;
+        box-shadow: none;
+        border: none;
+    }
+
+    .button_icon:hover {
+        color: rgba(0, 0, 0, .78);
     }
 
 </style>
