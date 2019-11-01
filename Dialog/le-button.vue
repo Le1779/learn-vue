@@ -1,12 +1,12 @@
 <template>
-    <div class="button-container">
+    <div class="button-container" :class="type">
         {{show_text}}
     </div>
 </template>
 
 <script>
     module.exports = {
-        props: ["show_text"]
+        props: ["show_text", "type"]
     }
 
 </script>
@@ -41,4 +41,15 @@
         background-color: #1457b0;
     }
 
+    .button-container.delete{
+        background-color: #d32f2f;
+    }
+    
+    .button-container.delete:hover{
+        background-color: #d22821;
+    }
+    
+    .button-container.delete:active{
+        background-color: #d02113;
+    }
 </style>

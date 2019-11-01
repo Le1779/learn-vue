@@ -4,11 +4,16 @@
             <div class="title">{{key}}</div>
             <div class="content">{{item}}</div>
         </div>
+        <div class="dialog-actions">
+            <le-button :show_text="edit_text"></le-button>
+        </div>
     </div>
 </template>
 
 <script>
-    let viewModel = {};
+    let viewModel = {
+        edit_text: '編輯'
+    };
 
     module.exports = {
         props: ["data"],
@@ -18,21 +23,25 @@
         methods: {
 
         },
+        components: {
+            'le-button': httpVueLoader('le-button.vue')
+        }
     }
 
 </script>
 
 <style scoped>
-    .column{
+    .column {
         padding: 10px 0;
     }
-    
-    .title{
+
+    .title {
         color: rgba(0, 0, 0, 0.54);
         padding-bottom: 5px;
     }
-    
-    .content{
+
+    .content {
         color: #73879C;
     }
+
 </style>

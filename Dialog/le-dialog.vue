@@ -6,10 +6,8 @@
                 <div class="close-button"></div>
                 <div class="dialog-title">{{dialog_info.title}}</div>
                 <div class="content-container">
-                    <le-dialog-purchase :data="dialog_info.content"></le-dialog-purchase>
-                </div>
-                <div class="dialog-actions">
-                    <le-button :show_text="edit_text"></le-button>
+                    <le-dialog-purchase v-show="dialog_info.type == 'purchase'" :data="dialog_info.content"></le-dialog-purchase>
+                    <le-dialog-delete-hint v-show="dialog_info.type == 'delete_hint'" :delete_account="dialog_info.content.Email"></le-dialog-delete-hint>
                 </div>
             </div>
         </div>
@@ -18,7 +16,6 @@
 
 <script>
     let viewModel = {
-        edit_text: '編輯'
     };
 
     module.exports = {
@@ -31,7 +28,8 @@
         },
         components: {
             'le-button': httpVueLoader('le-button.vue'),
-            'le-dialog-purchase': httpVueLoader('le-dialog-purchase.vue')
+            'le-dialog-purchase': httpVueLoader('le-dialog-purchase.vue'),
+            'le-dialog-delete-hint': httpVueLoader('le-dialog-delete-hint.vue')
         }
     }
 
@@ -64,7 +62,9 @@
     .dialog {
         position: relative;
         background-color: white;
-        width: 40vw;
+        min-width: 240px;
+        max-width: 80%;
+        width: 512px;
         border-radius: 8px;
         box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .3), 0 1px 3px 1px rgba(60, 64, 67, .15);
         overflow: hidden;
@@ -78,13 +78,13 @@
         letter-spacing: .005em;
         line-height: 26px;
     }
-    
-    .content-container{
+
+    .content-container {
         padding: 0 24px;
         margin-bottom: 20px;
     }
 
-    .dialog-actions{
+    .dialog-actions {
         display: flex;
         align-items: center;
         align-content: center;
@@ -92,4 +92,5 @@
         padding: 0 24px;
         margin-bottom: 20px;
     }
+
 </style>
