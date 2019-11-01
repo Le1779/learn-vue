@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-show="dialog_info.showDialog">
         <div class="mask"></div>
         <div class="dialog-container">
             <div class="dialog">
@@ -7,7 +7,7 @@
                 <div class="dialog-title">{{dialog_info.title}}</div>
                 <div class="content-container">
                     <le-dialog-purchase v-show="dialog_info.type == 'purchase'" :data="dialog_info.content"></le-dialog-purchase>
-                    <le-dialog-delete-hint v-show="dialog_info.type == 'delete_hint'" :delete_account="dialog_info.content.Email"></le-dialog-delete-hint>
+                    <le-dialog-delete-hint v-show="dialog_info.type == 'delete_hint'" :delete_account="dialog_info.content.Email" :callback="actionCallback"></le-dialog-delete-hint>
                 </div>
             </div>
         </div>
@@ -24,7 +24,19 @@
             return viewModel
         },
         methods: {
-
+            dismiss(){
+                console.log("dismiss");
+                this.dialog_info.showDialog = false;
+            },
+            actionCallback(response){
+                if(response == 'cancel'){
+                    this.dismiss();
+                }
+                
+                if(response == 'complete'){
+                    this.dismiss();
+                }
+            }
         },
         components: {
             'le-button': httpVueLoader('le-button.vue'),

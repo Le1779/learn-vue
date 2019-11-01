@@ -9,14 +9,13 @@
             position: absolute;
             width: 100vw;
         }
-
     </style>
     <link rel="stylesheet" href="../vue/css/font-awesome.min.css">
 </head>
 
 <body>
     <div id="app">
-        <le-button :show_text="create_new_user"></le-button>
+        <le-button :show_text="create_new_user" @click.native="showDialog"></le-button>
         <le-dialog :dialog_info="dialog_info"></le-dialog>
     </div>
 </body>
@@ -26,11 +25,10 @@
 <script src="../vue/js/httpVueLoader.js"></script>
 
 <script type="text/javascript">
-    
     let viewModel = {
         create_new_user: '新增使用者',
-        showDialog: true,
         dialog_info: {
+            showDialog: true,
             //title: 'Title',
             //type: 'purchase',
             title: '刪除紀錄',
@@ -43,19 +41,20 @@
             }
         }
     };
-    
+
     new Vue({
         el: '#app',
         data: function() {
             return viewModel
         },
         methods: {
-            
+            showDialog(){
+                viewModel.dialog_info.showDialog = true;
+            }
         },
         components: {
             'le-button': httpVueLoader('le-button.vue'),
             'le-dialog': httpVueLoader('le-dialog.vue')
         }
     })
-
 </script>

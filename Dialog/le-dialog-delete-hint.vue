@@ -13,8 +13,8 @@
             </div>
         </div>
         <div class="dialog-actions">
-            <le-button :show_text="cancel_text" :type="cancel_button_type"></le-button>
-            <le-button :show_text="delete_text" :type="delete_button_type"></le-button>
+            <le-button :show_text="cancel_text" :type="cancel_button_type" @click.native="callback('cancel')"></le-button>
+            <le-button :show_text="delete_text" :type="delete_button_type" @click.native="doDelete"></le-button>
         </div>
     </div>
 </template>
@@ -29,12 +29,17 @@
     };
 
     module.exports = {
-        props: ["delete_account"],
+        props: {
+            delete_account: String,
+            callback: Function
+        },
         data: function() {
             return viewModel
         },
         methods: {
-
+            doDelete(){
+                this.callback('complete');
+            }
         },
         components: {
             'le-button': httpVueLoader('le-button.vue')
@@ -70,4 +75,5 @@
         font-size: 14px;
         white-space: normal;
     }
+
 </style>
