@@ -1,13 +1,12 @@
 <template>
-    <div class="input-container" v-bind:class="{ 'focused': isFocus }">
+    <div class="input-container" v-bind:class="{ 'focused': input_info.isFocus }">
         <div class="title">{{input_info.title}}</div>
-        <input :id="input_info.id" class="text" type="text" @focus="isFocus = true" @blur="isFocus = false">
+        <input :id="input_info.id" class="text" type="text" @focus="input_info.isFocus = true" @blur="input_info.isFocus = false">
     </div>
 </template>
 
 <script>
     let viewModel = {
-        isFocus: false,
     };
 
     module.exports = {
