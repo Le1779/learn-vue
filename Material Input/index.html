@@ -16,12 +16,18 @@
 <body>
     <div id="app">
         <le-input :input_info="input_info"></le-input>
+        <le-date-range-picker :input_info="date_range_input_info"></le-date-range-picker>
+        <le-date-picker :input_info="date_input_info"></le-date-picker>
+        {{date_input_info.data}}
     </div>
 </body>
 
 </html>
 <script src="../vue/js/vue.js"></script>
 <script src="../vue/js/httpVueLoader.js"></script>
+<script src="https://unpkg.com/moment"></script>
+<script src="https://unpkg.com/v-md-date-range-picker/dist/v-md-date-range-picker.min.js"></script>
+<script src="https://unpkg.com/vuejs-datepicker"></script>
 
 <script type="text/javascript">
     let viewModel = {
@@ -29,7 +35,19 @@
             isFocus: false,
             id: 'email',
             title: 'Email',
-            text: '',
+            data: '',
+        },
+        date_range_input_info: {
+            isFocus: false,
+            id: 'date',
+            title: 'Date',
+            data: '',
+        },
+        date_input_info: {
+            isFocus: false,
+            id: 'date',
+            title: 'Date',
+            data: '',
         }
     };
 
@@ -41,7 +59,9 @@
         methods: {
         },
         components: {
-            'le-input': httpVueLoader('le-input.vue')
+            'le-input': httpVueLoader('le-input.vue'),
+            'le-date-range-picker': httpVueLoader('le-date-range-picker.vue'),
+            'le-date-picker': httpVueLoader('le-date-picker.vue')
         }
     })
 </script>

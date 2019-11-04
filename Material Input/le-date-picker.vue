@@ -1,12 +1,14 @@
 <template>
     <div class="input-container" v-bind:class="{ 'focused': input_info.isFocus }">
         <div class="title">{{input_info.title}}</div>
-        <input :id="input_info.id" class="text" type="text" @focus="input_info.isFocus = true" @blur="input_info.isFocus = false" v-model="input_info.data">
+        <vuejs-datepicker :id="input_info.id" v-model="input_info.data" :format=format style="width: 100%;"></vuejs-datepicker>
     </div>
 </template>
 
+
 <script>
     let viewModel = {
+        format: "yyyy/MM/dd"
     };
 
     module.exports = {
@@ -14,9 +16,10 @@
         data: function() {
             return viewModel
         },
-        methods: {
-        },
-        components: {}
+        methods: {},
+        components: {
+            vuejsDatepicker
+        }
     }
 
 </script>
@@ -84,7 +87,8 @@
         color: #448aff;
     }
 
-    .text {
+    input {
+        width: 100%;
         font-size: 16px;
         height: 32px;
         padding: 0;
@@ -98,6 +102,22 @@
         font-size: 16px;
         line-height: 32px;
         outline: none;
+    }
+
+    .activator-wrapper label {
+        display: none;
+    }
+
+    .mdrp__panel.dropdown-menu.show-calendar.opens-arrow-pos-left {
+        position: initial;
+    }
+
+    .mdrp__panel.dropdown-menu.show-calendar.opens-arrow-pos-left::before {
+        display: none;
+    }
+
+    .mdrp__panel.dropdown-menu.show-calendar.opens-arrow-pos-left::after {
+        display: none;
     }
 
 </style>
