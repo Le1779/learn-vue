@@ -9,13 +9,15 @@
             position: absolute;
             width: 100vw;
         }
+
     </style>
     <link rel="stylesheet" href="../vue/css/font-awesome.min.css">
 </head>
 
 <body>
     <div id="app">
-        <le-button :show_text="create_new_user" @click.native="showDialog"></le-button>
+        <le-button :show_text="create_new_user" @click.native="showCreateDialog"></le-button>
+        <le-button :show_text="delete_user" @click.native="showDeleteDialog"></le-button>
         <le-dialog :dialog_info="dialog_info"></le-dialog>
     </div>
 </body>
@@ -23,16 +25,18 @@
 </html>
 <script src="../vue/js/vue.js"></script>
 <script src="../vue/js/httpVueLoader.js"></script>
+<script src="https://unpkg.com/moment"></script>
+<script src="https://unpkg.com/v-md-date-range-picker/dist/v-md-date-range-picker.min.js"></script>
+<script src="https://unpkg.com/vuejs-datepicker"></script>
 
 <script type="text/javascript">
     let viewModel = {
         create_new_user: '新增使用者',
+        delete_user: '刪除使用者',
         dialog_info: {
             showDialog: true,
-            //title: 'Title',
-            //type: 'purchase',
-            title: '刪除紀錄',
-            type: 'delete_hint',
+            title: '新建紀錄',
+            type: 'create',
             content: {
                 Email: 'kevinle@dynacw.com',
                 Item: '華康中黑體',
@@ -48,7 +52,14 @@
             return viewModel
         },
         methods: {
-            showDialog(){
+            showCreateDialog() {
+                viewModel.dialog_info.title = '新建紀錄';
+                viewModel.dialog_info.type = 'create';
+                viewModel.dialog_info.showDialog = true;
+            },
+            showDeleteDialog() {
+                viewModel.dialog_info.title = '刪除紀錄';
+                viewModel.dialog_info.type = 'delete_hint';
                 viewModel.dialog_info.showDialog = true;
             }
         },
@@ -57,4 +68,5 @@
             'le-dialog': httpVueLoader('le-dialog.vue')
         }
     })
+
 </script>

@@ -6,8 +6,9 @@
                 <div class="close-button"></div>
                 <div class="dialog-title">{{dialog_info.title}}</div>
                 <div class="content-container">
-                    <le-dialog-purchase v-show="dialog_info.type == 'purchase'" :data="dialog_info.content"></le-dialog-purchase>
-                    <le-dialog-delete-hint v-show="dialog_info.type == 'delete_hint'" :delete_account="dialog_info.content.Email" :callback="actionCallback"></le-dialog-delete-hint>
+                    <le-dialog-purchase v-if="dialog_info.type == 'purchase'" :data="dialog_info.content"></le-dialog-purchase>
+                    <le-dialog-delete-hint v-if="dialog_info.type == 'delete_hint'" :delete_account="dialog_info.content.Email" :callback="actionCallback"></le-dialog-delete-hint>
+                    <le-dialog-create-purchase v-if="dialog_info.type == 'create'" :callback="actionCallback"></le-dialog-create-purchase>
                 </div>
             </div>
         </div>
@@ -41,7 +42,8 @@
         components: {
             'le-button': httpVueLoader('le-button.vue'),
             'le-dialog-purchase': httpVueLoader('../Dialog/le-dialog-purchase.vue'),
-            'le-dialog-delete-hint': httpVueLoader('../Dialog/le-dialog-delete-hint.vue')
+            'le-dialog-delete-hint': httpVueLoader('../Dialog/le-dialog-delete-hint.vue'),
+            'le-dialog-create-purchase': httpVueLoader('../Dialog/le-dialog-create-purchase.vue')
         }
     }
 
@@ -69,7 +71,6 @@
         height: 100%;
         width: 100%;
         z-index: 7;
-
     }
 
     .dialog {
@@ -80,7 +81,7 @@
         width: 512px;
         border-radius: 8px;
         box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .3), 0 1px 3px 1px rgba(60, 64, 67, .15);
-        overflow: hidden;
+        overflow: auto;
     }
 
     .dialog-title {

@@ -25,6 +25,9 @@
         },
         components: {
             'le-button': httpVueLoader('../Dialog/le-button.vue')
+        },
+        mounted: function() {
+            console.log('mounted purchase');
         }
     }
 
