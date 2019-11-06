@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
     <style>
-        .datatable{
+        .datatable {
             margin: 36px 72px;
         }
     </style>
@@ -15,11 +15,13 @@
 
 <body>
     <div id="app">
-        <div class="datatable">
-            <datatable></datatable>
-        </div>
+
         <v-app>
             <v-content>
+                <div class="datatable">
+                    <datatable></datatable>
+                </div>
+                <datepicker></datepicker>
             </v-content>
 
         </v-app>
@@ -33,7 +35,8 @@
             el: '#app',
             vuetify: new Vuetify(),
             components: {
-                'datatable': httpVueLoader('datatable.vue')
+                'datatable': httpVueLoader('datatable.vue'),
+                'datepicker': httpVueLoader('datepicker.vue')
             }
         })
     </script>
