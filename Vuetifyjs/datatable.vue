@@ -1,6 +1,6 @@
 <template>
     <v-card>
-        <v-data-table :headers="headers" :items="desserts" sort-by="calories" class="elevation-1">
+        <v-data-table :headers="headers" :items="desserts" :options.sync="pagination" :server-items-length="totalDesserts" :loading="loading" sort-by="calories" class="elevation-1">
             <template v-slot:top>
                 <v-toolbar flat color="white">
                     <v-toolbar-title>My CRUD</v-toolbar-title>
@@ -110,6 +110,13 @@
                 carbs: 0,
                 protein: 0,
             },
+            totalDesserts: 0,
+            desserts: [],
+            loading: true,
+            pagination: {
+                rowsPerPage: 5,
+                page: 1,
+            },
         }),
 
         computed: {
@@ -122,6 +129,12 @@
             dialog(val) {
                 val || this.close()
             },
+            pagination: {
+                handler() {
+                    this.getData();
+                },
+                deep: true
+            },
         },
 
         created() {
@@ -130,6 +143,38 @@
 
         methods: {
             initialize() {
+                this.getData();
+            },
+
+            editItem(item) {
+                this.editedIndex = this.desserts.indexOf(item)
+                this.editedItem = Object.assign({}, item)
+                this.dialog = true
+            },
+
+            deleteItem(item) {
+                const index = this.desserts.indexOf(item)
+                confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1)
+            },
+
+            close() {
+                this.dialog = false
+                setTimeout(() => {
+                    this.editedItem = Object.assign({}, this.defaultItem)
+                    this.editedIndex = -1
+                }, 300)
+            },
+
+            save() {
+                if (this.editedIndex > -1) {
+                    Object.assign(this.desserts[this.editedIndex], this.editedItem)
+                } else {
+                    this.desserts.push(this.editedItem)
+                }
+                this.close()
+            },
+            getData(){
+                this.loading = true;
                 this.desserts = [{
                         name: 'Frozen Yogurt',
                         calories: 159,
@@ -201,35 +246,10 @@
                         protein: 7,
                     },
                 ]
-            },
-
-            editItem(item) {
-                this.editedIndex = this.desserts.indexOf(item)
-                this.editedItem = Object.assign({}, item)
-                this.dialog = true
-            },
-
-            deleteItem(item) {
-                const index = this.desserts.indexOf(item)
-                confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1)
-            },
-
-            close() {
-                this.dialog = false
-                setTimeout(() => {
-                    this.editedItem = Object.assign({}, this.defaultItem)
-                    this.editedIndex = -1
-                }, 300)
-            },
-
-            save() {
-                if (this.editedIndex > -1) {
-                    Object.assign(this.desserts[this.editedIndex], this.editedItem)
-                } else {
-                    this.desserts.push(this.editedItem)
-                }
-                this.close()
-            },
+                
+                this.totalDesserts = this.desserts.length;
+                this.loading = false;
+            }
         },
     }
 
