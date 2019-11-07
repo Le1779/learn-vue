@@ -6,15 +6,15 @@
                     <v-toolbar-title>My CRUD</v-toolbar-title>
                     <v-divider class="mx-4" inset vertical></v-divider>
                     <v-spacer></v-spacer>
-                    <v-btn color="primary" dark class="mb-2" @click="createItem">New Item</v-btn>
+                    <v-btn color="primary" dark class="mb-2" @click="showCreateDialog">New Item</v-btn>
 
                 </v-toolbar>
             </template>
             <template v-slot:item.action="{ item }">
-                <v-icon small class="mr-2" @click="editItem(item)">
+                <v-icon small class="mr-2" @click="showEditDialog(item)">
                     edit
                 </v-icon>
-                <v-icon small @click="deleteItem(item)">
+                <v-icon small @click="showDeleteDialog(item)">
                     delete
                 </v-icon>
             </template>
@@ -23,6 +23,7 @@
             </template>
         </v-data-table>
         <datatable-dialog :dialog_model="dialog_model" :edited_item="editedItem" :form_title="'formTitle'" @dialog_data="save"></datatable-dialog>
+        <datatable-delete-dialog :dialog_model="delete_dialog_model" :edited_item="editedItem" @action="deleteItem"></datatable-delete-dialog>
     </v-card>
 </template>
 
@@ -32,8 +33,12 @@
         data: () => ({
             dialog_model: {
                 show: false,
+                title: '',
             },
-            dialog: false,
+            delete_dialog_model: {
+                show: false,
+                title: '刪除紀錄',
+            },
             headers: [{
                     text: 'Dessert (100g serving)',
                     align: 'left',
@@ -62,7 +67,6 @@
                     sortable: false
                 },
             ],
-            desserts: [],
             editedIndex: -1,
             editedItem: {
                 name: '',
@@ -113,10 +117,51 @@
             initialize() {
                 this.getData();
             },
+
+            showEditDialog(item) {
+                this.editedIndex = this.desserts.indexOf(item)
+                this.editedItem = Object.assign({}, item)
+                this.dialog_model.show = true
+            },
+
+            showDeleteDialog(item) {
+                this.editedIndex = this.desserts.indexOf(item)
+                this.editedItem = Object.assign({}, item)
+                this.delete_dialog_model.show = true
+                //const index = this.desserts.indexOf(item)
+                //confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1)
+            },
+
+            showCreateDialog() {
+                this.editedItem = Object.assign({}, this.defaultItem)
+                this.editedIndex = -1
+                this.dialog_model.show = true
+            },
+
+            close() {
+                this.dialog_model.show = false
+                this.delete_dialog_model.show = false
+                setTimeout(() => {
+                    this.editedItem = Object.assign({}, this.defaultItem)
+                    this.editedIndex = -1
+                }, 300)
+            },
+
+            save() {
+                console.log('save');
+                if (this.editedIndex > -1) {
+                    Object.assign(this.desserts[this.editedIndex], this.editedItem)
+                } else {
+                    this.desserts.push(this.editedItem)
+                    this.totalDesserts = this.desserts.length;
+                }
+                this.close()
+            },
             
             getData(){
                 this.loading = true;
-                this.desserts = [{
+                this.desserts = [
+                    {
                         name: 'Frozen Yogurt',
                         calories: 159,
                         fat: 6.0,
@@ -187,50 +232,19 @@
                         protein: 7,
                     },
                 ]
-                
                 this.totalDesserts = this.desserts.length;
                 this.loading = false;
             },
-
-            editItem(item) {
-                this.editedIndex = this.desserts.indexOf(item)
-                this.editedItem = Object.assign({}, item)
-                this.dialog_model.show = true
-            },
-
-            deleteItem(item) {
-                const index = this.desserts.indexOf(item)
-                confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1)
-            },
-
-            createItem() {
-                this.editedItem = Object.assign({}, this.defaultItem)
-                this.editedIndex = -1
-                this.dialog_model.show = true
-            },
-
-            close() {
-                this.dialog_model.show = false
-                setTimeout(() => {
-                    this.editedItem = Object.assign({}, this.defaultItem)
-                    this.editedIndex = -1
-                }, 300)
-            },
-
-            save() {
-                console.log('save');
-                if (this.editedIndex > -1) {
-                    Object.assign(this.desserts[this.editedIndex], this.editedItem)
-                } else {
-                    this.desserts.push(this.editedItem)
-                    this.totalDesserts = this.desserts.length;
-                }
-                this.close()
-            },
+            
+            deleteItem(){
+                console.log('delete');
+                this.close();
+            }
         },
 
         components: {
-            'datatable-dialog': httpVueLoader('datatable-dialog.vue')
+            'datatable-dialog': httpVueLoader('datatable-dialog.vue'),
+            'datatable-delete-dialog': httpVueLoader('datatable-delete-dialog.vue')
         }
     }
 
