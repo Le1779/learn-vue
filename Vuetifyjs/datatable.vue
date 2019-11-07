@@ -150,15 +150,13 @@
             save() {
                 console.log('save');
                 if (this.editedIndex > -1) {
-                    Object.assign(this.desserts[this.editedIndex], this.editedItem)
+                    this.editItem();
                 } else {
-                    this.desserts.push(this.editedItem)
-                    this.totalDesserts = this.desserts.length;
+                    this.createItem();
                 }
-                this.close()
             },
-            
-            getData(){
+
+            getData() {
                 this.loading = true;
                 this.desserts = [
                     {
@@ -235,9 +233,23 @@
                 this.totalDesserts = this.desserts.length;
                 this.loading = false;
             },
-            
-            deleteItem(){
+
+            createItem() {
+                console.log('create');
+                this.desserts.push(this.editedItem);
+                this.totalDesserts = this.desserts.length;
+                this.close()
+            },
+
+            editItem() {
+                console.log('edit');
+                Object.assign(this.desserts[this.editedIndex], this.editedItem);
+                this.close();
+            },
+
+            deleteItem() {
                 console.log('delete');
+                this.desserts.splice(this.editedIndex, 1)
                 this.close();
             }
         },
