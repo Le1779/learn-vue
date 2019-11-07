@@ -1,7 +1,7 @@
 <template>
-    <div class="input-container" v-bind:class="{ 'focused': input_info.isFocus }">
+    <div class="input-container" v-bind:class="{ 'focused': input_info.isFocus, 'error': input_info.isError }">
         <div class="title">{{input_info.title}}</div>
-        <input :id="input_info.id" class="text" type="text" @focus="input_info.isFocus = true" @blur="input_info.isFocus = false" v-model="input_info.data">
+        <input :id="input_info.id" class="text" type="text" @focus="onFocus" @blur="onBlur" v-model="input_info.data">
     </div>
 </template>
 
@@ -15,6 +15,13 @@
             return viewModel
         },
         methods: {
+            onFocus() {
+                this.input_info.isFocus = true;
+                this.input_info.isError = false;
+            },
+            onBlur(){
+                this.input_info.isFocus = false;
+            }
         },
         components: {}
     }
@@ -37,6 +44,10 @@
     .input-container::after {
         height: 1px;
         background-color: rgba(0, 0, 0, .42);
+    }
+    
+    .input-container.error::after {
+        background-color: #d32f2f;
     }
 
     .input-container::before {
@@ -78,6 +89,10 @@
         top: 0;
         opacity: 1;
         font-size: 12px;
+    }
+    
+    .input-container.error .title {
+        color: #d32f2f;
     }
 
     .input-container.focused .title {

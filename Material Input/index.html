@@ -18,7 +18,7 @@
         <le-input :input_info="input_info"></le-input>
         <le-date-range-picker :input_info="date_range_input_info"></le-date-range-picker>
         <le-date-picker :input_info="date_input_info"></le-date-picker>
-        {{date_input_info.data}}
+        <div @click="setError">set error</div>
     </div>
 </body>
 
@@ -33,6 +33,7 @@
     let viewModel = {
         input_info: {
             isFocus: false,
+            isError: false,
             id: 'email',
             title: 'Email',
             data: '',
@@ -57,6 +58,9 @@
             return viewModel
         },
         methods: {
+            setError() {
+                this.input_info.isError = true;
+            }
         },
         components: {
             'le-input': httpVueLoader('le-input.vue'),
