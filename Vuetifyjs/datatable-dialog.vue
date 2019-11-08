@@ -30,24 +30,41 @@
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-                <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+                <v-btn color="blue darken-1" text :loading="loading" :disabled="loading" @click="save">Save</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
 </template>
 
 <script>
+    let viewModel = {
+        loading: false
+    };
+
     module.exports = {
         props: ["dialog_model", "edited_item", "form_title"],
+        data: function() {
+            return viewModel
+        },
         methods: {
             close() {
                 this.dialog_model.show = false;
             },
             save() {
+                this.loading = true;
                 this.$emit('dialog_data', false)
-                this.close();
             }
         },
+        watch: {
+            dialog_model: {
+                handler(val) {
+                    if(val.show){
+                        this.loading = false;
+                    }
+                },
+                deep: true
+            },
+        }
     }
 
 </script>

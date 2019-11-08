@@ -24,8 +24,10 @@
 
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="grey darken-1" text @click="close">Cancel</v-btn>
-                <v-btn color="red darken-1" dark @click="deleteItem">{{delete_text}}</v-btn>
+                <v-btn color="grey darken-1" text @click="close">{{cancel_text}}</v-btn>
+                <v-btn color="red darken-1" class="white--text" :loading="loading" :disabled="loading" @click="deleteItem">
+                    {{delete_text}}
+                </v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -36,8 +38,10 @@
         delete_hint: '資料一經刪除後即無法復原。',
         delete_text: '刪除',
         delete_button_type: 'delete',
-        cancel_text: '取消',
-        cancel_button_type: 'cancel'
+        cancel_text: 'Cancel',
+        cancel_button_type: 'cancel',
+        loading_text: '刪除中...',
+        loading: false,
     };
 
     module.exports = {
@@ -50,10 +54,20 @@
                 this.dialog_model.show = false;
             },
             deleteItem() {
+                this.loading = true;
                 this.$emit('action', false)
-                this.close();
             }
         },
+        watch: {
+            dialog_model: {
+                handler(val) {
+                    if(val.show){
+                        this.loading = false;
+                    }
+                },
+                deep: true
+            },
+        }
     }
 
 </script>
@@ -76,7 +90,7 @@
         font-size: 14px;
         white-space: normal;
     }
-    
+
     .delete_target_title {
         color: rgba(0, 0, 0, 0.54);
         padding-bottom: 5px;

@@ -238,19 +238,20 @@
                 console.log('create');
                 this.desserts.push(this.editedItem);
                 this.totalDesserts = this.desserts.length;
-                this.close()
+                setTimeout(() => (this.close()), 3000)
             },
 
             editItem() {
                 console.log('edit');
                 Object.assign(this.desserts[this.editedIndex], this.editedItem);
-                this.close();
+                setTimeout(() => (this.close()), 3000)
             },
 
             deleteItem() {
                 console.log('delete');
                 this.desserts.splice(this.editedIndex, 1)
-                this.close();
+                setTimeout(() => (this.close()), 3000)
+                
             }
         },
 
