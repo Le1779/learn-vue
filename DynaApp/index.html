@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        
+        body{
+            margin: 0;
+        }
+        
+        #app{
+        }
+    </style>
+    <link rel="stylesheet" href="../vue/css/font-awesome.min.css">
+</head>
+
+<body>
+    <div id="app">
+        <app></app>
+    </div>
+</body>
+
+</html>
+<script src="../vue/js/vue.js"></script>
+<script src="../vue/js/httpVueLoader.js"></script>
+
+<script type="text/javascript">
+
+    new Vue({
+        el: '#app',
+        components:{
+            'app':httpVueLoader('app.vue')
+        }
+    })
+
+</script>
