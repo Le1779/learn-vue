@@ -42,6 +42,7 @@
 
 <style scoped>
     .account-info-container {
+        display: flex;
         margin-bottom: 40pt;
     }
 
