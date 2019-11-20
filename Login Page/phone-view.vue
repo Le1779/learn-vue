@@ -26,10 +26,12 @@
 
                     <v-text-field v-model="email" :rules="emailRules" :label="email_text" required></v-text-field>
 
-                    <v-text-field v-model="password" :append-icon="sp1 ? 'visibility' : 'visibility_off'" :rules="[rules.required, rules.min]" :type="sp1 ? 'text' : 'password'" name="input-10-1" :label="password_text" :hint="password_hint_text" @click:append="sp1 = !sp1"></v-text-field>
+                    <v-text-field v-model="password" :append-icon="showPas ? 'visibility' : 'visibility_off'" :rules="[rules.required, rules.min]" :type="showPas ? 'text' : 'password'" :label="password_text" :hint="password_hint_text" @click:append="showPas = !showPas"></v-text-field>
+                    
+                    <v-text-field v-if="registered" v-model="confirmPassword" :append-icon="showConfirmPas ? 'visibility' : 'visibility_off'" :rules="[rules.required, rules.min]" :type="showConfirmPas ? 'text' : 'password'" :label="confirm_password_text" :hint="password_hint_text" @click:append="showConfirmPas = !showConfirmPas"></v-text-field>
 
-                    <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">
-                        Validate
+                    <v-btn dark color="blue-grey darken-1" class="mr-4" @click="validate">
+                        Login
                     </v-btn>
                 </v-form>
             </v-card-text>
@@ -40,6 +42,7 @@
 <script>
     let viewModel = {
         valid: true,
+        registered: false,
         
         emailRules: [
             v => !!v || 'E-mail is required',
@@ -50,13 +53,16 @@
           min: v => v.length >= 8 || 'Min 8 characters',
           emailMatch: () => ('The email and password you entered don\'t match'),
         },
-        sp1: false,
+        showPas: false,
+        showConfirmPas: false,
         email_text: 'Email',
         password_text: 'Password',
+        confirm_password_text: 'Confirm Password',
         password_hint_text: 'At least 8 characters',
         
         email: '',
         password: '',
+        confirmPassword: '',
     };
 
     module.exports = {
