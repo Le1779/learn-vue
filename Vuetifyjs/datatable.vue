@@ -3,7 +3,7 @@
         <v-data-table :headers="headers" :items="desserts" :options.sync="pagination" :server-items-length="totalDesserts" :loading="loading" sort-by="calories" class="elevation-1">
             <template v-slot:top>
                 <v-toolbar flat color="white">
-                    <v-toolbar-title>My CRUD</v-toolbar-title>
+                    <v-toolbar-title @click="showSearchDialog">My CRUD</v-toolbar-title>
                     <v-divider class="mx-4" inset vertical></v-divider>
                     <v-spacer></v-spacer>
                     <v-btn color="primary" dark class="mb-2" @click="showCreateDialog">New Item</v-btn>
@@ -24,6 +24,7 @@
         </v-data-table>
         <datatable-dialog :dialog_model="dialog_model" :edited_item="editedItem" :form_title="'formTitle'" @dialog_data="save"></datatable-dialog>
         <datatable-delete-dialog :dialog_model="delete_dialog_model" :edited_item="editedItem" @action="deleteItem"></datatable-delete-dialog>
+        <datatable-search-dialog :dialog_model="delete_search_model" :search_item="searchItem" @action="doSearch"></datatable-search-dialog>
     </v-card>
 </template>
 
@@ -38,6 +39,10 @@
             delete_dialog_model: {
                 show: false,
                 title: '刪除紀錄',
+            },
+            delete_search_model: {
+                show: true,
+                title: '搜尋紀錄',
             },
             headers: [{
                     text: 'Dessert (100g serving)',
@@ -76,6 +81,13 @@
                 protein: 0,
             },
             defaultItem: {
+                name: '',
+                calories: 0,
+                fat: 0,
+                carbs: 0,
+                protein: 0,
+            },
+            searchItem: {
                 name: '',
                 calories: 0,
                 fat: 0,
@@ -137,6 +149,11 @@
                 this.editedIndex = -1
                 this.dialog_model.show = true
             },
+            
+            showSearchDialog(){
+                //this.searchItem
+                this.delete_search_model.show = true
+            },
 
             close() {
                 this.dialog_model.show = false
@@ -157,6 +174,7 @@
             },
 
             getData() {
+                console.log(this.pagination);
                 this.loading = true;
                 this.desserts = [
                     {
@@ -252,12 +270,18 @@
                 this.desserts.splice(this.editedIndex, 1)
                 setTimeout(() => (this.close()), 3000)
                 
+            },
+            
+            doSearch() {
+                console.log('search');
+                setTimeout(() => (this.close()), 3000)
             }
         },
 
         components: {
             'datatable-dialog': httpVueLoader('datatable-dialog.vue'),
-            'datatable-delete-dialog': httpVueLoader('datatable-delete-dialog.vue')
+            'datatable-delete-dialog': httpVueLoader('datatable-delete-dialog.vue'),
+            'datatable-search-dialog': httpVueLoader('datatable-search-dialog.vue')
         }
     }
 
