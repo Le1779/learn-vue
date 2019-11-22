@@ -33,7 +33,7 @@
                                 </v-card>
                             </v-col>
 
-                            <v-col cols="12" sm="7" md="7">
+                            <v-col cols="12">
                                 <v-card class="mx-auto px-4 py-2" outlined>
                                     <div class="overline mb-4">Priority</div>
                                     <v-chip-group mandatory active-class="primary--text" v-model="edited_item.PriorityLevel">
@@ -43,7 +43,7 @@
                                     </v-chip-group>
                                 </v-card>
                             </v-col>
-                            <v-col cols="12" sm="5" md="5">
+                            <v-col cols="12">
                                 <v-card class="mx-auto px-4 py-2" outlined>
                                     <div class="overline mb-4">Position</div>
                                     <v-chip-group mandatory active-class="primary--text" v-model="positionKey">
@@ -193,7 +193,7 @@
                     this.edited_item.Email = '';
                     return;
                 }
-                
+
                 this.edited_item.Email = this.edited_item.UserID + this.show_text.domain + this.show_text.domain_country[this.selectedEmailIndex];
 
             },
