@@ -94,7 +94,7 @@
                             <v-spacer></v-spacer>
                             <v-btn color="primary" :loading="loading" :disabled="loading" @click="save">Save</v-btn>
                         </v-card-actions>
-                        
+
                     </v-stepper-content>
                 </v-stepper-items>
             </v-stepper>
@@ -137,24 +137,40 @@
         },
 
         computed: {
-            positionKey: function() {
-                if (this.edited_item.Position == 'L') {
+            positionKey: {
+                get() {
+                    if (this.edited_item.Position == 'L') {
+                        return 0;
+                    } else if (this.edited_item.Position == 'E') {
+                        return 1;
+                    }
                     return 0;
-                } else if (this.edited_item.Position == 'E') {
-                    return 1;
+                },
+                set(value) {
+                    this.edited_item.Position = value == 0 ? 'L' : 'E'
                 }
-                return 0;
             },
 
-            countryKey: function() {
-                if (this.edited_item.Country == 'zh-TW') {
+            countryKey: {
+                get() {
+                    if (this.edited_item.Country == 'zh-TW') {
+                        return 0;
+                    } else if (this.edited_item.Country == 'ja_JP') {
+                        return 1;
+                    } else if (this.edited_item.Country == 'zh_CN') {
+                        return 2;
+                    }
                     return 0;
-                } else if (this.edited_item.Country == 'ja_JP') {
-                    return 1;
-                } else if (this.edited_item.Country == 'zh_CN') {
-                    return 2;
+                },
+                set(value) {
+                    if (value == 0) {
+                        this.edited_item.Country = 'zh-TW';
+                    } else if (value == 1) {
+                        this.edited_item.Country = 'ja_JP';
+                    } else if (value == 2) {
+                        this.edited_item.Country = 'zh_CN';
+                    }
                 }
-                return 0;
             },
         },
 
