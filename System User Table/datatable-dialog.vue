@@ -1,78 +1,103 @@
 <template>
-    <v-dialog v-model="dialog_model.show" persistent max-width="500px">
+    <v-dialog v-model="dialog_model.show" max-width="500px">
         <v-card>
             <v-card-title>
                 <span class="headline">{{ dialog_model.title }}</span>
             </v-card-title>
 
-            <v-card-text>
-                <v-form ref="form" v-model="valid" lazy-validation>
-                    <v-container>
-                        <v-row>
-                            <v-col cols="12" sm="6" md="6">
-                                <v-text-field v-model="edited_item.UserName" label="User Name" required :rules="nameRules"></v-text-field>
-                            </v-col>
+            <v-stepper v-model="step">
+                <v-stepper-header>
+                    <v-stepper-step :complete="step > 1" step="1">Info</v-stepper-step>
 
-                            <v-col cols="12" sm="6" md="6">
-                                <v-text-field v-model="edited_item.EngName" label="English Name" required :rules="engNameRules"></v-text-field>
-                            </v-col>
+                    <v-divider></v-divider>
 
-                            <v-col cols="12">
-                                <v-text-field v-model="edited_item.UserID" label="User ID" required :rules="idRules"></v-text-field>
-                            </v-col>
+                    <v-stepper-step :complete="step > 2" step="2">Role</v-stepper-step>
+                </v-stepper-header>
 
-                            <v-col cols="12">
-                                <v-card class="mx-auto px-4 py-2" outlined>
-                                    <div class="overline mb-4">Email</div>
-                                    <v-text-field v-model="edited_item.Email" label="Email" required :rules="emailRules"></v-text-field>
-                                    <v-chip-group mandatory active-class="primary--text" v-model="selectedEmailIndex">
-                                        <v-chip v-for="i in show_text.domain_country.length" :key="i">
-                                            {{ getEmail(i - 1) }}
-                                        </v-chip>
-                                    </v-chip-group>
-                                </v-card>
-                            </v-col>
+                <v-stepper-items>
+                    <v-stepper-content step="1">
+                        <v-form ref="form" v-model="valid" lazy-validation>
+                            <v-container>
+                                <v-row>
+                                    <v-col cols="12" sm="6" md="6">
+                                        <v-text-field v-model="edited_item.UserName" label="User Name" required :rules="nameRules"></v-text-field>
+                                    </v-col>
 
-                            <v-col cols="12">
-                                <v-card class="mx-auto px-4 py-2" outlined>
-                                    <div class="overline mb-4">Priority</div>
-                                    <v-chip-group mandatory active-class="primary--text" v-model="edited_item.PriorityLevel">
-                                        <v-chip v-for="i in show_text.priority.length" :key="i">
-                                            {{ getPriorityName(i - 1) }}
-                                        </v-chip>
-                                    </v-chip-group>
-                                </v-card>
-                            </v-col>
-                            <v-col cols="12">
-                                <v-card class="mx-auto px-4 py-2" outlined>
-                                    <div class="overline mb-4">Position</div>
-                                    <v-chip-group mandatory active-class="primary--text" v-model="positionKey">
-                                        <v-chip key="L">{{ show_text.position[0] }}</v-chip>
-                                        <v-chip key="E">{{ show_text.position[1] }}</v-chip>
-                                    </v-chip-group>
-                                </v-card>
+                                    <v-col cols="12" sm="6" md="6">
+                                        <v-text-field v-model="edited_item.EngName" label="English Name" required :rules="engNameRules"></v-text-field>
+                                    </v-col>
 
-                            </v-col>
-                            <v-col cols="12">
-                                <v-card class="mx-auto px-4 py-2" outlined>
-                                    <div class="overline mb-4">Country</div>
-                                    <v-chip-group mandatory active-class="primary--text" v-model="countryKey">
-                                        <v-chip key="zh-TW">{{ show_text.country[0] }}</v-chip>
-                                        <v-chip key="ja_JP">{{ show_text.country[1] }}</v-chip>
-                                        <v-chip key="zh_CN">{{ show_text.country[2] }}</v-chip>
-                                    </v-chip-group>
-                                </v-card>
+                                    <v-col cols="12">
+                                        <v-text-field v-model="edited_item.UserID" label="User ID" required :rules="idRules"></v-text-field>
+                                    </v-col>
 
-                            </v-col>
-                        </v-row>
-                    </v-container>
-                </v-form>
-            </v-card-text>
-            <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-                <v-btn color="blue darken-1" text :loading="loading" :disabled="loading" @click="save">Save</v-btn>
-            </v-card-actions>
+                                    <v-col cols="12">
+                                        <v-card class="mx-auto px-4 py-2" outlined>
+                                            <div class="overline mb-4">Email</div>
+                                            <v-text-field v-model="edited_item.Email" label="Email" required :rules="emailRules"></v-text-field>
+                                            <v-chip-group mandatory active-class="primary--text" v-model="selectedEmailIndex">
+                                                <v-chip v-for="i in show_text.domain_country.length" :key="i">
+                                                    {{ getEmail(i - 1) }}
+                                                </v-chip>
+                                            </v-chip-group>
+                                        </v-card>
+                                    </v-col>
+                                </v-row>
+                            </v-container>
+                        </v-form>
+
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="primary" @click="next">Next</v-btn>
+                        </v-card-actions>
+                    </v-stepper-content>
+
+                    <v-stepper-content step="2">
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12">
+                                    <v-card class="mx-auto px-4 py-2" outlined>
+                                        <div class="overline mb-4">Priority</div>
+                                        <v-chip-group mandatory active-class="primary--text" v-model="edited_item.PriorityLevel">
+                                            <v-chip v-for="i in show_text.priority.length" :key="i">
+                                                {{ getPriorityName(i - 1) }}
+                                            </v-chip>
+                                        </v-chip-group>
+                                    </v-card>
+                                </v-col>
+                                <v-col cols="12">
+                                    <v-card class="mx-auto px-4 py-2" outlined>
+                                        <div class="overline mb-4">Position</div>
+                                        <v-chip-group mandatory active-class="primary--text" v-model="positionKey">
+                                            <v-chip key="L">{{ show_text.position[0] }}</v-chip>
+                                            <v-chip key="E">{{ show_text.position[1] }}</v-chip>
+                                        </v-chip-group>
+                                    </v-card>
+
+                                </v-col>
+                                <v-col cols="12">
+                                    <v-card class="mx-auto px-4 py-2" outlined>
+                                        <div class="overline mb-4">Country</div>
+                                        <v-chip-group mandatory active-class="primary--text" v-model="countryKey">
+                                            <v-chip key="zh-TW">{{ show_text.country[0] }}</v-chip>
+                                            <v-chip key="ja_JP">{{ show_text.country[1] }}</v-chip>
+                                            <v-chip key="zh_CN">{{ show_text.country[2] }}</v-chip>
+                                        </v-chip-group>
+                                    </v-card>
+
+                                </v-col>
+                            </v-row>
+                        </v-container>
+
+                        <v-card-actions>
+                            <v-btn text @click="step = 1">Back</v-btn>
+                            <v-spacer></v-spacer>
+                            <v-btn color="primary" :loading="loading" :disabled="loading" @click="save">Save</v-btn>
+                        </v-card-actions>
+                        
+                    </v-stepper-content>
+                </v-stepper-items>
+            </v-stepper>
         </v-card>
     </v-dialog>
 </template>
@@ -102,6 +127,7 @@
 
         isInit: false,
         selectedEmailIndex: 0,
+        step: 0,
     };
 
     module.exports = {
@@ -149,16 +175,21 @@
                 this.selectedEmailIndex = this.show_text.domain_country.indexOf(email1);
             },
 
+            next() {
+                if (this.$refs.form.validate()) {
+                    console.log("validate");
+                    this.edited_item.Email = this.getEmail(this.selectedEmailIndex);
+                    this.step = 2;
+                }
+            },
+
             close() {
                 this.dialog_model.show = false;
             },
 
             save() {
-                if (this.$refs.form.validate()) {
-                    this.loading = true;
-                    this.edited_item.Email = this.getEmail(this.selectedEmailIndex);
-                    console.log(this.edited_item);
-                }
+                this.loading = true;
+                console.log(this.edited_item);
 
                 //this.$emit('dialog_data', false)
             }
