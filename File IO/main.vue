@@ -9,9 +9,9 @@
                 <v-btn color="primary" outlined style="width: 100%;">複製FTP網址</v-btn>
                 <v-divider class="my-2"></v-divider>
                 <div>
-                    <v-btn color="primary" outlined style="width: 100%;" class="mb-2">重新命名</v-btn>
-                    <v-btn color="error" outlined style="width: 100%;" class="mb-2">刪除</v-btn>
-                    <v-btn color="primary" outlined style="width: 100%;" class="mb-2">下載</v-btn>
+                    <v-btn color="primary" outlined style="width: 100%;" class="mb-2" :disabled="table_obj.selected.length != 1">重新命名</v-btn>
+                    <v-btn color="error" outlined style="width: 100%;" class="mb-2" :disabled="table_obj.selected.length == 0">刪除</v-btn>
+                    <v-btn color="primary" outlined style="width: 100%;" class="mb-2" :disabled="table_obj.selected.length == 0">下載</v-btn>
                 </div>
             </v-col>
         </v-row>
@@ -42,7 +42,7 @@
 
             getDirectory() {
                 let self = this;
-                console.log(this.makeCompletePath());
+                console.log(makeCompletePath());
                 let fakeObj = {
                     Folders: [{
                         Name: "Folder1",
@@ -67,44 +67,46 @@
                         FileSize: "529 KB"
                     }]
                 };
-                self.makeTableData(fakeObj);
+                makeTableData(fakeObj);
 
-            },
+                //將從後台得到的資料轉成前端看得懂的物件
+                function makeTableData(directory) {
+                    self.table_obj.data = [];
+                    for (let i = 0; i < directory.Folders.length; i++) {
+                        self.table_obj.data.push({
+                            Name: directory.Folders[i].Name,
+                            LastWriteTime: directory.Folders[i].LastWriteTime,
+                            FileSize: directory.Folders[i].FileSize,
+                            type: 'folder'
+                        })
+                    }
 
-            makeTableData(directory) {
-                this.table_obj.data = [];
-                for (let i = 0; i < directory.Folders.length; i++) {
-                    this.table_obj.data.push({
-                        Name: directory.Folders[i].Name,
-                        LastWriteTime: directory.Folders[i].LastWriteTime,
-                        FileSize: directory.Folders[i].FileSize,
-                        type: 'folder'
-                    })
+                    for (let i = 0; i < directory.Files.length; i++) {
+                        self.table_obj.data.push({
+                            Name: directory.Files[i].Name,
+                            LastWriteTime: directory.Files[i].LastWriteTime,
+                            FileSize: directory.Files[i].FileSize,
+                            type: 'file'
+                        })
+                    }
                 }
-                
-                for (let i = 0; i < directory.Files.length; i++) {
-                    this.table_obj.data.push({
-                        Name: directory.Files[i].Name,
-                        LastWriteTime: directory.Files[i].LastWriteTime,
-                        FileSize: directory.Files[i].FileSize,
-                        type: 'file'
-                    })
+                //得到完整的路徑
+                function makeCompletePath() {
+                    return '/' + self.path.join('/');
                 }
             },
             
-            makeCompletePath(){
-                return '/' + this.path.join('/');
-            }
+            
         },
 
         watch: {
             path: {
                 handler(newVal, oldVal) {
-                    console.log('path change');
+                    //顯示的路徑已經更換
                     this.getDirectory();
                 },
             },
-            
+
             "table_obj.selected": {
                 handler(newVal, oldVal) {
                     console.log('selected change');
