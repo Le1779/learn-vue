@@ -6,31 +6,18 @@
             </v-card-title>
 
             <v-card-text>
-                <v-container>
-                    <div class="delete_hint">
-                        <div class="delete_hint_text">
-                            <i class="fa fa-exclamation-triangle"></i>
-                            {{delete_hint}}
-                        </div>
-                    </div>
-                    <div class="delete_target">
-                        <v-card-text class="pa-0">
-                            <div v-for="(item, index) in items" style="display: inline-block">
-                                <v-chip class="ma-1">
-                                    <v-icon>{{item.type == 'folder' ? 'folder' : 'insert_drive_file'}}</v-icon>
-                                    {{item.Name}}
-                                </v-chip>
-                            </div>
-                        </v-card-text>
-                    </div>
-                </v-container>
+                <v-form ref="form" v-model="valid" lazy-validation>
+                    <v-container>
+                        <v-text-field v-model="dialog_model.filename" label="新的檔案名稱" required :rules="inputRules"></v-text-field>
+                    </v-container>
+                </v-form>
             </v-card-text>
 
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="grey darken-1" text :disabled="loading" @click="close">{{cancel_text}}</v-btn>
-                <v-btn color="red darken-1" class="white--text" :loading="loading" :disabled="loading" @click="deleteItem">
-                    {{delete_text}}
+                <v-btn color="blue darken-1" class="white--text" :loading="loading" :disabled="loading" @click="renameItem">
+                    {{confirm_text}}
                 </v-btn>
             </v-card-actions>
         </v-card>
@@ -39,35 +26,33 @@
 
 <script>
     let viewModel = {
-
-        delete_hint: '資料一經刪除後即無法復原。',
-        delete_text: '刪除',
-        delete_button_type: 'delete',
+        valid: true,
+        inputRules: [v => !!v || '名稱不為空白'],
+        title: '重新命名',
+        confirm_text: '確認',
         cancel_text: 'Cancel',
-        cancel_button_type: 'cancel',
-        loading_text: '刪除中...',
         loading: false,
     };
 
     module.exports = {
-        props: ["dialog_model", "items"],
+        props: ["dialog_model"],
         data: function() {
             return viewModel
         },
 
         computed: {
-            title() {
-                return '確定要將這' + this.items.length + '個檔案刪除嗎？'
-            },
+
         },
 
         methods: {
             close() {
                 this.dialog_model.show = false;
             },
-            deleteItem() {
-                this.loading = true;
-                this.$emit('action', false)
+            renameItem() {
+                if (this.$refs.form.validate()) {
+                    this.loading = true;
+                    this.$emit('action', false)
+                }
             }
         },
         watch: {
@@ -102,4 +87,5 @@
         font-size: 14px;
         white-space: normal;
     }
+
 </style>

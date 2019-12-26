@@ -9,7 +9,7 @@
                 <v-btn color="primary" outlined style="width: 100%;">複製FTP網址</v-btn>
                 <v-divider class="my-2"></v-divider>
                 <div>
-                    <v-btn color="primary" outlined style="width: 100%;" class="mb-2" :disabled="table_obj.selected.length != 1" @click="renameItem">重新命名</v-btn>
+                    <v-btn color="primary" outlined style="width: 100%;" class="mb-2" :disabled="table_obj.selected.length != 1" @click="showRenameDialog">重新命名</v-btn>
                     <v-btn color="primary" outlined style="width: 100%;" class="mb-2" :disabled="table_obj.selected.length == 0" @click="renameItem">移動</v-btn>
                     <v-btn color="error" outlined style="width: 100%;" class="mb-2" :disabled="table_obj.selected.length == 0" @click="showDeleteDialog">刪除</v-btn>
                     <v-btn color="primary" outlined style="width: 100%;" class="mb-2" :disabled="table_obj.selected.length == 0" @click="downloadItem">下載</v-btn>
@@ -18,6 +18,8 @@
         </v-row>
 
         <datatable-delete-dialog :dialog_model="delete_dialog_model" :items="table_obj.selected" @action="deleteItem"></datatable-delete-dialog>
+        
+        <rename-dialog :dialog_model="rename_dialog_model" :items="table_obj.selected" @action="renameItem"></rename-dialog>
     </div>
 </template>
 
@@ -34,6 +36,11 @@
             
             delete_dialog_model: {
                 show: false,
+            },
+            
+            rename_dialog_model: {
+                show: false,
+                filename: '',
             },
         }),
 
@@ -103,6 +110,7 @@
                 //將從後台得到的資料轉成前端看得懂的物件
                 function makeTableData(directory) {
                     self.table_obj.data = [];
+                    self.table_obj.selected = [];
                     for (let i = 0; i < directory.Folders.length; i++) {
                         self.table_obj.data.push({
                             Name: directory.Folders[i].Name,
@@ -127,7 +135,14 @@
                 }
             },
 
-            showRenameDialog() {},
+            showRenameDialog() {
+                if(this.table_obj.selected.length == 0){
+                    return;
+                }
+                
+                this.rename_dialog_model.filename = this.table_obj.selected[0].Name;
+                this.rename_dialog_model.show = true;
+            },
 
             showMoveDialog() {
                 
@@ -141,10 +156,20 @@
 
             renameItem() {
                 console.log('renameItem');
+                let self = this;
+                setTimeout(function (){
+                    self.getDirectory();
+                    self.rename_dialog_model.show = false;
+                }, 3000)
             },
 
             deleteItem() {
                 console.log('deleteItem');
+                let self = this;
+                setTimeout(function (){
+                    self.getDirectory();
+                    self.delete_dialog_model.show = false;
+                }, 3000)
             },
 
             downloadItem() {
@@ -171,6 +196,7 @@
             'path-nav': httpVueLoader('path-nav.vue'),
             'directory-table': httpVueLoader('directory-table.vue'),
             'datatable-delete-dialog': httpVueLoader('datatable-delete-dialog.vue'),
+            'rename-dialog': httpVueLoader('rename-dialog.vue'),
         }
     }
 
