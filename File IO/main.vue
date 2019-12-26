@@ -9,13 +9,15 @@
                 <v-btn color="primary" outlined style="width: 100%;">複製FTP網址</v-btn>
                 <v-divider class="my-2"></v-divider>
                 <div>
-                    <v-btn color="primary" outlined style="width: 100%;" class="mb-2" :disabled="table_obj.selected.length != 1">重新命名</v-btn>
-                    <v-btn color="error" outlined style="width: 100%;" class="mb-2" :disabled="table_obj.selected.length == 0">刪除</v-btn>
-                    <v-btn color="primary" outlined style="width: 100%;" class="mb-2" :disabled="table_obj.selected.length == 0">下載</v-btn>
+                    <v-btn color="primary" outlined style="width: 100%;" class="mb-2" :disabled="table_obj.selected.length != 1" @click="renameItem">重新命名</v-btn>
+                    <v-btn color="primary" outlined style="width: 100%;" class="mb-2" :disabled="table_obj.selected.length == 0" @click="renameItem">移動</v-btn>
+                    <v-btn color="error" outlined style="width: 100%;" class="mb-2" :disabled="table_obj.selected.length == 0" @click="showDeleteDialog">刪除</v-btn>
+                    <v-btn color="primary" outlined style="width: 100%;" class="mb-2" :disabled="table_obj.selected.length == 0" @click="downloadItem">下載</v-btn>
                 </div>
             </v-col>
         </v-row>
 
+        <datatable-delete-dialog :dialog_model="delete_dialog_model" :items="table_obj.selected" @action="deleteItem"></datatable-delete-dialog>
     </div>
 </template>
 
@@ -24,9 +26,14 @@
     module.exports = {
         data: () => ({
             path: ["path1", "path2"],
+            
             table_obj: {
                 data: [],
                 selected: [],
+            },
+            
+            delete_dialog_model: {
+                show: false,
             },
         }),
 
@@ -65,6 +72,30 @@
                         Name: "File2",
                         LastWriteTime: "2019/12/19 17:40",
                         FileSize: "529 KB"
+                    }, {
+                        Name: "File3",
+                        LastWriteTime: "2019/12/19 17:40",
+                        FileSize: "529 KB"
+                    }, {
+                        Name: "File4",
+                        LastWriteTime: "2019/12/19 17:40",
+                        FileSize: "529 KB"
+                    }, {
+                        Name: "File5",
+                        LastWriteTime: "2019/12/19 17:40",
+                        FileSize: "529 KB"
+                    }, {
+                        Name: "File6",
+                        LastWriteTime: "2019/12/19 17:40",
+                        FileSize: "529 KB"
+                    }, {
+                        Name: "File7",
+                        LastWriteTime: "2019/12/19 17:40",
+                        FileSize: "529 KB"
+                    }, {
+                        Name: "File8",
+                        LastWriteTime: "2019/12/19 17:40",
+                        FileSize: "529 KB"
                     }]
                 };
                 makeTableData(fakeObj);
@@ -95,8 +126,30 @@
                     return '/' + self.path.join('/');
                 }
             },
-            
-            
+
+            showRenameDialog() {},
+
+            showMoveDialog() {
+                
+            },
+
+            showDeleteDialog() {
+                this.delete_dialog_model.show = true;
+            },
+
+            showPreDownloadDialog() {},
+
+            renameItem() {
+                console.log('renameItem');
+            },
+
+            deleteItem() {
+                console.log('deleteItem');
+            },
+
+            downloadItem() {
+                console.log('downloadItem');
+            },
         },
 
         watch: {
@@ -116,7 +169,8 @@
 
         components: {
             'path-nav': httpVueLoader('path-nav.vue'),
-            'directory-table': httpVueLoader('directory-table.vue')
+            'directory-table': httpVueLoader('directory-table.vue'),
+            'datatable-delete-dialog': httpVueLoader('datatable-delete-dialog.vue'),
         }
     }
 
