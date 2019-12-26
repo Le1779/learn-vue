@@ -42,6 +42,7 @@
 
             getDirectory() {
                 let self = this;
+                console.log(this.makeCompletePath());
                 let fakeObj = {
                     Folders: [{
                         Name: "Folder1",
@@ -89,6 +90,10 @@
                         type: 'file'
                     })
                 }
+            },
+            
+            makeCompletePath(){
+                return '/' + this.path.join('/');
             }
         },
 
@@ -96,6 +101,7 @@
             path: {
                 handler(newVal, oldVal) {
                     console.log('path change');
+                    this.getDirectory();
                 },
             },
             
