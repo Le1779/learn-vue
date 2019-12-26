@@ -12,14 +12,16 @@
                     <v-btn color="primary" outlined style="width: 100%;" class="mb-2" :disabled="table_obj.selected.length != 1" @click="showRenameDialog">重新命名</v-btn>
                     <v-btn color="primary" outlined style="width: 100%;" class="mb-2" :disabled="table_obj.selected.length == 0" @click="renameItem">移動</v-btn>
                     <v-btn color="error" outlined style="width: 100%;" class="mb-2" :disabled="table_obj.selected.length == 0" @click="showDeleteDialog">刪除</v-btn>
-                    <v-btn color="primary" outlined style="width: 100%;" class="mb-2" :disabled="table_obj.selected.length == 0" @click="downloadItem">下載</v-btn>
+                    <v-btn color="primary" outlined style="width: 100%;" class="mb-2" :disabled="table_obj.selected.length == 0" @click="showPreDownloadDialog">下載</v-btn>
                 </div>
             </v-col>
         </v-row>
 
         <datatable-delete-dialog :dialog_model="delete_dialog_model" :items="table_obj.selected" @action="deleteItem"></datatable-delete-dialog>
-        
+
         <rename-dialog :dialog_model="rename_dialog_model" :items="table_obj.selected" @action="renameItem"></rename-dialog>
+
+        <pre-download-dialog :dialog_model="pre_download_dialog_model" :items="table_obj.selected" @action="downloadItem"></pre-download-dialog>
     </div>
 </template>
 
@@ -28,19 +30,24 @@
     module.exports = {
         data: () => ({
             path: ["path1", "path2"],
-            
+
             table_obj: {
                 data: [],
                 selected: [],
             },
-            
+
             delete_dialog_model: {
                 show: false,
             },
-            
+
             rename_dialog_model: {
                 show: false,
                 filename: '',
+            },
+
+            pre_download_dialog_model: {
+                show: false,
+                progress: 0,
             },
         }),
 
@@ -136,28 +143,31 @@
             },
 
             showRenameDialog() {
-                if(this.table_obj.selected.length == 0){
+                if (this.table_obj.selected.length == 0) {
                     return;
                 }
-                
+
                 this.rename_dialog_model.filename = this.table_obj.selected[0].Name;
                 this.rename_dialog_model.show = true;
             },
 
             showMoveDialog() {
-                
+
             },
 
             showDeleteDialog() {
                 this.delete_dialog_model.show = true;
             },
 
-            showPreDownloadDialog() {},
+            showPreDownloadDialog() {
+                this.pre_download_dialog_model.progress = 0;
+                this.pre_download_dialog_model.show = true;
+            },
 
             renameItem() {
                 console.log('renameItem');
                 let self = this;
-                setTimeout(function (){
+                setTimeout(function() {
                     self.getDirectory();
                     self.rename_dialog_model.show = false;
                 }, 3000)
@@ -166,7 +176,7 @@
             deleteItem() {
                 console.log('deleteItem');
                 let self = this;
-                setTimeout(function (){
+                setTimeout(function() {
                     self.getDirectory();
                     self.delete_dialog_model.show = false;
                 }, 3000)
@@ -174,6 +184,19 @@
 
             downloadItem() {
                 console.log('downloadItem');
+                let self = this;
+                test();
+
+                function test() {
+                    setTimeout(function() {
+                        if (self.pre_download_dialog_model.progress >= 100) {
+                            self.pre_download_dialog_model.show = false;
+                        } else {
+                            self.pre_download_dialog_model.progress++;
+                            test();
+                        }
+                    }, 30)
+                }
             },
         },
 
@@ -184,12 +207,6 @@
                     this.getDirectory();
                 },
             },
-
-            "table_obj.selected": {
-                handler(newVal, oldVal) {
-                    console.log('selected change');
-                },
-            },
         },
 
         components: {
@@ -197,6 +214,7 @@
             'directory-table': httpVueLoader('directory-table.vue'),
             'datatable-delete-dialog': httpVueLoader('datatable-delete-dialog.vue'),
             'rename-dialog': httpVueLoader('rename-dialog.vue'),
+            'pre-download-dialog': httpVueLoader('pre-download-dialog.vue'),
         }
     }
 
