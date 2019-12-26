@@ -5,7 +5,7 @@
         </div>
         <div v-for="(item, index) in path" class="path_container">
             <v-icon>keyboard_arrow_right</v-icon>
-            <div @click="(index + 1) != path.length ? movePath(index) : ''" class="path" :class="{'disable' : (index + 1) == path.length}">{{item}}</div>
+            <div @click="(index + 1) != path.length ? movePath(index + 1) : ''" class="path" :class="{'disable' : (index + 1) == path.length}">{{item}}</div>
         </div>
     </div>
 </template>
@@ -26,7 +26,7 @@
             },
             
             movePath(index) {
-                for (let i = 0; i <= index; i++) {
+                while(this.path.length != index) {
                     this.path.pop();
                 }
                 console.log(this.path);
