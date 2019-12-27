@@ -10,7 +10,7 @@
                 <v-divider class="my-2"></v-divider>
                 <div>
                     <v-btn color="primary" outlined style="width: 100%;" class="mb-2" :disabled="table_obj.selected.length != 1" @click="showRenameDialog">重新命名</v-btn>
-                    <v-btn color="primary" outlined style="width: 100%;" class="mb-2" :disabled="table_obj.selected.length == 0" @click="renameItem">移動</v-btn>
+                    <v-btn color="primary" outlined style="width: 100%;" class="mb-2" :disabled="table_obj.selected.length == 0" @click="showMoveDialog">移動</v-btn>
                     <v-btn color="error" outlined style="width: 100%;" class="mb-2" :disabled="table_obj.selected.length == 0" @click="showDeleteDialog">刪除</v-btn>
                     <v-btn color="primary" outlined style="width: 100%;" class="mb-2" :disabled="table_obj.selected.length == 0" @click="showPreDownloadDialog">下載</v-btn>
                 </div>
@@ -22,6 +22,8 @@
         <rename-dialog :dialog_model="rename_dialog_model" :items="table_obj.selected" @action="renameItem"></rename-dialog>
 
         <pre-download-dialog :dialog_model="pre_download_dialog_model" :items="table_obj.selected" @action="downloadItem"></pre-download-dialog>
+
+        <move-file-dialog :dialog_model="move_dialog_model" :items="table_obj.selected" :current_path=path @action="moveItem" @get-directory="getMoveDirectory"></move-file-dialog>
     </div>
 </template>
 
@@ -36,13 +38,19 @@
                 selected: [],
             },
 
-            delete_dialog_model: {
-                show: false,
-            },
-
             rename_dialog_model: {
                 show: false,
                 filename: '',
+            },
+
+            move_dialog_model: {
+                show: false,
+                path: [],
+                directory: [],
+            },
+
+            delete_dialog_model: {
+                show: false,
             },
 
             pre_download_dialog_model: {
@@ -142,6 +150,43 @@
                 }
             },
 
+            getMoveDirectory() {
+                let self = this;
+                console.log("getMoveDirectory: " + self.move_dialog_model.path);
+                let fakeObj = {
+                    Folders: [{
+                        Name: "Folder1",
+                        LastWriteTime: "2019/12/19 17:42",
+                        FileSize: ""
+                    }, {
+                        Name: "Folder2",
+                        LastWriteTime: "2019/12/19 17:42",
+                        FileSize: ""
+                    }, {
+                        Name: "Folder3",
+                        LastWriteTime: "2019/12/19 17:42",
+                        FileSize: ""
+                    }],
+                    Files: []
+                };
+                makeTableData(fakeObj);
+                //console.log(self.move_dialog_model.directory);
+
+                function makeTableData(directory) {
+                    //self.move_dialog_model.directory = directory.Folders;
+self.move_dialog_model.directory = [];
+                    for (let i = 0; i < directory.Folders.length; i++) {
+                        let notEqual = true;
+                        for(let j = 0; j < self.table_obj.selected.length; j++){
+                            notEqual &= self.table_obj.selected[j].Name != directory.Folders[i].Name
+                        }
+                        if (notEqual) {
+                            self.move_dialog_model.directory.push(directory.Folders[i])
+                        }
+                    }
+                }
+            },
+
             showRenameDialog() {
                 if (this.table_obj.selected.length == 0) {
                     return;
@@ -152,7 +197,10 @@
             },
 
             showMoveDialog() {
-
+                this.move_dialog_model.path = []
+                Object.assign(this.move_dialog_model.path, this.path);
+                this.getMoveDirectory();
+                this.move_dialog_model.show = true;
             },
 
             showDeleteDialog() {
@@ -160,7 +208,6 @@
             },
 
             showPreDownloadDialog() {
-                this.pre_download_dialog_model.progress = 0;
                 this.pre_download_dialog_model.show = true;
             },
 
@@ -198,6 +245,15 @@
                     }, 30)
                 }
             },
+
+            moveItem() {
+                console.log('moveItem');
+                let self = this;
+                setTimeout(function() {
+                    self.getDirectory();
+                    self.move_dialog_model.show = false;
+                }, 3000)
+            },
         },
 
         watch: {
@@ -215,6 +271,7 @@
             'datatable-delete-dialog': httpVueLoader('datatable-delete-dialog.vue'),
             'rename-dialog': httpVueLoader('rename-dialog.vue'),
             'pre-download-dialog': httpVueLoader('pre-download-dialog.vue'),
+            'move-file-dialog': httpVueLoader('move-file-dialog.vue'),
         }
     }
 

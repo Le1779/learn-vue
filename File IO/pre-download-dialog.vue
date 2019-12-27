@@ -7,13 +7,13 @@
 
             <v-card-text>
                 <v-container>
-                    <div class="delete_hint">
-                        <div class="delete_hint_text">
+                    <div class="download_hint">
+                        <div class="download_hint_text">
                             <i class="fa fa-exclamation-triangle"></i>
                             {{delete_hint}}
                         </div>
                     </div>
-                    <div class="delete_target">
+                    <div>
                         <v-card-text class="pa-0">
                             <div v-for="(item, index) in items" style="display: inline-block">
                                 <v-chip class="ma-1">
@@ -74,6 +74,7 @@
         watch: {
             "dialog_model.show": {
                 handler(val) {
+                    this.dialog_model.progress = 0;
                     this.loading = false;
                 },
             },
@@ -83,7 +84,7 @@
 </script>
 
 <style>
-    .delete_hint {
+    .download_hint {
         background-color: #BBDEFB;
         color: #0D47A1;
         padding: 0 0 0 24px;
@@ -92,7 +93,7 @@
         min-height: 48px;
     }
 
-    .delete_hint_text {
+    .download_hint_text {
         padding-left: 36px;
         margin-right: 24px;
         padding: 12px 0;
