@@ -6,13 +6,18 @@
                 <directory-table :table_obj=table_obj :path=path></directory-table>
             </v-col>
             <v-col cols="3" class="py-0">
-                <v-btn color="primary" outlined style="width: 100%;">複製FTP網址</v-btn>
+                <v-btn color="primary" outlined block @click="copyFTPUrl">
+                    複製FTP網址
+                    <v-btn text icon color="grey darken-1" @click="showHelpDoc">
+                        <v-icon>help_outline</v-icon>
+                    </v-btn>
+                </v-btn>
                 <v-divider class="my-2"></v-divider>
                 <div>
-                    <v-btn color="primary" outlined style="width: 100%;" class="mb-2" :disabled="table_obj.selected.length != 1" @click="showRenameDialog">重新命名</v-btn>
-                    <v-btn color="primary" outlined style="width: 100%;" class="mb-2" :disabled="table_obj.selected.length == 0" @click="showMoveDialog">移動</v-btn>
-                    <v-btn color="error" outlined style="width: 100%;" class="mb-2" :disabled="table_obj.selected.length == 0" @click="showDeleteDialog">刪除</v-btn>
-                    <v-btn color="primary" outlined style="width: 100%;" class="mb-2" :disabled="table_obj.selected.length == 0" @click="showPreDownloadDialog">下載</v-btn>
+                    <v-btn color="primary" outlined block class="mb-2" :disabled="table_obj.selected.length != 1" @click="showRenameDialog">重新命名</v-btn>
+                    <v-btn color="primary" outlined block class="mb-2" :disabled="table_obj.selected.length == 0" @click="showMoveDialog">移動</v-btn>
+                    <v-btn color="error" outlined block class="mb-2" :disabled="table_obj.selected.length == 0" @click="showDeleteDialog">刪除</v-btn>
+                    <v-btn color="primary" outlined block class="mb-2" :disabled="table_obj.selected.length == 0" @click="showPreDownloadDialog">下載</v-btn>
                 </div>
             </v-col>
         </v-row>
@@ -25,7 +30,7 @@
 
         <move-file-dialog :dialog_model="move_dialog_model" :items="table_obj.selected" :current_path=path @action="moveItem" @get-directory="getMoveDirectory"></move-file-dialog>
 
-        <v-snackbar v-model="snackbar_error_model.show" :timeout="timeout">
+        <v-snackbar v-model="snackbar_error_model.show" :timeout="5000">
             {{ snackbar_error_model.message }}
             <v-btn color="blue" text @click="snackbar_error_model.show = false">Close</v-btn>
         </v-snackbar>
@@ -63,7 +68,7 @@
                 show: false,
                 progress: 0,
             },
-            
+
             snackbar_error_model: {
                 show: false,
                 message: '',
@@ -78,6 +83,15 @@
             initialize() {
                 console.log('initialize');
                 this.getDirectory();
+            },
+            
+            copyFTPUrl(){
+                console.log('copyFTPUrl');
+            },
+            
+            showHelpDoc(){
+                console.log('showHelpDoc');
+                event.stopPropagation();
             },
 
             getDirectory() {
