@@ -24,6 +24,12 @@
         <pre-download-dialog :dialog_model="pre_download_dialog_model" :items="table_obj.selected" @action="downloadItem"></pre-download-dialog>
 
         <move-file-dialog :dialog_model="move_dialog_model" :items="table_obj.selected" :current_path=path @action="moveItem" @get-directory="getMoveDirectory"></move-file-dialog>
+
+        <v-snackbar v-model="snackbar_error_model.show" :timeout="timeout">
+            {{ snackbar_error_model.message }}
+            <v-btn color="blue" text @click="snackbar_error_model.show = false">Close</v-btn>
+        </v-snackbar>
+
     </div>
 </template>
 
@@ -57,6 +63,11 @@
                 show: false,
                 progress: 0,
             },
+            
+            snackbar_error_model: {
+                show: false,
+                message: '',
+            }
         }),
 
         created() {
@@ -174,10 +185,10 @@
 
                 function makeTableData(directory) {
                     //self.move_dialog_model.directory = directory.Folders;
-self.move_dialog_model.directory = [];
+                    self.move_dialog_model.directory = [];
                     for (let i = 0; i < directory.Folders.length; i++) {
                         let notEqual = true;
-                        for(let j = 0; j < self.table_obj.selected.length; j++){
+                        for (let j = 0; j < self.table_obj.selected.length; j++) {
                             notEqual &= self.table_obj.selected[j].Name != directory.Folders[i].Name
                         }
                         if (notEqual) {
