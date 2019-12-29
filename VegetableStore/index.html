@@ -21,11 +21,14 @@
     <script src="../vue/js/httpVueLoader.js"></script>
     <script>
         const routes = [{
-            path: '/user-table',
-            component: httpVueLoader('user-table.vue')
+            path: '/user',
+            component: httpVueLoader('layout-user.vue')
         }, {
-            path: '/order-table',
-            component: httpVueLoader('order-table.vue')
+            path: '/order',
+            component: httpVueLoader('layout-order.vue')
+        }, {
+            path: '/product',
+            component: httpVueLoader('layout-product.vue')
         }]
 
         const router = new VueRouter({
@@ -41,4 +44,6 @@
             }
         })
     </script>
-</body></html>
+</body>
+
+</html>

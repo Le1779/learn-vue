@@ -51,33 +51,17 @@
             items: [{
                     icon: 'person',
                     text: '使用者',
-                link: '/user-table'
+                    link: '/user'
                 },
                 {
                     icon: 'description',
                     text: '訂單管理',
-                    link: '/order-table'
-                },
-            ],
-            items2: [{
-                    picture: 28,
-                    text: 'Joseph'
+                    link: '/order'
                 },
                 {
-                    picture: 38,
-                    text: 'Apple'
-                },
-                {
-                    picture: 48,
-                    text: 'Xbox Ahoy'
-                },
-                {
-                    picture: 58,
-                    text: 'Nokia'
-                },
-                {
-                    picture: 78,
-                    text: 'MKBHD'
+                    icon: 'shopping_cart',
+                    text: '商品管理',
+                    link: '/product'
                 },
             ],
         }),

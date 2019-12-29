@@ -34,7 +34,7 @@
     module.exports = {
         data: () => ({
             loading: false,
-headers: [{
+            headers: [{
                     text: 'Dessert (100g serving)',
                     align: 'left',
                     sortable: false,
@@ -62,7 +62,7 @@ headers: [{
                     sortable: false
                 },
             ],
-            
+
             desserts: [],
         }),
 
