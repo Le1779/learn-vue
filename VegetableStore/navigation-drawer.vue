@@ -63,6 +63,11 @@
                     text: '商品管理',
                     link: '/product'
                 },
+                {
+                    icon: 'shopping_cart',
+                    text: '商品管理(卡片版本)',
+                    link: '/product-card'
+                },
             ],
         }),
     }

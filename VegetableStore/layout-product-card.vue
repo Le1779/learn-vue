@@ -2,7 +2,7 @@
     <v-container fluid>
         <v-row align="stretch" justify="center">
             <v-col cols=12>
-                <v-data-table :headers="headers" :items="desserts" :loading="loading" sort-by="calories">
+                <v-data-table :items="desserts" :loading="loading" sort-by="calories" hide-default-header>
                     <template v-slot:top>
                         <v-toolbar flat>
                             <v-toolbar-title>My CRUD</v-toolbar-title>
@@ -12,13 +12,43 @@
 
                         </v-toolbar>
                     </template>
-                    <template v-slot:item.action="{ item }">
-                        <v-icon small class="mr-2">
-                            edit
-                        </v-icon>
-                        <v-icon small>
-                            delete
-                        </v-icon>
+                    <template v-slot:item="{ item }">
+                        <v-hover v-slot:default="{ hover }">
+                            <v-card max-width="344" class="d-inline-block ma-2" :elevation="hover ? 12 : 2">
+                                <v-list-item>
+                                    <v-list-item-content>
+                                        <v-list-item-subtitle>{{ 'Create By ' + item.create_date }}</v-list-item-subtitle>
+                                        <v-list-item-title class="display-1 font-weight-bold">{{ item.name }}</v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+
+                                <v-img :src=item.image height="194"></v-img>
+
+                                <v-card-text>
+                                    {{ item.remark }}
+                                </v-card-text>
+
+                                <v-card-actions>
+                                    <v-card-text class="headline text-right red--text accent-2">
+                                        {{ item.price }}
+                                    </v-card-text>
+                                    <v-card-text class="headline text-center px-0">
+                                        /
+                                    </v-card-text>
+                                    <v-card-text class="headline">
+                                        {{ item.unit }}
+                                    </v-card-text>
+                                    <v-spacer></v-spacer>
+                                    <v-btn icon>
+                                        <v-icon>delete</v-icon>
+                                    </v-btn>
+                                    <v-btn icon>
+                                        <v-icon>edit</v-icon>
+                                    </v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-hover>
+
                     </template>
                     <template v-slot:no-data>
                         <v-btn color="primary">Reset</v-btn>
@@ -34,41 +64,6 @@
     module.exports = {
         data: () => ({
             loading: false,
-
-            headers: [{
-                    text: '商品名稱',
-                    value: 'name',
-                },
-                {
-                    text: '建立時間',
-                    value: 'create_date'
-                },
-                {
-                    text: '價錢',
-                    value: 'price'
-                },
-                {
-                    text: '單位',
-                    value: 'unit'
-                },
-                {
-                    text: '庫存',
-                    value: 'inventory'
-                },
-                {
-                    text: '販售地區',
-                    value: 'sales_area'
-                },
-                {
-                    text: '商品說明',
-                    value: 'remark'
-                },
-                {
-                    text: 'Actions',
-                    value: 'action',
-                    sortable: false
-                },
-            ],
 
             desserts: [{
                     name: "茄子",
