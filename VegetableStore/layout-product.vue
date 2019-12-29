@@ -2,28 +2,30 @@
     <v-container fluid>
         <v-row align="stretch" justify="center">
             <v-col cols=12>
-                <v-data-table :headers="headers" :items="desserts" :loading="loading" sort-by="calories">
-                    <template v-slot:top>
-                        <v-toolbar flat>
-                            <v-toolbar-title>My CRUD</v-toolbar-title>
-                            <v-divider class="mx-4" inset vertical></v-divider>
-                            <v-spacer></v-spacer>
-                            <v-btn color="primary" dark class="mb-2">New Item</v-btn>
+                <v-card>
+                    <v-data-table :headers="headers" :items="desserts" :loading="loading" sort-by="calories">
+                        <template v-slot:top>
+                            <v-toolbar flat>
+                                <v-toolbar-title>My CRUD</v-toolbar-title>
+                                <v-divider class="mx-4" inset vertical></v-divider>
+                                <v-spacer></v-spacer>
+                                <v-btn color="primary" dark class="mb-2">New Item</v-btn>
 
-                        </v-toolbar>
-                    </template>
-                    <template v-slot:item.action="{ item }">
-                        <v-icon small class="mr-2">
-                            edit
-                        </v-icon>
-                        <v-icon small>
-                            delete
-                        </v-icon>
-                    </template>
-                    <template v-slot:no-data>
-                        <v-btn color="primary">Reset</v-btn>
-                    </template>
-                </v-data-table>
+                            </v-toolbar>
+                        </template>
+                        <template v-slot:item.action="{ item }">
+                            <v-icon small class="mr-2">
+                                edit
+                            </v-icon>
+                            <v-icon small>
+                                delete
+                            </v-icon>
+                        </template>
+                        <template v-slot:no-data>
+                            <v-btn color="primary">Reset</v-btn>
+                        </template>
+                    </v-data-table>
+                </v-card>
             </v-col>
         </v-row>
     </v-container>
