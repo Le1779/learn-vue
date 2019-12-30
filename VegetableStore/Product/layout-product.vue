@@ -148,15 +148,19 @@
 
             createProduct() {
                 console.log("createProduct");
-                let url = '/Product/QueryByPage';
+                let url = '/Product/Create';
                 let postObj = this.dialog_create_edit_model.item;
+                console.log(postObj);
 
+                let self = this;
                 function success(response) {
-
+                    console.log(response);
+                    self.dialog_create_edit_model.show = false
+                    self.getProducts()
                 }
 
                 function fail(error) {
-
+                    console.log(error);
                 }
 
                 //this.excutePost(url, postObj, success, fail);
@@ -164,15 +168,18 @@
             
             editProduct() {
                 console.log("editProduct");
-                let url = '/Product/QueryByPage';
+                let url = '/Product/Edit';
                 let postObj = this.dialog_create_edit_model.item;
+                console.log(postObj);
 
+                let self = this;
                 function success(response) {
-
+                    self.dialog_create_edit_model.show = false
+                    self.getProducts()
                 }
 
                 function fail(error) {
-
+                    console.log(error);
                 }
 
                 //this.excutePost(url, postObj, success, fail);
@@ -180,20 +187,21 @@
             
             deleteProduct() {
                 console.log("deleteProduct");
-                let url = '/Product/QueryByPage';
+                let url = '/Product/Delete';
                 let postObj = this.dialog_delete_model.item;
 
+                let self = this;
                 function success(response) {
-
+                    self.dialog_delete_model.show = false
+                    self.getProducts()
                 }
 
                 function fail(error) {
-
+                    console.log(error);
                 }
 
                 //this.excutePost(url, postObj, success, fail);
             },
-
 
             getProducts() {
                 let url = '/Product/QueryByPage';
@@ -203,12 +211,13 @@
                     product: this.searchCondition,
                 }
 
+                let self = this;
                 function success(response) {
                     console.log(response);
                     formatData(response.data.Data.data);
-                    this.desserts = response.data.Data.data;
-                    console.log(this.desserts);
-                    this.totalDesserts = response.data.Data.total
+                    self.desserts = response.data.Data.data;
+                    console.log(self.desserts);
+                    self.totalDesserts = response.data.Data.total
                 }
 
                 function fail(error) {
@@ -294,7 +303,33 @@
             'dialog-delete-product': httpVueLoader('Product/dialog-delete-product.vue'),
         }
     }
+	
+	function formatData(data) {
+        data.forEach(function (item, index, array) {
+            let createDate = stringToDate(item.CreateDate);
+            item.CreateDate = getFormatDate(createDate);
+        });
 
+        function stringToDate(str) {
+            let leftParentheses = str.indexOf('(');
+            let rightParentheses = str.lastIndexOf(')');
+            let milli = parseInt(str.substring(leftParentheses + 1, rightParentheses));
+            let date = new Date(milli);
+            return date;
+        }
+
+        function getFormatDate(date) {
+            let d = new Date(date),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+
+            if (month.length < 2) month = '0' + month;
+            if (day.length < 2) day = '0' + day;
+
+            return [year, month, day].join('-');
+        }
+    }
 </script>
 
 
