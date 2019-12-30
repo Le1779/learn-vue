@@ -3,7 +3,7 @@
         <v-row align="stretch" justify="center">
             <v-col cols=12>
                 <v-card>
-                    <v-data-table :headers="headers" :items="desserts" :loading="loading" sort-by="calories">
+                    <v-data-table :headers="headers" :items="desserts" :loading="loading" :options.sync="pagination" :server-items-length="totalDesserts">
                         <template v-slot:top>
                             <v-toolbar flat>
                                 <v-toolbar-title>My CRUD</v-toolbar-title>
@@ -37,33 +37,42 @@
         data: () => ({
             loading: false,
 
+            pagination: {
+                rowsPerPage: 10,
+                page: 1,
+            },
+
+            totalDesserts: 0,
+
+            searchCondition: {},
+
             headers: [{
                     text: '商品名稱',
-                    value: 'name',
+                    value: 'Name',
                 },
                 {
                     text: '建立時間',
-                    value: 'create_date'
+                    value: 'CreateDate'
                 },
                 {
                     text: '價錢',
-                    value: 'price'
+                    value: 'Price'
                 },
                 {
                     text: '單位',
-                    value: 'unit'
+                    value: 'Unit'
                 },
                 {
                     text: '庫存',
-                    value: 'inventory'
+                    value: 'Inventory'
                 },
                 {
                     text: '販售地區',
-                    value: 'sales_area'
+                    value: 'Area'
                 },
                 {
                     text: '商品說明',
-                    value: 'remark'
+                    value: 'Remark'
                 },
                 {
                     text: 'Actions',
@@ -116,20 +125,49 @@
         }),
 
         created() {
-
+            this.initialize()
         },
 
         methods: {
+            initialize() {
+                console.log('initialize');
+                this.getProducts();
+            },
+            
+            getProducts() {
+                let self = this;
+                self.loading = true;
 
+                //axios.post('/Product/QueryByPage', {
+                //        startItem: (self.pagination.page - 1) * self.pagination.rowsPerPage,
+                //        length: self.pagination.rowsPerPage,
+                //        product: self.searchCondition,
+                //    })
+                //    .then(function(response) {
+                //        console.log(response);
+                //        self.loading = false;
+                //        formatData(response.data.Data.data);
+                //        self.desserts = response.data.Data.data;
+                //        console.log(self.desserts);
+                //        self.totalDesserts = response.data.Data.total
+                //    })
+                //    .catch(function(error) {
+                //        console.log(error);
+                //    });
+            }
         },
 
         watch: {
-
+            pagination: {
+                handler() {
+                    this.getProducts();
+                },
+                deep: true
+            },
         },
 
         components: {}
     }
-
 </script>
 
 
@@ -138,5 +176,4 @@
         box-shadow: 0 0 20px inset rgba(0, 0, 0, 0.2);
         background-image: linear-gradient(to top, rgba(0, 0, 0, 0.4) 100%, transparent 72px);
     }
-
 </style>
