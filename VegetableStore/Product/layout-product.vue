@@ -9,15 +9,14 @@
                                 <v-toolbar-title>My CRUD</v-toolbar-title>
                                 <v-divider class="mx-4" inset vertical></v-divider>
                                 <v-spacer></v-spacer>
-                                <v-btn color="primary" dark class="mb-2" @click="showCreateDialog()">New Item</v-btn>
-
+                                <v-btn color="primary" dark class="mb-2" @click="showCreateDialog()">新建商品</v-btn>
                             </v-toolbar>
                         </template>
                         <template v-slot:item.action="{ item }">
-                            <v-icon small class="mr-2">
+                            <v-icon small class="mr-2" @click="showEditDialog(item)">
                                 edit
                             </v-icon>
-                            <v-icon small>
+                            <v-icon small @click="showDeleteDialog(item)">
                                 delete
                             </v-icon>
                         </template>
@@ -29,7 +28,8 @@
             </v-col>
         </v-row>
 
-        <dialog-create-product :dialog_model=dialog_create_edit_model></dialog-create-product>
+        <dialog-create-edit-product :dialog_model=dialog_create_edit_model></dialog-create-edit-product>
+        <dialog-delete-product :dialog_model=dialog_delete_model></dialog-delete-product>
     </v-container>
 </template>
 
@@ -105,6 +105,14 @@
                 show: false,
                 item: '',
                 isEdit: false,
+                action: null,
+            },
+            
+            dialog_delete_model: {
+                loading: false,
+                show: false,
+                item: '',
+                action: null,
             }
         }),
 
@@ -121,10 +129,25 @@
             showCreateDialog() {
                 this.dialog_create_edit_model.item = Object.assign({}, this.defaultItem)
                 this.dialog_create_edit_model.isEdit = false
+                this.dialog_create_edit_model.action = this.createProduct
                 this.dialog_create_edit_model.show = true
             },
 
+            showEditDialog(item) {
+                this.dialog_create_edit_model.item = Object.assign({}, item)
+                this.dialog_create_edit_model.isEdit = true
+                this.dialog_create_edit_model.action = this.editProduct
+                this.dialog_create_edit_model.show = true
+            },
+            
+            showDeleteDialog(item){
+                this.dialog_delete_model.item = Object.assign({}, item)
+                this.dialog_delete_model.action = this.deleteProduct
+                this.dialog_delete_model.show = true
+            },
+
             createProduct() {
+                console.log("createProduct");
                 let url = '/Product/QueryByPage';
                 let postObj = this.dialog_create_edit_model.item;
 
@@ -135,9 +158,42 @@
                 function fail(error) {
 
                 }
-                
+
                 //this.excutePost(url, postObj, success, fail);
             },
+            
+            editProduct() {
+                console.log("editProduct");
+                let url = '/Product/QueryByPage';
+                let postObj = this.dialog_create_edit_model.item;
+
+                function success(response) {
+
+                }
+
+                function fail(error) {
+
+                }
+
+                //this.excutePost(url, postObj, success, fail);
+            },
+            
+            deleteProduct() {
+                console.log("deleteProduct");
+                let url = '/Product/QueryByPage';
+                let postObj = this.dialog_delete_model.item;
+
+                function success(response) {
+
+                }
+
+                function fail(error) {
+
+                }
+
+                //this.excutePost(url, postObj, success, fail);
+            },
+
 
             getProducts() {
                 let url = '/Product/QueryByPage';
@@ -162,14 +218,15 @@
                 //this.excutePost(url, postObj, success, fail);
 
                 //fake
-                self.loading = false;
-                self.desserts = [{
+                this.desserts = [{
                         Name: "茄子",
                         Price: 100,
-                        Unit: '1根',
+                        Unit: '根',
+                        Area: '北區',
                         CreateDate: '2019/02/30',
                         Image: "https://2.share.photo.xuite.net/yield.life/120e58a/20462333/1216908173_l.jpg",
-                        Remark: "這是一個茄子"
+                        Remark: "這是一個茄子",
+                        Stock: 30
                     },
                     {
                         Name: "prodrct2",
@@ -205,7 +262,7 @@
                     }
                 ];
 
-                self.totalDesserts = 5
+                this.totalDesserts = 5
 
             },
 
@@ -233,7 +290,8 @@
         },
 
         components: {
-            'dialog-create-product': httpVueLoader('Product/dialog-create-product.vue'),
+            'dialog-create-edit-product': httpVueLoader('Product/dialog-create-edit-product.vue'),
+            'dialog-delete-product': httpVueLoader('Product/dialog-delete-product.vue'),
         }
     }
 

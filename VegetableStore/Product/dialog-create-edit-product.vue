@@ -73,7 +73,7 @@
             save() {
                 if (this.$refs.form.validate()) {
                     this.dialog_model.loading = true;
-                    this.$emit('dialog_data', false)
+                    this.dialog_model.action()
                 }
             }
         },
