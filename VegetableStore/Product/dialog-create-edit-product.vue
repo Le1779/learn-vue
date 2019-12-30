@@ -37,7 +37,7 @@
             </v-card-text>
 
             <v-card-actions class="mx-7">
-                <v-switch v-model="dialog_model.item.IsInStock" label="是否上架"></v-switch>
+                <v-switch v-model="isInStock" label="是否上架"></v-switch>
                 <v-spacer></v-spacer>
                 <v-btn color="grey darken-1" text @click="close">Cancel</v-btn>
                 <v-btn color="blue darken-1" class="white--text" :loading="dialog_model.loading" :disabled="dialog_model.loading" @click="save">{{actionTitle}}</v-btn>
@@ -63,6 +63,15 @@
 
             actionTitle() {
                 return this.dialog_model.isEdit ? '編輯' : '建立'
+            },
+			
+			isInStock: {
+                get: function () {
+                    return this.dialog_model.item.IsInStock == 1
+                },
+                set: function (value) {
+                    this.dialog_model.item.IsInStock = value ? 1 : 0
+                }
             }
         },
 
