@@ -30,6 +30,8 @@
 
         <dialog-create-edit-product :dialog_model=dialog_create_edit_model></dialog-create-edit-product>
         <dialog-delete-product :dialog_model=dialog_delete_model></dialog-delete-product>
+
+        <v-snackbar v-model="snackbar_error.show" :timeout="snackbar_error.timeout">{{ snackbar_error.message }}</v-snackbar>
     </v-container>
 </template>
 
@@ -107,12 +109,18 @@
                 isEdit: false,
                 action: null,
             },
-            
+
             dialog_delete_model: {
                 loading: false,
                 show: false,
                 item: '',
                 action: null,
+            },
+
+            snackbar_error: {
+                show: false,
+                timeout: 5000,
+                message: '',
             }
         }),
 
@@ -139,8 +147,8 @@
                 this.dialog_create_edit_model.action = this.editProduct
                 this.dialog_create_edit_model.show = true
             },
-            
-            showDeleteDialog(item){
+
+            showDeleteDialog(item) {
                 this.dialog_delete_model.item = Object.assign({}, item)
                 this.dialog_delete_model.action = this.deleteProduct
                 this.dialog_delete_model.show = true
@@ -153,6 +161,7 @@
                 console.log(postObj);
 
                 let self = this;
+
                 function success(response) {
                     console.log(response);
                     self.dialog_create_edit_model.show = false
@@ -161,11 +170,14 @@
 
                 function fail(error) {
                     console.log(error);
+                    self.dialog_create_edit_model.loading = false
+                    self.snackbar_error.message = error
+                    self.snackbar_error.show = true
                 }
 
-                //this.excutePost(url, postObj, success, fail);
+                this.excutePost(url, postObj, success, fail);
             },
-            
+
             editProduct() {
                 console.log("editProduct");
                 let url = '/Product/Edit';
@@ -173,6 +185,7 @@
                 console.log(postObj);
 
                 let self = this;
+
                 function success(response) {
                     self.dialog_create_edit_model.show = false
                     self.getProducts()
@@ -180,17 +193,21 @@
 
                 function fail(error) {
                     console.log(error);
+                    self.dialog_create_edit_model.loading = false
+                    self.snackbar_error.message = error
+                    self.snackbar_error.show = true
                 }
 
-                //this.excutePost(url, postObj, success, fail);
+                this.excutePost(url, postObj, success, fail);
             },
-            
+
             deleteProduct() {
                 console.log("deleteProduct");
                 let url = '/Product/Delete';
                 let postObj = this.dialog_delete_model.item;
 
                 let self = this;
+
                 function success(response) {
                     self.dialog_delete_model.show = false
                     self.getProducts()
@@ -198,12 +215,16 @@
 
                 function fail(error) {
                     console.log(error);
+                    self.dialog_delete_model.loading = false
+                    self.snackbar_error.message = error
+                    self.snackbar_error.show = true
                 }
 
-                //this.excutePost(url, postObj, success, fail);
+                this.excutePost(url, postObj, success, fail);
             },
 
             getProducts() {
+                this.loading = true;
                 let url = '/Product/QueryByPage';
                 let postObj = {
                     startItem: (this.pagination.page - 1) * this.pagination.rowsPerPage,
@@ -212,19 +233,24 @@
                 }
 
                 let self = this;
+
                 function success(response) {
                     console.log(response);
                     formatData(response.data.Data.data);
                     self.desserts = response.data.Data.data;
                     console.log(self.desserts);
                     self.totalDesserts = response.data.Data.total
+                    self.loading = false;
                 }
 
                 function fail(error) {
                     console.log(error);
+                    self.snackbar_error.message = error
+                    self.snackbar_error.show = true
+                    self.loading = false;
                 }
 
-                //this.excutePost(url, postObj, success, fail);
+                this.excutePost(url, postObj, success, fail);
 
                 //fake
                 this.desserts = [{
@@ -276,15 +302,20 @@
             },
 
             excutePost(url, obj, success, fail) {
-                let self = this;
-                self.loading = true;
+                setTimeout(function() {
+                    fail("Test");
+                }, 3000)
+                return;
+
                 axios.post(url, obj)
                     .then(function(response) {
-                        success(response);
-                        self.loading = false;
+                        if (response.data.Code == 0) {
+                            success(response);
+                        } else {
+                            fail(response.data.Message);
+                        }
                     }).catch(function(error) {
                         fail(error);
-                        self.loading = false;
                     });
             },
         },
@@ -303,9 +334,9 @@
             'dialog-delete-product': httpVueLoader('Product/dialog-delete-product.vue'),
         }
     }
-	
-	function formatData(data) {
-        data.forEach(function (item, index, array) {
+
+    function formatData(data) {
+        data.forEach(function(item, index, array) {
             let createDate = stringToDate(item.CreateDate);
             item.CreateDate = getFormatDate(createDate);
         });
@@ -330,6 +361,7 @@
             return [year, month, day].join('-');
         }
     }
+
 </script>
 
 
