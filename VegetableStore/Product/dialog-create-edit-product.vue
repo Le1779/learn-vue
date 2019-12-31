@@ -52,8 +52,8 @@
             <v-card-actions v-if="stepper == 1" class="px-7 py-0">
                 <v-switch v-model="isInStock" label="是否上架"></v-switch>
                 <v-spacer></v-spacer>
-                <v-btn color="pink lighten-1" text @click="stepper = 2">{{uploadImageTitle}}</v-btn>
                 <v-btn color="grey darken-1" text @click="close">Cancel</v-btn>
+                <v-btn color="pink lighten-1" text @click="stepper = 2">{{uploadImageTitle}}</v-btn>
                 <v-btn color="blue darken-1" class="white--text" :loading="dialog_model.loading" :disabled="dialog_model.loading" @click="save">{{actionTitle}}</v-btn>
             </v-card-actions>
 
