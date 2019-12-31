@@ -99,6 +99,7 @@
                 Stock: 0,
                 Area: '',
                 Remark: '',
+                Image: '',
                 IsInStock: true,
             },
 
