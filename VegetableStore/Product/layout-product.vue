@@ -12,6 +12,12 @@
                                 <v-btn color="primary" dark class="mb-2" @click="showCreateDialog()">新建商品</v-btn>
                             </v-toolbar>
                         </template>
+
+                        <template v-slot:item.instock="{ item }">
+                           <v-icon  v-if="item.IsInStock == 1" color="teal">mdi-check</v-icon>
+                           <v-icon v-if="item.IsInStock != 1" color="red">mdi-close</v-icon>
+                        </template>
+
                         <template v-slot:item.action="{ item }">
                             <v-icon small class="mr-2" @click="showEditDialog(item)">
                                 edit
@@ -80,7 +86,7 @@
                 },
                 {
                     text: '是否上架',
-                    value: 'IsInStock'
+                    value: 'instock'
                 },
                 {
                     text: 'Actions',
@@ -262,7 +268,8 @@
                         CreateDate: '2019/02/30',
                         Image: "https://2.share.photo.xuite.net/yield.life/120e58a/20462333/1216908173_l.jpg",
                         Remark: "這是一個茄子",
-                        Stock: 30
+                        Stock: 30,
+                        IsInStock: -1
                     },
                     {
                         Name: "prodrct2",
@@ -270,7 +277,9 @@
                         Unit: '1根',
                         CreateDate: '2019/02/30',
                         Image: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-                        Remark: "Greyhound divisely hello coldly fonwderfullyGreyhound divisely hello coldly fonwderfully"
+                        Remark: "Greyhound divisely hello coldly fonwderfullyGreyhound divisely hello coldly fonwderfully",
+                        Stock: 30,
+                        IsInStock: 0
                     },
                     {
                         Name: "prodrct2",
@@ -278,7 +287,9 @@
                         Unit: '1根',
                         CreateDate: '2019/02/30',
                         Image: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-                        Remark: "Greyhound divisely hello coldly fonwderfully"
+                        Remark: "Greyhound divisely hello coldly fonwderfully",
+                        Stock: 30,
+                        IsInStock: 1
                     },
                     {
                         Name: "prodrct2",
@@ -286,7 +297,9 @@
                         Unit: '1根',
                         CreateDate: '2019/02/30',
                         Image: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-                        Remark: "Greyhound divisely hello coldly fonwderfully"
+                        Remark: "Greyhound divisely hello coldly fonwderfully",
+                        Stock: 30,
+                        IsInStock: -1
                     },
                     {
                         Name: "prodrct2",
@@ -294,7 +307,9 @@
                         Unit: '1根',
                         CreateDate: '2019/02/30',
                         Image: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-                        Remark: "Greyhound divisely hello coldly fonwderfully"
+                        Remark: "Greyhound divisely hello coldly fonwderfully",
+                        Stock: 30,
+                        IsInStock: -1
                     }
                 ];
 
