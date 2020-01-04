@@ -6,8 +6,7 @@
             <v-toolbar-title>小曾蔬果</v-toolbar-title>
         </v-app-bar>
         <v-content>
-<router-view></router-view>
-            
+            <router-view></router-view>
         </v-content>
     </v-app>
 </template>
@@ -18,7 +17,7 @@
             source: String,
         },
         data: () => ({
-            app:{
+            app: {
                 nav_drawer_expand: null,
                 user: {
                     name: 'Kevin Le',
