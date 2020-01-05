@@ -6,7 +6,11 @@
                     <v-data-table :headers="headers" :items="desserts" :loading="loading" :options.sync="pagination" :server-items-length="totalDesserts">
                         <template v-slot:top>
                             <v-toolbar flat>
-                                <v-toolbar-title>My CRUD</v-toolbar-title>
+                                <v-toolbar-title>
+                                    <v-btn text icon color="grey darken-1">
+                                        <v-icon x-large @click="showSearchDialog()">search</v-icon>
+                                    </v-btn>
+                                </v-toolbar-title>
                                 <v-divider class="mx-4" inset vertical></v-divider>
                                 <v-spacer></v-spacer>
                                 <v-btn color="primary" dark class="mb-2" @click="showCreateDialog()">新建商品</v-btn>
@@ -14,8 +18,8 @@
                         </template>
 
                         <template v-slot:item.instock="{ item }">
-                           <v-icon  v-if="item.IsInStock == 1" color="teal">mdi-check</v-icon>
-                           <v-icon v-if="item.IsInStock != 1" color="red">mdi-close</v-icon>
+                            <v-icon v-if="item.IsInStock == 1" color="teal">mdi-check</v-icon>
+                            <v-icon v-if="item.IsInStock != 1" color="red">mdi-close</v-icon>
                         </template>
 
                         <template v-slot:item.action="{ item }">
@@ -36,6 +40,7 @@
 
         <dialog-create-edit-product :dialog_model=dialog_create_edit_model></dialog-create-edit-product>
         <dialog-delete-product :dialog_model=dialog_delete_model></dialog-delete-product>
+        <dialog-search-product :dialog_model=dialog_search_model></dialog-search-product>
 
         <v-snackbar v-model="snackbar_error.show" :timeout="snackbar_error.timeout">{{ snackbar_error.message }}</v-snackbar>
     </v-container>
@@ -124,6 +129,23 @@
                 action: null,
             },
 
+            dialog_search_model: {
+                loading: false,
+                show: false,
+                item: {
+                    Name: '',
+                    CreateDate: '',
+                    Price: 0,
+                    Unit: '',
+                    Stock: 0,
+                    Area: '',
+                    Remark: '',
+                    Image: '',
+                    IsInStock: true,
+                },
+                action: null,
+            },
+
             snackbar_error: {
                 show: false,
                 timeout: 5000,
@@ -159,6 +181,11 @@
                 this.dialog_delete_model.item = Object.assign({}, item)
                 this.dialog_delete_model.action = this.deleteProduct
                 this.dialog_delete_model.show = true
+            },
+
+            showSearchDialog() {
+                this.dialog_search_model.action = this.getProducts
+                this.dialog_search_model.show = true
             },
 
             createProduct() {
@@ -348,6 +375,7 @@
         components: {
             'dialog-create-edit-product': httpVueLoader('Product/dialog-create-edit-product.vue'),
             'dialog-delete-product': httpVueLoader('Product/dialog-delete-product.vue'),
+            'dialog-search-product': httpVueLoader('Product/dialog-search-product.vue'),
         }
     }
 
