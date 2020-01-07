@@ -40,10 +40,22 @@
                         </v-stepper-content>
 
                         <v-stepper-content step="2">
-                            <v-file-input v-model="uploadImage" accept="image/png, image/jpeg, image/bmp" placeholder="商品圖片" prepend-icon="mdi-camera" label="商品圖片"></v-file-input>
-                            <v-card class="mb-12" color="white lighten-1" height="300px">
-                                <v-img :src="dialog_model.item.Image" height="300px" contain></v-img>
-                            </v-card>
+                            <v-file-input v-model="uploadImages" color="pink lighten-1" counter="5" label="File input" multiple accept="image/png, image/jpeg, image/bmp" placeholder="商品圖片" prepend-icon="mdi-camera" :show-size="1000">
+                                <template v-slot:selection="{ index, text }">
+                                    <v-chip v-if="index < 2" color="pink lighten-1" dark label small>
+                                        {{ text }}
+                                    </v-chip>
+
+                                    <span v-else-if="index === 2" class="overline grey--text text--darken-3 mx-2">
+                                        +{{ uploadImages.length - 2 }} File(s)
+                                    </span>
+                                </template>
+                            </v-file-input>
+                            <v-carousel height="300px">
+                                <v-carousel-item v-for="(data, i) in dialog_model.item.Image" :key="data">
+                                    <v-img :src="data" height="300px" contain></v-img>
+                                </v-carousel-item>
+                            </v-carousel>
                         </v-stepper-content>
                     </v-stepper-items>
                 </v-stepper>
@@ -74,7 +86,7 @@
             notNullRules: [v => !!v || '名稱不為空白'],
             unitItems: ['個', '條', '根', '包', '斤', '箱', '袋'],
             areaItems: ['全區', '北區', '中區', '南區', '東區'],
-            uploadImage: null,
+            uploadImages: [],
         }),
 
         computed: {
@@ -104,11 +116,25 @@
             close() {
                 this.dialog_model.show = false;
             },
+
             save() {
                 if (this.$refs.form.validate()) {
                     this.dialog_model.loading = true;
                     this.dialog_model.action()
                 }
+            },
+
+            readerImage(files, index) {
+                let reader = new FileReader();
+                let self = this;
+                reader.onload = function(e) {
+                    self.dialog_model.item.Image.push(e.target.result);
+                    if (files.length > ++index) {
+                        self.readerImage(files, index);
+                    }
+                }
+
+                reader.readAsDataURL(files[index]);
             }
         },
 
@@ -117,33 +143,24 @@
                 handler(val) {
                     this.dialog_model.loading = false;
                     this.dialog_model.item.CreateDate = getFormatDate(Date.now(), true);
-                    this.uploadImage =  null;
+                    this.uploadImage = null;
                 },
             },
 
-            uploadImage: {
+            uploadImages: {
                 handler(val) {
                     console.log(val);
-                    let self = this;
-                    //this.dialog_model.item.Image = val;
-                    
-                    if(val == null){
-                        this.dialog_model.item.Image = ""
+                    this.dialog_model.item.Image = [];
+                    let uploadLength = val.length;
+                    if (uploadLength > 5 || uploadLength == 0) {
                         return;
                     }
-                    
-                    let reader = new FileReader();
-                    reader.onload = function(e) {
-                        //console.log(e.target.result);
-                        self.dialog_model.item.Image = e.target.result;
-                    }
 
-                    reader.readAsDataURL(val);
+                    this.readerImage(val, 0);
                 },
             },
         }
     }
-
 
     function getFormatDate(date, showTime) {
         let d = new Date(date),
@@ -168,7 +185,6 @@
         let t = d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
         return [year, month, day].join('/') + ' ' + [hour, minute, second].join(':');
     }
-
 </script>
 
 <style scoped>
