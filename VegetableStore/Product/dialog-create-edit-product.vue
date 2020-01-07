@@ -23,13 +23,13 @@
                                             <v-text-field v-model="dialog_model.item.Price" label="售價"></v-text-field>
                                         </v-col>
                                         <v-col cols="12" sm="6">
-                                            <v-select v-model="dialog_model.item.Unit" :items="UnitItems" label="單位" :rules="notNullRules"></v-select>
+                                            <v-select v-model="dialog_model.item.Unit" :items="unitItems" label="單位" :rules="notNullRules"></v-select>
                                         </v-col>
                                         <v-col cols="12" sm="6">
                                             <v-text-field v-model="dialog_model.item.Stock" label="庫存量"></v-text-field>
                                         </v-col>
                                         <v-col cols="12" sm="6">
-                                            <v-select v-model="dialog_model.item.Area" :items="AreaItems" label="銷售地區" :rules="notNullRules"></v-select>
+                                            <v-select v-model="dialog_model.item.Area" :items="areaItems" label="銷售地區" :rules="notNullRules"></v-select>
                                         </v-col>
                                         <v-col cols="12">
                                             <v-textarea v-model="dialog_model.item.Remark" label="商品敘述" outlined></v-textarea>
@@ -72,8 +72,8 @@
             stepper: 1,
             valid: true,
             notNullRules: [v => !!v || '名稱不為空白'],
-            UnitItems: ['個', '根', '箱', '袋'],
-            AreaItems: ['全區', '北區', '中區', '南區', '東區'],
+            unitItems: ['個', '條', '根', '包', '斤', '箱', '袋'],
+            areaItems: ['全區', '北區', '中區', '南區', '東區'],
             uploadImage: null,
         }),
 

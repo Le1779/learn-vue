@@ -67,7 +67,7 @@
             menu2: false,
             createDateEnd: '',
             title: '搜尋商品',
-            unitItems: ['個', '根', '箱', '袋'],
+            unitItems: ['個', '條', '根', '包', '斤', '箱', '袋'],
             areaItems: ['全區', '北區', '中區', '南區', '東區'],
             inStockItems: [{
                     text: '無',
