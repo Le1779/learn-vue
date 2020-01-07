@@ -143,7 +143,9 @@
                 handler(val) {
                     this.dialog_model.loading = false;
                     this.dialog_model.item.CreateDate = getFormatDate(Date.now(), true);
-                    this.uploadImage = null;
+                    if (!this.dialog_model.isEdit) {
+                        this.uploadImages = []
+                    }
                 },
             },
 
