@@ -14,9 +14,9 @@
                         </div>
                     </div>
                     <div class="delete_target">
-                        <div class="delete_target_title">使用者信箱</div>
+                        <div class="delete_target_title">使用者帳號</div>
                         <div class="delete_target_account">
-                            {{dialog_model.item.Email}}
+                            {{dialog_model.item.Account}}
                         </div>
                     </div>
                 </v-container>

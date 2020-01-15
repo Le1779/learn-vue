@@ -65,8 +65,8 @@
                     value: 'Platform',
                 },
                 {
-                    text: 'Email',
-                    value: 'Email'
+                    text: 'Account',
+                    value: 'Account'
                 },
                 {
                     text: 'Password',
@@ -99,7 +99,7 @@
 
             //id, email, password, name, platform, phone, deviceId, address, 
             defaultItem: {
-                Email: '',
+                Account: '',
                 Password: '',
                 Name: '',
                 Platform: '',
@@ -127,7 +127,7 @@
                 loading: false,
                 show: false,
                 item: {
-                    Email: '',
+                    Account: '',
                     Password: '',
                     Name: '',
                     Platform: '',
@@ -205,7 +205,7 @@
                 this.excutePost(url, postObj, success, fail);
 
                 self.desserts = [{
-                    Email: 'test@gmail.com',
+                    Account: 'test@gmail.com',
                     Password: 'asdfj12l34123904',
                     Name: 'Test User',
                     Platform: 'facebook',
