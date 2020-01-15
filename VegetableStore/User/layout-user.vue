@@ -34,9 +34,9 @@
             </v-col>
         </v-row>
         
-        <dialog-create-edit-product :dialog_model=dialog_create_edit_model></dialog-create-edit-product>
-        <dialog-delete-product :dialog_model=dialog_delete_model></dialog-delete-product>
-        <dialog-search-product :dialog_model=dialog_search_model></dialog-search-product>
+        <dialog-create-edit :dialog_model=dialog_create_edit_model></dialog-create-edit>
+        <dialog-delete :dialog_model=dialog_delete_model></dialog-delete>
+        <dialog-search :dialog_model=dialog_search_model></dialog-search>
 
         <v-snackbar v-model="snackbar_error.show" :timeout="snackbar_error.timeout">{{ snackbar_error.message }}</v-snackbar>
         
@@ -315,9 +315,9 @@
         },
 
         components: {
-            'dialog-create-edit-product': httpVueLoader('User/dialog-create-edit-product.vue'),
-            'dialog-delete-product': httpVueLoader('User/dialog-delete-product.vue'),
-            'dialog-search-product': httpVueLoader('User/dialog-search-product.vue'),
+            'dialog-create-edit': httpVueLoader('User/dialog-create-edit.vue'),
+            'dialog-delete': httpVueLoader('User/dialog-delete.vue'),
+            'dialog-search': httpVueLoader('User/dialog-search.vue'),
         }
     }
 
