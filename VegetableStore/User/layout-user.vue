@@ -2,30 +2,44 @@
     <v-container fluid>
         <v-row align="stretch" justify="center">
             <v-col cols=12>
-                <v-data-table :headers="headers" :items="desserts" :loading="loading" sort-by="calories" class="elevation-1">
-                    <template v-slot:top>
-                        <v-toolbar flat>
-                            <v-toolbar-title>My CRUD</v-toolbar-title>
-                            <v-divider class="mx-4" inset vertical></v-divider>
-                            <v-spacer></v-spacer>
-                            <v-btn color="primary" dark class="mb-2">New Item</v-btn>
+                <v-card>
+                    <v-data-table :headers="headers" :items="desserts" :loading="loading" :options.sync="pagination" :server-items-length="totalDesserts">
+                        <template v-slot:top>
+                            <v-toolbar flat>
+                                <v-toolbar-title>
+                                    <v-btn text icon color="grey darken-1">
+                                        <v-icon x-large @click="showSearchDialog()">search</v-icon>
+                                    </v-btn>
+                                </v-toolbar-title>
+                                <v-divider class="mx-4" inset vertical></v-divider>
+                                <v-spacer></v-spacer>
+                                <v-btn color="primary" dark class="mb-2" @click="showCreateDialog()">新建使用者</v-btn>
+                            </v-toolbar>
+                        </template>
 
-                        </v-toolbar>
-                    </template>
-                    <template v-slot:item.action="{ item }">
-                        <v-icon small class="mr-2">
-                            edit
-                        </v-icon>
-                        <v-icon small>
-                            delete
-                        </v-icon>
-                    </template>
-                    <template v-slot:no-data>
-                        <v-btn color="primary">Reset</v-btn>
-                    </template>
-                </v-data-table>
+                        <template v-slot:item.action="{ item }">
+                            <v-icon small class="mr-2" @click="showEditDialog(item)">
+                                edit
+                            </v-icon>
+                            <v-icon small @click="showDeleteDialog(item)">
+                                delete
+                            </v-icon>
+                        </template>
+
+                        <template v-slot:no-data>
+                            <v-btn color="primary">Reset</v-btn>
+                        </template>
+                    </v-data-table>
+                </v-card>
             </v-col>
         </v-row>
+        
+        <dialog-create-edit-product :dialog_model=dialog_create_edit_model></dialog-create-edit-product>
+        <dialog-delete-product :dialog_model=dialog_delete_model></dialog-delete-product>
+        <dialog-search-product :dialog_model=dialog_search_model></dialog-search-product>
+
+        <v-snackbar v-model="snackbar_error.show" :timeout="snackbar_error.timeout">{{ snackbar_error.message }}</v-snackbar>
+        
     </v-container>
 </template>
 
@@ -34,27 +48,45 @@
     module.exports = {
         data: () => ({
             loading: false,
+
+            pagination: {
+                rowsPerPage: 10,
+                page: 1,
+            },
+
+            totalDesserts: 0,
+
+            searchCondition: {},
+
             headers: [{
-                    text: 'Dessert (100g serving)',
+                    text: 'Platform',
                     align: 'left',
                     sortable: false,
-                    value: 'name',
+                    value: 'Platform',
                 },
                 {
-                    text: 'Calories',
-                    value: 'calories'
+                    text: 'Email',
+                    value: 'Email'
                 },
                 {
-                    text: 'Fat (g)',
-                    value: 'fat'
+                    text: 'Password',
+                    value: 'Password'
                 },
                 {
-                    text: 'Carbs (g)',
-                    value: 'carbs'
+                    text: 'Name',
+                    value: 'Name'
                 },
                 {
-                    text: 'Protein (g)',
-                    value: 'protein'
+                    text: 'Phone',
+                    value: 'Phone'
+                },
+                {
+                    text: 'DeviceID',
+                    value: 'DeviceID'
+                },
+                {
+                    text: 'Addresss',
+                    value: 'Addresss'
                 },
                 {
                     text: 'Actions',
@@ -64,6 +96,53 @@
             ],
 
             desserts: [],
+
+            //id, email, password, name, platform, phone, deviceId, address, 
+            defaultItem: {
+                Email: '',
+                Password: '',
+                Name: '',
+                Platform: '',
+                Phone: '',
+                DeviceID: '',
+                Addresss: '',
+            },
+
+            dialog_create_edit_model: {
+                loading: false,
+                show: false,
+                item: '',
+                isEdit: false,
+                action: null,
+            },
+
+            dialog_delete_model: {
+                loading: false,
+                show: false,
+                item: '',
+                action: null,
+            },
+
+            dialog_search_model: {
+                loading: false,
+                show: false,
+                item: {
+                    Email: '',
+                    Password: '',
+                    Name: '',
+                    Platform: '',
+                    Phone: '',
+                    DeviceID: '',
+                    Addresss: '',
+                },
+                action: null,
+            },
+
+            snackbar_error: {
+                show: false,
+                timeout: 5000,
+                message: '',
+            }
         }),
 
         created() {
@@ -71,14 +150,106 @@
         },
 
         methods: {
+            showCreateDialog() {
+                this.dialog_create_edit_model.item = Object.assign({}, this.defaultItem)
+                this.dialog_create_edit_model.isEdit = false
+                this.dialog_create_edit_model.action = this.createProduct
+                this.dialog_create_edit_model.show = true
+            },
 
+            showEditDialog(item) {
+                this.dialog_create_edit_model.item = Object.assign({}, item)
+                this.dialog_create_edit_model.isEdit = true
+                this.dialog_create_edit_model.action = this.editProduct
+                this.dialog_create_edit_model.show = true
+            },
+
+            showDeleteDialog(item) {
+                this.dialog_delete_model.item = Object.assign({}, item)
+                this.dialog_delete_model.action = this.deleteProduct
+                this.dialog_delete_model.show = true
+            },
+
+            showSearchDialog() {
+                this.dialog_search_model.action = this.getProducts
+                this.dialog_search_model.show = true
+            },
+
+            getUsers() {
+                this.loading = true;
+                let url = '/Product/QueryByPage';
+                let postObj = {
+                    startItem: (this.pagination.page - 1) * this.pagination.rowsPerPage,
+                    length: this.pagination.rowsPerPage,
+                    product: this.searchCondition,
+                }
+
+                let self = this;
+
+                function success(response) {
+                    console.log(response);
+                    formatData(response.data.Data.data);
+                    self.desserts = response.data.Data.data;
+                    console.log(self.desserts);
+                    self.totalDesserts = response.data.Data.total
+                    self.loading = false;
+                }
+
+                function fail(error) {
+                    console.log(error);
+                    self.snackbar_error.message = error
+                    self.snackbar_error.show = true
+                    self.loading = false;
+                }
+
+                this.excutePost(url, postObj, success, fail);
+
+                self.desserts = [{
+                    Email: 'test@gmail.com',
+                    Password: 'asdfj12l34123904',
+                    Name: 'Test User',
+                    Platform: 'facebook',
+                    Phone: '09123456789',
+                    DeviceID: 'D123456',
+                    Addresss: 'Taipei, Nahu, Min-Chan'
+                }];
+                
+                self.totalDesserts = 1;
+            },
+
+            excutePost(url, obj, success, fail) {
+                setTimeout(function() {
+                    fail("Test");
+                }, 3000)
+                return;
+
+                axios.post(url, obj)
+                    .then(function(response) {
+                        if (response.data.Code == 0) {
+                            success(response);
+                        } else {
+                            fail(response.data.Message);
+                        }
+                    }).catch(function(error) {
+                        fail(error);
+                    });
+            },
         },
 
         watch: {
-
+            pagination: {
+                handler() {
+                    this.getUsers();
+                },
+                deep: true
+            },
         },
 
-        components: {}
+        components: {
+            'dialog-create-edit-product': httpVueLoader('User/dialog-create-edit-product.vue'),
+            'dialog-delete-product': httpVueLoader('User/dialog-delete-product.vue'),
+            'dialog-search-product': httpVueLoader('User/dialog-search-product.vue'),
+        }
     }
 
 </script>
