@@ -153,29 +153,98 @@
             showCreateDialog() {
                 this.dialog_create_edit_model.item = Object.assign({}, this.defaultItem)
                 this.dialog_create_edit_model.isEdit = false
-                this.dialog_create_edit_model.action = this.createProduct
+                this.dialog_create_edit_model.action = this.doCreate
                 this.dialog_create_edit_model.show = true
             },
 
             showEditDialog(item) {
                 this.dialog_create_edit_model.item = Object.assign({}, item)
                 this.dialog_create_edit_model.isEdit = true
-                this.dialog_create_edit_model.action = this.editProduct
+                this.dialog_create_edit_model.action = this.doEdit
                 this.dialog_create_edit_model.show = true
             },
 
             showDeleteDialog(item) {
                 this.dialog_delete_model.item = Object.assign({}, item)
-                this.dialog_delete_model.action = this.deleteProduct
+                this.dialog_delete_model.action = this.doDelete
                 this.dialog_delete_model.show = true
             },
 
             showSearchDialog() {
-                this.dialog_search_model.action = this.getProducts
+                this.dialog_search_model.action = this.getData
                 this.dialog_search_model.show = true
             },
+            
+            doCreate() {
+                console.log("create");
+                let url = '/Product/Create';
+                let postObj = this.dialog_create_edit_model.item;
+                console.log(postObj);
 
-            getUsers() {
+                let self = this;
+
+                function success(response) {
+                    console.log(response);
+                    self.dialog_create_edit_model.show = false
+                    self.getProducts()
+                }
+
+                function fail(error) {
+                    console.log(error);
+                    self.dialog_create_edit_model.loading = false
+                    self.snackbar_error.message = error
+                    self.snackbar_error.show = true
+                }
+
+                this.excutePost(url, postObj, success, fail);
+            },
+
+            doEdit() {
+                console.log("edit");
+                let url = '/Product/Edit';
+                let postObj = this.dialog_create_edit_model.item;
+                console.log(postObj);
+
+                let self = this;
+
+                function success(response) {
+                    self.dialog_create_edit_model.show = false
+                    self.getProducts()
+                }
+
+                function fail(error) {
+                    console.log(error);
+                    self.dialog_create_edit_model.loading = false
+                    self.snackbar_error.message = error
+                    self.snackbar_error.show = true
+                }
+
+                this.excutePost(url, postObj, success, fail);
+            },
+
+            doDelete() {
+                console.log("delete");
+                let url = '/Product/Delete';
+                let postObj = this.dialog_delete_model.item;
+
+                let self = this;
+
+                function success(response) {
+                    self.dialog_delete_model.show = false
+                    self.getProducts()
+                }
+
+                function fail(error) {
+                    console.log(error);
+                    self.dialog_delete_model.loading = false
+                    self.snackbar_error.message = error
+                    self.snackbar_error.show = true
+                }
+
+                this.excutePost(url, postObj, success, fail);
+            },
+
+            getData() {
                 this.loading = true;
                 let url = '/Product/QueryByPage';
                 let postObj = {
@@ -239,7 +308,7 @@
         watch: {
             pagination: {
                 handler() {
-                    this.getUsers();
+                    this.getData();
                 },
                 deep: true
             },
