@@ -12,23 +12,23 @@
                 <v-form ref="form" v-model="valid" lazy-validation>
                     <v-container>
                         <v-row>
-                            <v-col cols="5">
+                            <v-col v-if="false" cols="5">
                                 <v-avatar class="profile elevation-10" color="grey" size="164" tile>
                                     <v-img src="https://picsum.photos/164?random"></v-img>
                                 </v-avatar>
                             </v-col>
 
-                            <v-col cols="7">
+                            <v-col cols="12">
                                 <v-col cols="12" class="pa-0">
                                     <v-text-field v-model="dialog_model.item.Account" label="使用者帳號" :rules="notNullRules"></v-text-field>
                                 </v-col>
                                 <v-col cols="12" class="pa-0">
-                                    <v-text-field v-model="dialog_model.item.Password" label="使用者密碼" :rules="notNullRules"></v-text-field>
+                                    <v-text-field v-model="dialog_model.item.Password" label="使用者密碼" :rules="[rules.required, rules.min]"></v-text-field>
                                 </v-col>
                             </v-col>
 
                             <v-col cols="12" sm="6">
-                                <v-text-field v-model="dialog_model.item.Name" label="使用者名稱" :rules="notNullRules"></v-text-field>
+                                <v-text-field v-model="dialog_model.item.Name" label="使用者名稱"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6">
                                 <v-text-field v-model="dialog_model.item.Phone" label="使用者電話"></v-text-field>
@@ -41,7 +41,7 @@
                 </v-form>
             </v-card-text>
 
-            <v-card-actions >
+            <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="grey darken-1" text @click="close">Cancel</v-btn>
                 <v-btn color="blue darken-1" class="white--text" :loading="dialog_model.loading" :disabled="dialog_model.loading" @click="save">{{actionTitle}}</v-btn>
@@ -57,9 +57,10 @@
             stepper: 1,
             valid: true,
             notNullRules: [v => !!v || '名稱不為空白'],
-            unitItems: ['個', '條', '根', '包', '斤', '箱', '袋'],
-            areaItems: ['全區', '北區', '中區', '南區', '東區'],
-            uploadImages: [],
+            rules: {
+                required: value => !!value || '請輸入新密碼.',
+                min: v => v.length >= 8 || 'Min 8 characters',
+            },
         }),
 
         computed: {
@@ -70,19 +71,6 @@
             actionTitle() {
                 return this.dialog_model.isEdit ? '編輯' : '建立'
             },
-
-            uploadImageTitle() {
-                return this.dialog_model.item.Image != "" ? '編輯圖片' : '上傳圖片'
-            },
-
-            isInStock: {
-                get: function() {
-                    return this.dialog_model.item.IsInStock == 1
-                },
-                set: function(value) {
-                    this.dialog_model.item.IsInStock = value ? 1 : 0
-                }
-            }
         },
 
         methods: {
