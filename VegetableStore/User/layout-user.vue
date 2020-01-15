@@ -3,7 +3,7 @@
         <v-row align="stretch" justify="center">
             <v-col cols=12>
                 <v-card>
-                    <v-data-table :headers="headers" :items="desserts" :loading="loading" :options.sync="pagination" :server-items-length="totalDesserts">
+                    <v-data-table :headers="headers" :items="desserts" :loading="loading" :options.sync="pagination" :server-items-length="totalDesserts" :footer-props="footerProps">
                         <template v-slot:top>
                             <v-toolbar flat>
                                 <v-toolbar-title>
@@ -59,43 +59,48 @@
             searchCondition: {},
 
             headers: [{
-                    text: 'Platform',
+                    text: '提供者',
                     align: 'left',
                     sortable: false,
                     value: 'Platform',
                 },
                 {
-                    text: 'Account',
+                    text: '帳號',
                     value: 'Account'
                 },
                 {
-                    text: 'Password',
+                    text: '密碼',
                     value: 'Password'
                 },
                 {
-                    text: 'Name',
+                    text: '名稱',
                     value: 'Name'
                 },
                 {
-                    text: 'Phone',
+                    text: '電話',
                     value: 'Phone'
                 },
                 {
-                    text: 'DeviceID',
+                    text: '裝置ID',
                     value: 'DeviceID'
                 },
                 {
-                    text: 'Addresss',
+                    text: '地址',
                     value: 'Addresss'
                 },
                 {
-                    text: 'Actions',
+                    text: '編輯/刪除',
                     value: 'action',
                     sortable: false
                 },
             ],
 
             desserts: [],
+            
+            footerProps: {
+                itemsPerPageText: '每頁比數',
+                itemsPerPageAllText: '全部'
+            },
 
             //id, email, password, name, platform, phone, deviceId, address, 
             defaultItem: {

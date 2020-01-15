@@ -44,7 +44,7 @@
             title: '刪除使用者',
             delete_hint: '資料一經刪除後即無法復原。',
             delete_text: '刪除',
-            cancel_text: 'Cancel',
+            cancel_text: '取消',
             loading_text: '刪除中...',
         }),
         methods: {
