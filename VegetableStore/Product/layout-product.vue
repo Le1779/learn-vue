@@ -79,7 +79,7 @@
                 },
                 {
                     text: '庫存',
-                    value: 'Stock'
+                    value: 'Inventory'
                 },
                 {
                     text: '販售地區',
@@ -137,7 +137,7 @@
                     CreateDate: '',
                     Price: 0,
                     Unit: '',
-                    Stock: 0,
+                    Inventory: 0,
                     Area: '',
                     Remark: '',
                     Image: '',
@@ -160,7 +160,6 @@
         methods: {
             initialize() {
                 console.log('initialize');
-                this.getProducts();
             },
 
             showCreateDialog() {
@@ -259,18 +258,18 @@
 
             getProducts() {
                 this.loading = true;
-                let url = '/Product/QueryByPage';
+                let url = this.$HOST + '/Product';
                 let postObj = {
                     startItem: (this.pagination.page - 1) * this.pagination.rowsPerPage,
                     length: this.pagination.rowsPerPage,
-                    product: this.searchCondition,
+                    //product: this.searchCondition,
                 }
 
                 let self = this;
 
                 function success(response) {
                     console.log(response);
-                    formatData(response.data.Data.data);
+                    //formatData(response.data.Data.data);
                     self.desserts = response.data.Data.data;
                     console.log(self.desserts);
                     self.totalDesserts = response.data.Data.total
@@ -283,7 +282,9 @@
                     self.snackbar_error.show = true
                     self.loading = false;
                 }
-
+                
+                httpHelper.excuteGet(url, postObj, success, fail);
+                return;
                 this.excutePost(url, postObj, success, fail);
 
                 //fake

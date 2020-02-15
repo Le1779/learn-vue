@@ -28,6 +28,8 @@
 
         created() {
             this.$vuetify.theme.dark = false
+            Vue.prototype.$HOST = "http://122.116.79.139/api/v1"
+            httpHelper.hello()
         },
 
         components: {
