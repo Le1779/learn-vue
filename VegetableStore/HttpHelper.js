@@ -3,9 +3,11 @@ var httpHelperMixin = {
         hello: function () {
             console.log('hello from mixin!')
         },
-        
+
         excuteGet(url, obj, success, fail) {
-            axios.get(url, { params: obj })
+            axios.get(url, {
+                    params: obj
+                })
                 .then(function (response) {
                     if (response.data.Code == 0) {
                         success(response);
@@ -28,6 +30,26 @@ var httpHelperMixin = {
                 }).catch(function (error) {
                     fail(error);
                 });
+        },
+
+        excuteDelete(url, obj, success, fail) {
+            axios.delete(url, obj)
+                .then(function (response) {
+                    if (response.data.Code == 0) {
+                        success(response);
+                    } else {
+                        fail(response.data.Message);
+                    }
+                }).catch(function (error) {
+                    fail(error);
+                });
+        },
+
+        excuteTestPost(url, obj, success, fail) {
+            setTimeout(function () {
+                fail("Test");
+            }, 3000)
+            return;
         },
     }
 }

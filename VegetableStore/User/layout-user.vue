@@ -27,7 +27,7 @@
                         </template>
 
                         <template v-slot:no-data>
-                            <v-btn color="primary">Reset</v-btn>
+                            <v-btn color="primary" @click="getData()">Reset</v-btn>
                         </template>
                     </v-data-table>
                 </v-card>
@@ -251,11 +251,12 @@
 
             getData() {
                 this.loading = true;
-                let url = '/Product/QueryByPage';
+                let url = this.$HOST + '/User';
                 let postObj = {
+                    token: "",
                     startItem: (this.pagination.page - 1) * this.pagination.rowsPerPage,
                     length: this.pagination.rowsPerPage,
-                    product: this.searchCondition,
+                    //product: this.searchCondition,
                 }
 
                 let self = this;
@@ -276,19 +277,7 @@
                     self.loading = false;
                 }
 
-                this.excutePost(url, postObj, success, fail);
-
-                self.desserts = [{
-                    Account: 'test@gmail.com',
-                    Password: 'asdfj12l34123904',
-                    Name: 'Test User',
-                    Platform: 'facebook',
-                    Phone: '09123456789',
-                    DeviceID: 'D123456',
-                    Addresss: 'Taipei, Nahu, Min-Chan'
-                }];
-                
-                self.totalDesserts = 1;
+                httpHelper.excuteGet(url, postObj, success, fail);
             },
 
             excutePost(url, obj, success, fail) {

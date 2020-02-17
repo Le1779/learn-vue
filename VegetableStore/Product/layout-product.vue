@@ -38,9 +38,10 @@
             </v-col>
         </v-row>
 
-        <dialog-create-edit-product :dialog_model=dialog_create_edit_model></dialog-create-edit-product>
+        <!--<dialog-create-edit-product :dialog_model=dialog_create_edit_model></dialog-create-edit-product>-->
         <dialog-delete-product :dialog_model=dialog_delete_model></dialog-delete-product>
         <dialog-search-product :dialog_model=dialog_search_model></dialog-search-product>
+        <dialog-create :dialog_model=dialog_create_edit_model></dialog-create>
 
         <v-snackbar v-model="snackbar_error.show" :timeout="snackbar_error.timeout">{{ snackbar_error.message }}</v-snackbar>
     </v-container>
@@ -189,8 +190,8 @@
 
             createProduct() {
                 console.log("createProduct");
-                let url = '/Product/Create';
-                let postObj = this.dialog_create_edit_model.item;
+                let url = this.$HOST + '/Product';
+                let postObj = {Token: "ab" ,Product: this.dialog_create_edit_model.item};
                 console.log(postObj);
 
                 let self = this;
@@ -208,7 +209,7 @@
                     self.snackbar_error.show = true
                 }
 
-                this.excutePost(url, postObj, success, fail);
+                httpHelper.excutePost(url, postObj, success, fail);
             },
 
             editProduct() {
@@ -231,13 +232,16 @@
                     self.snackbar_error.show = true
                 }
 
-                this.excutePost(url, postObj, success, fail);
+                httpHelper.excutePost(url, postObj, success, fail);
             },
 
             deleteProduct() {
                 console.log("deleteProduct");
-                let url = '/Product/Delete';
-                let postObj = this.dialog_delete_model.item;
+                let url = this.$HOST + '/Product';
+                let postObj = {
+                    Token: "token",
+                    SerialNo: this.dialog_delete_model.item.SerialNo,
+                }
 
                 let self = this;
 
@@ -253,7 +257,7 @@
                     self.snackbar_error.show = true
                 }
 
-                this.excutePost(url, postObj, success, fail);
+                httpHelper.excuteDelete(url, postObj, success, fail);
             },
 
             getProducts() {
@@ -284,83 +288,6 @@
                 }
                 
                 httpHelper.excuteGet(url, postObj, success, fail);
-                return;
-                this.excutePost(url, postObj, success, fail);
-
-                //fake
-                this.desserts = [{
-                        Name: "茄子",
-                        Price: 100,
-                        Unit: '根',
-                        Area: '北區',
-                        CreateDate: '2019/02/30',
-                        Image: "https://2.share.photo.xuite.net/yield.life/120e58a/20462333/1216908173_l.jpg",
-                        Remark: "這是一個茄子",
-                        Stock: 30,
-                        IsInStock: -1
-                    },
-                    {
-                        Name: "prodrct2",
-                        Price: 300,
-                        Unit: '1根',
-                        CreateDate: '2019/02/30',
-                        Image: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-                        Remark: "Greyhound divisely hello coldly fonwderfullyGreyhound divisely hello coldly fonwderfully",
-                        Stock: 30,
-                        IsInStock: 0
-                    },
-                    {
-                        Name: "prodrct2",
-                        Price: 300,
-                        Unit: '1根',
-                        CreateDate: '2019/02/30',
-                        Image: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-                        Remark: "Greyhound divisely hello coldly fonwderfully",
-                        Stock: 30,
-                        IsInStock: 1
-                    },
-                    {
-                        Name: "prodrct2",
-                        Price: 300,
-                        Unit: '1根',
-                        CreateDate: '2019/02/30',
-                        Image: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-                        Remark: "Greyhound divisely hello coldly fonwderfully",
-                        Stock: 30,
-                        IsInStock: -1
-                    },
-                    {
-                        Name: "prodrct2",
-                        Price: 300,
-                        Unit: '1根',
-                        CreateDate: '2019/02/30',
-                        Image: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-                        Remark: "Greyhound divisely hello coldly fonwderfully",
-                        Stock: 30,
-                        IsInStock: -1
-                    }
-                ];
-
-                this.totalDesserts = 5
-
-            },
-
-            excutePost(url, obj, success, fail) {
-                setTimeout(function() {
-                    fail("Test");
-                }, 3000)
-                return;
-
-                axios.post(url, obj)
-                    .then(function(response) {
-                        if (response.data.Code == 0) {
-                            success(response);
-                        } else {
-                            fail(response.data.Message);
-                        }
-                    }).catch(function(error) {
-                        fail(error);
-                    });
             },
         },
 
@@ -377,6 +304,7 @@
             'dialog-create-edit-product': httpVueLoader('Product/dialog-create-edit-product.vue'),
             'dialog-delete-product': httpVueLoader('Product/dialog-delete-product.vue'),
             'dialog-search-product': httpVueLoader('Product/dialog-search-product.vue'),
+            'dialog-create': httpVueLoader('Product/dialog-create.vue'),
         }
     }
 
