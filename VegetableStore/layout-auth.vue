@@ -89,6 +89,16 @@
             this.checkToken();
         },
 
+        watch: {
+            $TOKEN: {
+                handler() {
+                    console.log("token change");
+                    console.log(this.$TOKEN);
+                    this.getUserInfo();
+                }
+            },
+        },
+
         methods: {
             login() {
                 if (this.$refs.form.validate()) {
@@ -103,8 +113,7 @@
 
                     function success(response) {
                         console.log(response);
-                        Vue.prototype.$USER_TOKEN = response.data.Token;
-                        self.getUserInfo();
+                        self.$TOKEN = response.data.Token;
                     }
 
                     function fail(error) {
@@ -124,10 +133,9 @@
 
             getUserInfo() {
                 console.log("getUserInfo");
-                console.log(this.$USER_TOKEN);
                 let url = this.$HOST + '/User/ReadUserInfo';
                 let postObj = new FormData();
-                postObj.set('Token', this.$USER_TOKEN);
+                postObj.set('Token', this.$TOKEN);
 
                 let self = this;
 
@@ -145,9 +153,9 @@
 
                 httpHelper.excutePost(url, postObj, success, fail);
             },
-            
-            checkToken(){
-                if(this.$USER_TOKEN != null){
+
+            checkToken() {
+                if (this.$TOKEN != null) {
                     this.isLogin = true;
                 }
             }

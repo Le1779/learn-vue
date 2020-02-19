@@ -43,6 +43,20 @@
             routes
         })
 
+        const TOKEN = Vue.observable({
+            TOKEN: null
+        })
+
+        Object.defineProperty(Vue.prototype, '$TOKEN', {
+            get() {
+                return TOKEN.TOKEN
+            },
+
+            set(value) {
+                TOKEN.TOKEN = value
+            }
+        })
+
         new Vue({
             el: '#app',
             vuetify: new Vuetify(),
@@ -51,6 +65,7 @@
                 'main-app': httpVueLoader('main.vue'),
             }
         })
+
     </script>
 </body>
 
