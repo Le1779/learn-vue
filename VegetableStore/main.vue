@@ -19,10 +19,6 @@
         data: () => ({
             app: {
                 nav_drawer_expand: null,
-                user: {
-                    name: 'Kevin Le',
-                    role: 'Admin'
-                }
             },
         }),
 

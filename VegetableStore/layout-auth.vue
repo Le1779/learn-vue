@@ -144,6 +144,7 @@
                     self.loading = false;
                     self.checkToken();
                     self.user = response.data.Data;
+                    self.$USER = response.data.Data;
                 }
 
                 function fail(error) {

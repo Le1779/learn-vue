@@ -21,6 +21,7 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="../vue/js/httpVueLoader.js"></script>
     <script src="../VegetableStore/HttpHelper.js"></script>
+    <script src="../VegetableStore/Global.js"></script>
     <script>
         const routes = [{
             path: '/user',
@@ -41,20 +42,6 @@
 
         const router = new VueRouter({
             routes
-        })
-
-        const TOKEN = Vue.observable({
-            TOKEN: null
-        })
-
-        Object.defineProperty(Vue.prototype, '$TOKEN', {
-            get() {
-                return TOKEN.TOKEN
-            },
-
-            set(value) {
-                TOKEN.TOKEN = value
-            }
         })
 
         new Vue({

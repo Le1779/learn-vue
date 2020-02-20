@@ -1,14 +1,20 @@
 <template>
     <v-navigation-drawer v-model="app.nav_drawer_expand" app clipped>
         <template v-slot:prepend>
-            <v-list-item two-line>
+            <v-list-item two-line v-if="$USER != null">
                 <v-list-item-avatar color="red">
-                    <span class="white--text headline">{{app.user.name.charAt(0)}}</span>
+                    <span class="white--text headline">{{$USER.Name.charAt(0)}}</span>
                 </v-list-item-avatar>
 
                 <v-list-item-content>
-                    <v-list-item-title>{{app.user.name}}</v-list-item-title>
-                    <v-list-item-subtitle>{{app.user.role}}</v-list-item-subtitle>
+                    <v-list-item-title>{{$USER.Name}}</v-list-item-title>
+                    <v-list-item-subtitle>{{$USER.Priority == 74970855 ? "管理員" : "一般用戶"}}</v-list-item-subtitle>
+                </v-list-item-content>
+            </v-list-item>
+
+            <v-list-item v-if="$USER == null">
+                <v-list-item-content>
+                    <v-list-item-title>未登入</v-list-item-title>
                 </v-list-item-content>
             </v-list-item>
         </template>
@@ -70,6 +76,16 @@
                 },
             ],
         }),
+
+        watch: {
+            $USER: {
+                handler() {
+                    console.log("user change");
+                    console.log(this.$USER);
+                }
+            },
+        },
+
     }
 
 </script>
