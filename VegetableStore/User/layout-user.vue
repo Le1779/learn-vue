@@ -16,13 +16,13 @@
                                 <v-btn color="primary" dark class="mb-2" @click="showCreateDialog()">新建使用者</v-btn>
                             </v-toolbar>
                         </template>
-                        
+
                         <template v-slot:item.priority="{ item }">
                             {{item.Priority == 74970855 ? "管理員" : "一般用戶"}}
                         </template>
-                        
+
                         <template v-slot:item.gender="{ item }">
-                            {{item.Gender == -1 ? "" : item.Gender == 0? "男" : "女"}}
+                            {{item.Gender == -1 ? "無" : item.Gender == 0? "男" : "女"}}
                         </template>
 
                         <template v-slot:item.action="{ item }">
@@ -41,13 +41,13 @@
                 </v-card>
             </v-col>
         </v-row>
-        
+
         <dialog-create-edit :dialog_model=dialog_create_edit_model></dialog-create-edit>
         <dialog-delete :dialog_model=dialog_delete_model></dialog-delete>
         <dialog-search :dialog_model=dialog_search_model></dialog-search>
 
         <v-snackbar v-model="snackbar_error.show" :timeout="snackbar_error.timeout">{{ snackbar_error.message }}</v-snackbar>
-        
+
     </v-container>
 </template>
 
@@ -55,6 +55,7 @@
 <script>
     module.exports = {
         data: () => ({
+            url: '',
             loading: false,
 
             pagination: {
@@ -102,7 +103,7 @@
             ],
 
             desserts: [],
-            
+
             footerProps: {
                 itemsPerPageText: '每頁比數',
                 itemsPerPageAllText: '全部'
@@ -110,12 +111,12 @@
 
             //id, email, password, name, platform, phone, deviceId, address, 
             defaultItem: {
-                Account: '',
+                Email: '',
                 Password: '',
                 Name: '',
-                Platform: '',
+                Gender: '',
                 Phone: '',
-                DeviceID: '',
+                Birthday: '',
                 Addresss: '',
             },
 
@@ -157,6 +158,7 @@
         }),
 
         created() {
+            this.url = this.$HOST + '/User'
         },
 
         methods: {
@@ -184,11 +186,18 @@
                 this.dialog_search_model.action = this.getData
                 this.dialog_search_model.show = true
             },
-            
+
             doCreate() {
                 console.log("create");
-                let url = '/Product/Create';
-                let postObj = this.dialog_create_edit_model.item;
+                let creatObj = this.dialog_create_edit_model.item;
+                let postObj = new FormData();
+                postObj.set('Email', creatObj.Email);
+                postObj.set('Password', creatObj.Password);
+                postObj.set('Name', creatObj.Name);
+                postObj.set('Gender', creatObj.Gender);
+                postObj.set('Phone', creatObj.Phone);
+                postObj.set('Birthday', creatObj.Birthday);
+                postObj.set('Addresss', creatObj.Addresss);
                 console.log(postObj);
 
                 let self = this;
@@ -196,7 +205,7 @@
                 function success(response) {
                     console.log(response);
                     self.dialog_create_edit_model.show = false
-                    self.getProducts()
+                    self.getData()
                 }
 
                 function fail(error) {
@@ -206,7 +215,7 @@
                     self.snackbar_error.show = true
                 }
 
-                this.excutePost(url, postObj, success, fail);
+                httpHelper.excutePost(this.url + "/Register", postObj, success, fail);
             },
 
             doEdit() {
@@ -255,11 +264,10 @@
             },
 
             getData() {
-                if(this.$TOKEN == null){
+                if (this.$TOKEN == null) {
                     return;
                 }
                 this.loading = true;
-                let url = this.$HOST + '/User';
                 let postObj = {
                     token: this.$TOKEN,
                     startItem: (this.pagination.page - 1) * this.pagination.rowsPerPage,
@@ -283,7 +291,7 @@
                     self.loading = false;
                 }
 
-                httpHelper.excuteGet(url, postObj, success, fail);
+                httpHelper.excuteGet(this.url, postObj, success, fail);
             },
 
             excutePost(url, obj, success, fail) {

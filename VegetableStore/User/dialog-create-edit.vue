@@ -20,10 +20,10 @@
 
                             <v-col cols="12">
                                 <v-col cols="12" class="pa-0">
-                                    <v-text-field v-model="dialog_model.item.Account" label="使用者帳號" :rules="notNullRules"></v-text-field>
+                                    <v-text-field v-model="dialog_model.item.Email" label="使用者信箱" :rules="[rules.required]" filled></v-text-field>
                                 </v-col>
                                 <v-col cols="12" class="pa-0">
-                                    <v-text-field v-model="dialog_model.item.Password" label="使用者密碼" :rules="[rules.required, rules.min]"></v-text-field>
+                                    <v-text-field v-model="dialog_model.item.Password" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'" :rules="[rules.required, rules.min, rules.max]" :type="showPassword ? 'text' : 'password'" name="input-10-2" label="使用者密碼" class="input-group--focused" @click:append="showPassword = !showPassword" filled></v-text-field>
                                 </v-col>
                             </v-col>
 
@@ -32,6 +32,21 @@
                             </v-col>
                             <v-col cols="12" sm="6">
                                 <v-text-field v-model="dialog_model.item.Phone" label="使用者電話"></v-text-field>
+                            </v-col>
+                            <v-col cols="12" sm="6">
+                                <v-select v-model="dialog_model.item.Gender" :items="genderItems" label="性別"></v-select>
+                            </v-col>
+                            <v-col cols="12" sm="6">
+                                <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="dialog_model.item.Birthday" transition="scale-transition" offset-y min-width="290px">
+                                    <template v-slot:activator="{ on }">
+                                        <v-text-field v-model="dialog_model.item.Birthday" label="Picker in menu" prepend-icon="event" readonly v-on="on"></v-text-field>
+                                    </template>
+                                    <v-date-picker v-model="dialog_model.item.Birthday" no-title scrollable>
+                                        <v-spacer></v-spacer>
+                                        <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
+                                        <v-btn text color="primary" @click="$refs.menu.save(dialog_model.item.Birthday)">OK</v-btn>
+                                    </v-date-picker>
+                                </v-menu>
                             </v-col>
                             <v-col cols="12">
                                 <v-text-field v-model="dialog_model.item.Address" label="使用者地址"></v-text-field>
@@ -56,11 +71,15 @@
         data: () => ({
             stepper: 1,
             valid: true,
-            notNullRules: [v => !!v || '名稱不為空白'],
             rules: {
-                required: value => !!value || '請輸入新密碼.',
+                required: value => !!value || '必填',
                 min: v => v.length >= 8 || 'Min 8 characters',
+                max: v => v.length <= 16 || 'Max 16 characters',
+                match: this.confirm == this.password || 'No Math',
             },
+            showPassword: false,
+            genderItems: ['無', '男', '女'],
+            menu: false,
         }),
 
         computed: {
