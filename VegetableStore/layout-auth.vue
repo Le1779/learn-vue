@@ -113,7 +113,8 @@
 
                     function success(response) {
                         console.log(response);
-                        self.$TOKEN = response.data.Token;
+                        $TOKEN = response.data.Token;
+                        localStorage.setItem('token', self.$TOKEN)
                     }
 
                     function fail(error) {

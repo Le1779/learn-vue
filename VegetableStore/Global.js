@@ -12,6 +12,9 @@ Object.defineProperty(Vue.prototype, '$TOKEN', {
     }
 })
 
+$TOKEN = localStorage.getItem('token');
+console.log($TOKEN);
+
 const USER =  Vue.observable({
     USER: null
 })
