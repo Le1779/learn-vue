@@ -1,9 +1,5 @@
 var httpHelperMixin = {
     methods: {
-        hello: function () {
-            console.log('hello from mixin!')
-        },
-
         excuteGet(url, obj, success, fail) {
             axios.get(url, {
                     params: obj

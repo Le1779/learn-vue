@@ -22,10 +22,31 @@
             },
         }),
 
+        watch: {
+            $TOKEN: {
+                handler() {
+                    if (this.$TOKEN == null) {
+                        console.log("no token");
+                        if (this.$router.path !== '/auth') {
+                            this.$router.replace('/auth')
+                        }
+                    }
+                }
+            },
+        },
+
         created() {
             this.$vuetify.theme.dark = false
             Vue.prototype.$HOST = "http://122.116.79.139/api/v1"
-            httpHelper.hello()
+        },
+
+        mounted() {
+            if (this.$TOKEN == null) {
+                console.log("no token");
+                if (this.$router.path !== '/auth') {
+                    this.$router.replace('/auth')
+                }
+            }
         },
 
         components: {

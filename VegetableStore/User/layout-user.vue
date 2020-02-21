@@ -16,6 +16,14 @@
                                 <v-btn color="primary" dark class="mb-2" @click="showCreateDialog()">新建使用者</v-btn>
                             </v-toolbar>
                         </template>
+                        
+                        <template v-slot:item.priority="{ item }">
+                            {{item.Priority == 74970855 ? "管理員" : "一般用戶"}}
+                        </template>
+                        
+                        <template v-slot:item.gender="{ item }">
+                            {{item.Gender == -1 ? "" : item.Gender == 0? "男" : "女"}}
+                        </template>
 
                         <template v-slot:item.action="{ item }">
                             <v-icon small class="mr-2" @click="showEditDialog(item)">
@@ -59,34 +67,32 @@
             searchCondition: {},
 
             headers: [{
-                    text: '提供者',
-                    align: 'left',
-                    sortable: false,
-                    value: 'Platform',
+                    text: 'Priority',
+                    value: 'priority',
                 },
                 {
-                    text: '帳號',
-                    value: 'Account'
-                },
-                {
-                    text: '密碼',
-                    value: 'Password'
-                },
-                {
-                    text: '名稱',
+                    text: 'Name',
                     value: 'Name'
                 },
                 {
-                    text: '電話',
+                    text: 'Email',
+                    value: 'Email'
+                },
+                {
+                    text: 'Address',
+                    value: 'Address'
+                },
+                {
+                    text: 'Gender',
+                    value: 'gender'
+                },
+                {
+                    text: 'Phone',
                     value: 'Phone'
                 },
                 {
-                    text: '裝置ID',
-                    value: 'DeviceID'
-                },
-                {
-                    text: '地址',
-                    value: 'Addresss'
+                    text: 'Birthday',
+                    value: 'Birthday'
                 },
                 {
                     text: '編輯/刪除',
@@ -151,7 +157,6 @@
         }),
 
         created() {
-
         },
 
         methods: {
@@ -250,10 +255,13 @@
             },
 
             getData() {
+                if(this.$TOKEN == null){
+                    return;
+                }
                 this.loading = true;
                 let url = this.$HOST + '/User';
                 let postObj = {
-                    token: "",
+                    token: this.$TOKEN,
                     startItem: (this.pagination.page - 1) * this.pagination.rowsPerPage,
                     length: this.pagination.rowsPerPage,
                     //product: this.searchCondition,
@@ -263,7 +271,6 @@
 
                 function success(response) {
                     console.log(response);
-                    formatData(response.data.Data.data);
                     self.desserts = response.data.Data.data;
                     console.log(self.desserts);
                     self.totalDesserts = response.data.Data.total
