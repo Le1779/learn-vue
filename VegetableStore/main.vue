@@ -23,6 +23,7 @@
         }),
 
         created() {
+            console.log(this.$TOKEN);
             this.$vuetify.theme.dark = false
             Vue.prototype.$HOST = "http://122.116.79.139/api/v1"
         },

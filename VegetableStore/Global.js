@@ -4,16 +4,14 @@ const TOKEN = Vue.observable({
 
 Object.defineProperty(Vue.prototype, '$TOKEN', {
     get() {
-        return TOKEN.TOKEN
+        return TOKEN.TOKEN == null ? localStorage.getItem('token') : TOKEN.TOKEN
     },
 
     set(value) {
+        localStorage.setItem('token', value)
         TOKEN.TOKEN = value
     }
 })
-
-$TOKEN = localStorage.getItem('token');
-console.log($TOKEN);
 
 const USER =  Vue.observable({
     USER: null

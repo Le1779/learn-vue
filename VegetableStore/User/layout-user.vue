@@ -255,16 +255,15 @@
             },
 
             getData() {
-                if($TOKEN == null){
+                if(this.$TOKEN == null){
                     return;
                 }
                 this.loading = true;
                 let url = this.$HOST + '/User';
                 let postObj = {
-                    token: $TOKEN,
+                    token: this.$TOKEN,
                     startItem: (this.pagination.page - 1) * this.pagination.rowsPerPage,
                     length: this.pagination.rowsPerPage,
-                    //product: this.searchCondition,
                 }
 
                 let self = this;

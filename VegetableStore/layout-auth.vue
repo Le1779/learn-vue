@@ -51,6 +51,10 @@
             <v-card-actions>
             </v-card-actions>
         </v-card>
+
+        <v-btn text color="deep-purple accent-4" @click="logout()">
+            Logout
+        </v-btn>
     </v-container>
 </template>
 
@@ -113,8 +117,7 @@
 
                     function success(response) {
                         console.log(response);
-                        $TOKEN = response.data.Token;
-                        localStorage.setItem('token', self.$TOKEN)
+                        self.$TOKEN = response.data.Token;
                     }
 
                     function fail(error) {
@@ -124,6 +127,11 @@
 
                     httpHelper.excutePost(url, postObj, success, fail);
                 }
+            },
+
+            logout() {
+                localStorage.removeItem('token');
+                this.$router.push('/auth');
             },
 
             register() {
