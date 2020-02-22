@@ -3,16 +3,13 @@
         <v-card>
             <v-card-title>
                 <span class="headline">{{ title }}</span>
-                <v-avatar v-if="dialog_model.isEdit" class="ml-2" size="24">
-                    <img src="../VegetableStore/Image/facebook.svg" alt="John">
-                </v-avatar>
             </v-card-title>
 
             <v-card-text>
                 <v-form ref="form" v-model="valid" lazy-validation>
                     <v-container>
                         <v-row>
-                            <v-col v-if="false" cols="5">
+                            <v-col v-if="true" cols="5">
                                 <v-avatar class="profile elevation-10" color="grey" size="164" tile>
                                     <v-img src="https://picsum.photos/164?random"></v-img>
                                 </v-avatar>
@@ -20,9 +17,9 @@
 
                             <v-col cols="12">
                                 <v-col cols="12" class="pa-0">
-                                    <v-text-field v-model="dialog_model.item.Email" label="使用者信箱" :rules="[rules.required]" filled></v-text-field>
+                                    <v-text-field v-model="dialog_model.item.Email" label="使用者信箱" :rules="[rules.required]" filled :readonly="dialog_model.isEdit"></v-text-field>
                                 </v-col>
-                                <v-col cols="12" class="pa-0">
+                                <v-col v-if="!dialog_model.isEdit" cols="12" class="pa-0">
                                     <v-text-field v-model="dialog_model.item.Password" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'" :rules="[rules.required, rules.min, rules.max]" :type="showPassword ? 'text' : 'password'" name="input-10-2" label="使用者密碼" class="input-group--focused" @click:append="showPassword = !showPassword" filled></v-text-field>
                                 </v-col>
                             </v-col>
@@ -34,7 +31,7 @@
                                 <v-text-field v-model="dialog_model.item.Phone" label="使用者電話"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6">
-                                <v-select v-model="dialog_model.item.Gender" :items="genderItems" label="性別"></v-select>
+                                <v-select v-model="dialog_model.item.Gender" item-text="text" item-value="value" :items="genderItems" label="性別"></v-select>
                             </v-col>
                             <v-col cols="12" sm="6">
                                 <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="dialog_model.item.Birthday" transition="scale-transition" offset-y min-width="290px">
@@ -78,7 +75,16 @@
                 match: this.confirm == this.password || 'No Math',
             },
             showPassword: false,
-            genderItems: ['無', '男', '女'],
+            genderItems: [{
+                text: '無',
+                value: -1
+            }, {
+                text: '男',
+                value: 0
+            }, {
+                text: '女',
+                value: 1
+            }],
             menu: false,
         }),
 

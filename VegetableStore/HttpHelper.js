@@ -27,6 +27,19 @@ var httpHelperMixin = {
                     fail(error);
                 });
         },
+        
+        excutePut(url, obj, success, fail) {
+            axios.put(url, obj)
+                .then(function (response) {
+                    if (response.data.Code == 0) {
+                        success(response);
+                    } else {
+                        fail(response.data.Message);
+                    }
+                }).catch(function (error) {
+                    fail(error);
+                });
+        },
 
         excuteDelete(url, obj, success, fail) {
             axios.delete(url, obj)

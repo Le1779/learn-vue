@@ -220,15 +220,17 @@
 
             doEdit() {
                 console.log("edit");
-                let url = '/Product/Edit';
-                let postObj = this.dialog_create_edit_model.item;
-                console.log(postObj);
-
+                let editObj = this.dialog_create_edit_model.item;
+                let postObj = new FormData();
+                postObj.set('Token', this.$TOKEN);
+                postObj.set('User', JSON.stringify(editObj));
+                console.log(editObj);
+                
                 let self = this;
 
                 function success(response) {
                     self.dialog_create_edit_model.show = false
-                    self.getProducts()
+                    self.getData()
                 }
 
                 function fail(error) {
@@ -238,7 +240,7 @@
                     self.snackbar_error.show = true
                 }
 
-                this.excutePost(url, postObj, success, fail);
+                httpHelper.excutePut(this.url, postObj, success, fail);
             },
 
             doDelete() {
