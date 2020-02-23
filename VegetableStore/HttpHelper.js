@@ -42,7 +42,7 @@ var httpHelperMixin = {
         },
 
         excuteDelete(url, obj, success, fail) {
-            axios.delete(url, obj)
+            axios.delete(url, { data: obj })
                 .then(function (response) {
                     if (response.data.Code == 0) {
                         success(response);

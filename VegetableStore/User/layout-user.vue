@@ -245,14 +245,15 @@
 
             doDelete() {
                 console.log("delete");
-                let url = '/Product/Delete';
-                let postObj = this.dialog_delete_model.item;
+                let postObj = new FormData();
+                postObj.set('Token', this.$TOKEN);
+                postObj.set('ID', this.dialog_delete_model.item.ID);
 
                 let self = this;
 
                 function success(response) {
                     self.dialog_delete_model.show = false
-                    self.getProducts()
+                    self.getData()
                 }
 
                 function fail(error) {
@@ -262,7 +263,7 @@
                     self.snackbar_error.show = true
                 }
 
-                this.excutePost(url, postObj, success, fail);
+                httpHelper.excuteDelete(this.url, postObj, success, fail);
             },
 
             getData() {
