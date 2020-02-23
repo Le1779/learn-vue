@@ -51,6 +51,8 @@
 <script>
     module.exports = {
         data: () => ({
+            url: '',
+            
             loading: false,
 
             pagination: {
@@ -108,11 +110,11 @@
                 CreateDate: '',
                 Price: 0,
                 Unit: '',
-                Stock: 0,
+                Inventory: 0,
                 Area: '',
                 Remark: '',
                 Image: '',
-                IsInStock: true,
+                IsInStock: 1,
             },
 
             dialog_create_edit_model: {
@@ -142,7 +144,7 @@
                     Area: '',
                     Remark: '',
                     Image: '',
-                    IsInStock: true,
+                    IsInStock: 1,
                 },
                 action: null,
             },
@@ -161,6 +163,7 @@
         methods: {
             initialize() {
                 console.log('initialize');
+                this.url = this.$HOST + '/Product'
             },
 
             showCreateDialog() {
@@ -190,8 +193,9 @@
 
             createProduct() {
                 console.log("createProduct");
-                let url = this.$HOST + '/Product';
-                let postObj = {Token: "ab" ,Product: this.dialog_create_edit_model.item};
+                let postObj = new FormData();
+                postObj.set('Token', this.$TOKEN);
+                postObj.set('Product', JSON.stringify(this.dialog_create_edit_model.item));
                 console.log(postObj);
 
                 let self = this;
@@ -209,14 +213,15 @@
                     self.snackbar_error.show = true
                 }
 
-                httpHelper.excutePost(url, postObj, success, fail);
+                httpHelper.excutePost(this.url, postObj, success, fail);
             },
 
             editProduct() {
                 console.log("editProduct");
-                let url = '/Product/Edit';
-                let postObj = this.dialog_create_edit_model.item;
-                console.log(postObj);
+                let editObj = new FormData();
+                editObj.set('Token', this.$TOKEN);
+                editObj.set('Product', JSON.stringify(this.dialog_create_edit_model.item));
+                console.log(this.dialog_create_edit_model.item);
 
                 let self = this;
 
@@ -232,16 +237,14 @@
                     self.snackbar_error.show = true
                 }
 
-                httpHelper.excutePost(url, postObj, success, fail);
+                httpHelper.excutePut(this.url, editObj, success, fail);
             },
 
             deleteProduct() {
                 console.log("deleteProduct");
-                let url = this.$HOST + '/Product';
-                let postObj = {
-                    Token: "token",
-                    SerialNo: this.dialog_delete_model.item.SerialNo,
-                }
+                let deleteObj = new FormData();
+                deleteObj.set('Token', this.$TOKEN);
+                deleteObj.set('SerialNo', this.dialog_delete_model.item.SerialNo);
 
                 let self = this;
 
@@ -257,23 +260,21 @@
                     self.snackbar_error.show = true
                 }
 
-                httpHelper.excuteDelete(url, postObj, success, fail);
+                httpHelper.excuteDelete(this.url, deleteObj, success, fail);
             },
 
             getProducts() {
                 this.loading = true;
-                let url = this.$HOST + '/Product';
                 let postObj = {
                     startItem: (this.pagination.page - 1) * this.pagination.rowsPerPage,
                     length: this.pagination.rowsPerPage,
-                    //product: this.searchCondition,
+                    //condition: JSON.stringify(this.dialog_search_model.item),
                 }
 
                 let self = this;
 
                 function success(response) {
                     console.log(response);
-                    //formatData(response.data.Data.data);
                     self.desserts = response.data.Data.data;
                     console.log(self.desserts);
                     self.totalDesserts = response.data.Data.total
@@ -287,7 +288,7 @@
                     self.loading = false;
                 }
                 
-                httpHelper.excuteGet(url, postObj, success, fail);
+                httpHelper.excuteGet(this.url, postObj, success, fail);
             },
         },
 

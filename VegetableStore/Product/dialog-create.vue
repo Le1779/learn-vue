@@ -22,7 +22,7 @@
                                             <v-select v-model="dialog_model.item.Unit" :items="unitItems" label="單位" :rules="notNullRules"></v-select>
                                         </v-col>
                                         <v-col cols="12" sm="6">
-                                            <v-text-field v-model="dialog_model.item.Stock" label="庫存量"></v-text-field>
+                                            <v-text-field v-model="dialog_model.item.Inventory" label="庫存量"></v-text-field>
                                         </v-col>
                                         <v-col cols="12" sm="6">
                                             <v-select v-model="dialog_model.item.Area" :items="areaItems" label="銷售地區" :rules="notNullRules"></v-select>
