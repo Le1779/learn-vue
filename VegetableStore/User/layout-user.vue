@@ -220,11 +220,9 @@
 
             doEdit() {
                 console.log("edit");
-                let editObj = this.dialog_create_edit_model.item;
-                let postObj = new FormData();
-                postObj.set('Token', this.$TOKEN);
-                postObj.set('User', JSON.stringify(editObj));
-                console.log(editObj);
+                let editObj = new FormData();
+                editObj.set('Token', this.$TOKEN);
+                editObj.set('User', JSON.stringify(this.dialog_create_edit_model.item));
                 
                 let self = this;
 
@@ -240,14 +238,14 @@
                     self.snackbar_error.show = true
                 }
 
-                httpHelper.excutePut(this.url, postObj, success, fail);
+                httpHelper.excutePut(this.url, editObj, success, fail);
             },
 
             doDelete() {
                 console.log("delete");
-                let postObj = new FormData();
-                postObj.set('Token', this.$TOKEN);
-                postObj.set('ID', this.dialog_delete_model.item.ID);
+                let deleteObj = new FormData();
+                deleteObj.set('Token', this.$TOKEN);
+                deleteObj.set('ID', this.dialog_delete_model.item.ID);
 
                 let self = this;
 
@@ -263,7 +261,7 @@
                     self.snackbar_error.show = true
                 }
 
-                httpHelper.excuteDelete(this.url, postObj, success, fail);
+                httpHelper.excuteDelete(this.url, deleteObj, success, fail);
             },
 
             getData() {
