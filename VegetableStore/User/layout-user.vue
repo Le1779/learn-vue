@@ -22,7 +22,7 @@
                         </template>
 
                         <template v-slot:item.gender="{ item }">
-                            {{item.Gender == -1 ? "無" : item.Gender == 0? "男" : "女"}}
+                            {{item.Gender == 0 ? "無" : item.Gender == 1? "男" : "女"}}
                         </template>
 
                         <template v-slot:item.action="{ item }">
@@ -139,12 +139,12 @@
                 loading: false,
                 show: false,
                 item: {
-                    Account: '',
+                    Email: '',
                     Password: '',
                     Name: '',
-                    Platform: '',
+                    Gender: -1,
                     Phone: '',
-                    DeviceID: '',
+                    Birthday: '',
                     Addresss: '',
                 },
                 action: null,
@@ -223,7 +223,7 @@
                 let editObj = new FormData();
                 editObj.set('Token', this.$TOKEN);
                 editObj.set('User', JSON.stringify(this.dialog_create_edit_model.item));
-                
+
                 let self = this;
 
                 function success(response) {
@@ -273,6 +273,7 @@
                     token: this.$TOKEN,
                     startItem: (this.pagination.page - 1) * this.pagination.rowsPerPage,
                     length: this.pagination.rowsPerPage,
+                    condition: JSON.stringify(this.dialog_search_model.item),
                 }
 
                 let self = this;

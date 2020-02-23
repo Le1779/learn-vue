@@ -9,7 +9,7 @@
                 <v-container>
                     <v-row>
                         <v-col cols="12">
-                            <v-text-field v-model="dialog_model.item.Account" label="使用者帳號"></v-text-field>
+                            <v-text-field v-model="dialog_model.item.Email" label="使用者帳號"></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6">
                             <v-text-field v-model="dialog_model.item.Name" label="使用者名稱"></v-text-field>
@@ -51,7 +51,7 @@
             },
             
             clean() {
-                this.dialog_model.item.Account = '';
+                this.dialog_model.item.Email = '';
                 this.dialog_model.item.Name = null;
                 this.dialog_model.item.Phone = null;
                 this.dialog_model.item.Address = null;
