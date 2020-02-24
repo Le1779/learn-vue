@@ -22,15 +22,47 @@
             },
         }),
 
+        watch: {
+            $TOKEN: {
+                handler() {
+                    console.log("token change");
+                    console.log(this.$TOKEN);
+                }
+            },
+        },
+
         created() {
             console.log(this.$TOKEN);
             this.$vuetify.theme.dark = false
             Vue.prototype.$HOST = "http://122.116.79.139/api/v1"
+            this.getUserInfo();
         },
 
         components: {
             'navigation-drawer': httpVueLoader('navigation-drawer.vue'),
-        }
+        },
+
+        methods: {
+            getUserInfo() {
+                console.log("getUserInfo");
+                let url = this.$HOST + '/User/ReadUserInfo';
+                let postObj = new FormData();
+                postObj.set('Token', this.$TOKEN);
+
+                let self = this;
+
+                function success(response) {
+                    console.log(response);
+                    self.$USER = response.data.Data;
+                }
+
+                function fail(error) {
+                    console.log(error);
+                }
+
+                httpHelper.excutePost(url, postObj, success, fail);
+            },
+        },
     }
 
 </script>
