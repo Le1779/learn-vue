@@ -49,12 +49,11 @@
                 <p class="text--primary">Priority: {{user.Priority}}</p>
             </v-card-text>
             <v-card-actions>
+                <v-btn text color="deep-purple accent-4" @click="logout()">
+                    Logout
+                </v-btn>
             </v-card-actions>
         </v-card>
-
-        <v-btn text color="deep-purple accent-4" @click="logout()">
-            Logout
-        </v-btn>
     </v-container>
 </template>
 
@@ -90,17 +89,7 @@
         },
 
         created() {
-            this.checkToken();
-        },
-
-        watch: {
-            $TOKEN: {
-                handler() {
-                    console.log("token change");
-                    console.log(this.$TOKEN);
-                    this.getUserInfo();
-                }
-            },
+            this.getUserInfo();
         },
 
         methods: {
@@ -118,6 +107,7 @@
                     function success(response) {
                         console.log(response);
                         self.$TOKEN = response.data.Token;
+                        self.getUserInfo();
                     }
 
                     function fail(error) {
