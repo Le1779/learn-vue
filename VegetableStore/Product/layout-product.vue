@@ -65,6 +65,9 @@
             searchCondition: {},
 
             headers: [{
+                    text: '商品序號',
+                    value: 'SerialNo',
+                },{
                     text: '商品名稱',
                     value: 'Name',
                 },
@@ -114,7 +117,7 @@
                 Area: '',
                 Remark: '',
                 Image: '',
-                IsInStock: 1,
+                IsInStock: 0,
             },
 
             dialog_create_edit_model: {
