@@ -7,41 +7,44 @@
 
             <v-card-text>
                 <v-form ref="form" v-model="valid" lazy-validation>
-                                <v-container>
-                                    <v-row>
-                                        <v-col cols="12" sm="6">
-                                            <v-text-field v-model="dialog_model.item.Name" label="商品名稱" :rules="notNullRules"></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" sm="6">
-                                            <v-text-field v-model="dialog_model.item.CreateDate" label="建立時間" readonly></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" sm="6">
-                                            <v-text-field v-model="dialog_model.item.Price" label="售價"></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" sm="6">
-                                            <v-select v-model="dialog_model.item.Unit" :items="unitItems" label="單位" :rules="notNullRules"></v-select>
-                                        </v-col>
-                                        <v-col cols="12" sm="6">
-                                            <v-text-field v-model="dialog_model.item.Inventory" label="庫存量"></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" sm="6">
-                                            <v-select v-model="dialog_model.item.Area" :items="areaItems" label="銷售地區" :rules="notNullRules"></v-select>
-                                        </v-col>
-                                        <v-col cols="12">
-                                            <v-textarea v-model="dialog_model.item.Remark" label="商品敘述" outlined></v-textarea>
-                                        </v-col>
-                                    </v-row>
-                                </v-container>
-                            </v-form>
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12" sm="6">
+                                <v-text-field v-model="dialog_model.item.Name" label="商品名稱" :rules="notNullRules"></v-text-field>
+                            </v-col>
+                            <v-col cols="12" sm="6">
+                                <v-text-field v-model="dialog_model.item.CreateDate" label="建立時間" readonly></v-text-field>
+                            </v-col>
+                            <v-col cols="12" sm="6">
+                                <v-text-field v-model="dialog_model.item.Price" label="售價"></v-text-field>
+                            </v-col>
+                            <v-col cols="12" sm="6">
+                                <v-select v-model="dialog_model.item.Unit" :items="unitItems" label="單位" :rules="notNullRules"></v-select>
+                            </v-col>
+                            <v-col cols="12" sm="6">
+                                <v-text-field v-model="dialog_model.item.Inventory" label="庫存量"></v-text-field>
+                            </v-col>
+                            <v-col cols="12" sm="6">
+                                <v-select v-model="dialog_model.item.Area" :items="areaItems" label="銷售地區" :rules="notNullRules"></v-select>
+                            </v-col>
+                            <v-col cols="12">
+                                <v-textarea v-model="dialog_model.item.Remark" label="商品敘述" outlined></v-textarea>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-form>
             </v-card-text>
 
             <v-card-actions class="px-7 py-0">
                 <v-switch v-model="isInStock" label="是否上架"></v-switch>
                 <v-spacer></v-spacer>
+                <v-btn color="red darken-1" text @click="showImageEditDialog">修改圖片</v-btn>
                 <v-btn color="grey darken-1" text @click="close">Cancel</v-btn>
                 <v-btn color="blue darken-1" class="white--text" :loading="dialog_model.loading" :disabled="dialog_model.loading" @click="save">{{actionTitle}}</v-btn>
             </v-card-actions>
         </v-card>
+        
+        <dialog-image-edit :dialog_model=dialog_image_edit_model></dialog-image-edit>
     </v-dialog>
 </template>
 
@@ -55,6 +58,13 @@
             unitItems: ['個', '條', '根', '包', '斤', '箱', '袋'],
             areaItems: ['全區', '北區', '中區', '南區', '東區'],
             uploadImages: [],
+            
+            dialog_image_edit_model: {
+                loading: false,
+                show: false,
+                item: '',
+                action: null,
+            },
         }),
 
         computed: {
@@ -91,6 +101,11 @@
                     this.dialog_model.action()
                 }
             },
+
+            showImageEditDialog() {
+                this.dialog_image_edit_model.item = this.dialog_model.item
+                this.dialog_image_edit_model.show = true
+            },
         },
 
         watch: {
@@ -103,6 +118,10 @@
                     }
                 },
             },
+        },
+        
+        components: {
+            'dialog-image-edit': httpVueLoader('Product/dialog-image-edit.vue'),
         }
     }
 
@@ -129,6 +148,7 @@
         let t = d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
         return [year, month, day].join('/') + ' ' + [hour, minute, second].join(':');
     }
+
 </script>
 
 <style scoped>

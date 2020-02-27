@@ -116,7 +116,7 @@
                 Inventory: 0,
                 Area: '',
                 Remark: '',
-                Image: '',
+                Image: [],
                 IsInStock: 0,
             },
 
@@ -177,6 +177,7 @@
             },
 
             showEditDialog(item) {
+                item.Image = JSON.parse("[" + item.Image + "]")
                 this.dialog_create_edit_model.item = Object.assign({}, item)
                 this.dialog_create_edit_model.isEdit = true
                 this.dialog_create_edit_model.action = this.editProduct
