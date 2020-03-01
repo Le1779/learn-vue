@@ -42,6 +42,7 @@
         <dialog-delete-product :dialog_model=dialog_delete_model></dialog-delete-product>
         <dialog-search-product :dialog_model=dialog_search_model></dialog-search-product>
         <dialog-create :dialog_model=dialog_create_edit_model></dialog-create>
+        <dialog-image-edit :dialog_model=dialog_image_edit_model></dialog-image-edit>
 
         <v-snackbar v-model="snackbar_error.show" :timeout="snackbar_error.timeout">{{ snackbar_error.message }}</v-snackbar>
     </v-container>
@@ -126,9 +127,17 @@
                 item: '',
                 isEdit: false,
                 action: null,
+                showEditImageAction: null,
             },
 
             dialog_delete_model: {
+                loading: false,
+                show: false,
+                item: '',
+                action: null,
+            },
+            
+            dialog_image_edit_model: {
                 loading: false,
                 show: false,
                 item: '',
@@ -173,6 +182,7 @@
                 this.dialog_create_edit_model.item = Object.assign({}, this.defaultItem)
                 this.dialog_create_edit_model.isEdit = false
                 this.dialog_create_edit_model.action = this.createProduct
+                this.dialog_create_edit_model.showEditImageAction = this.showEditImageDialog
                 this.dialog_create_edit_model.show = true
             },
 
@@ -181,6 +191,7 @@
                 this.dialog_create_edit_model.item = Object.assign({}, item)
                 this.dialog_create_edit_model.isEdit = true
                 this.dialog_create_edit_model.action = this.editProduct
+                this.dialog_create_edit_model.showEditImageAction = this.showEditImageDialog
                 this.dialog_create_edit_model.show = true
             },
 
@@ -193,6 +204,10 @@
             showSearchDialog() {
                 this.dialog_search_model.action = this.getProducts
                 this.dialog_search_model.show = true
+            },
+            
+            showEditImageDialog(){
+                this.dialog_image_edit_model.show = true
             },
 
             createProduct() {
@@ -294,6 +309,35 @@
                 
                 httpHelper.excuteGet(this.url, postObj, success, fail);
             },
+            
+            editImage(){
+                this.loading = true;
+                let postObj = {
+                    Token: this.$TOKEN,
+                    SerialNo: (this.pagination.page - 1) * this.pagination.rowsPerPage,
+                    length: this.pagination.rowsPerPage,
+                    //condition: JSON.stringify(this.dialog_search_model.item),
+                }
+
+                let self = this;
+
+                function success(response) {
+                    console.log(response);
+                    self.desserts = response.data.Data.data;
+                    console.log(self.desserts);
+                    self.totalDesserts = response.data.Data.total
+                    self.loading = false;
+                }
+
+                function fail(error) {
+                    console.log(error);
+                    self.snackbar_error.message = error
+                    self.snackbar_error.show = true
+                    self.loading = false;
+                }
+                
+                httpHelper.excuteGet(this.$HOST + '/ProductPicture', postObj, success, fail);
+            },
         },
 
         watch: {
@@ -310,33 +354,7 @@
             'dialog-delete-product': httpVueLoader('Product/dialog-delete-product.vue'),
             'dialog-search-product': httpVueLoader('Product/dialog-search-product.vue'),
             'dialog-create': httpVueLoader('Product/dialog-create.vue'),
-        }
-    }
-
-    function formatData(data) {
-        data.forEach(function(item, index, array) {
-            let createDate = stringToDate(item.CreateDate);
-            item.CreateDate = getFormatDate(createDate);
-        });
-
-        function stringToDate(str) {
-            let leftParentheses = str.indexOf('(');
-            let rightParentheses = str.lastIndexOf(')');
-            let milli = parseInt(str.substring(leftParentheses + 1, rightParentheses));
-            let date = new Date(milli);
-            return date;
-        }
-
-        function getFormatDate(date) {
-            let d = new Date(date),
-                month = '' + (d.getMonth() + 1),
-                day = '' + d.getDate(),
-                year = d.getFullYear();
-
-            if (month.length < 2) month = '0' + month;
-            if (day.length < 2) day = '0' + day;
-
-            return [year, month, day].join('-');
+            'dialog-image-edit': httpVueLoader('Product/dialog-image-edit.vue'),
         }
     }
 

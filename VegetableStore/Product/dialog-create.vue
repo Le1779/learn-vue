@@ -38,13 +38,11 @@
             <v-card-actions class="px-7 py-0">
                 <v-switch v-model="isInStock" label="是否上架"></v-switch>
                 <v-spacer></v-spacer>
-                <v-btn color="red darken-1" text @click="showImageEditDialog">修改圖片</v-btn>
+                <v-btn color="red darken-1" text @click="dialog_model.showEditImageAction">修改圖片</v-btn>
                 <v-btn color="grey darken-1" text @click="close">Cancel</v-btn>
                 <v-btn color="blue darken-1" class="white--text" :loading="dialog_model.loading" :disabled="dialog_model.loading" @click="save">{{actionTitle}}</v-btn>
             </v-card-actions>
         </v-card>
-        
-        <dialog-image-edit :dialog_model=dialog_image_edit_model></dialog-image-edit>
     </v-dialog>
 </template>
 
@@ -101,11 +99,6 @@
                     this.dialog_model.action()
                 }
             },
-
-            showImageEditDialog() {
-                this.dialog_image_edit_model.item = this.dialog_model.item
-                this.dialog_image_edit_model.show = true
-            },
         },
 
         watch: {
@@ -119,10 +112,6 @@
                 },
             },
         },
-        
-        components: {
-            'dialog-image-edit': httpVueLoader('Product/dialog-image-edit.vue'),
-        }
     }
 
     function getFormatDate(date, showTime) {
