@@ -140,7 +140,10 @@
             dialog_image_edit_model: {
                 loading: false,
                 show: false,
-                item: '',
+                serialNo: '',
+                pic1: '',
+                pic2: '',
+                pic3: '',
                 action: null,
             },
 
@@ -206,7 +209,10 @@
                 this.dialog_search_model.show = true
             },
             
-            showEditImageDialog(){
+            showEditImageDialog(serialNo){
+                console.log(serialNo);
+                this.dialog_image_edit_model.serialNo = serialNo
+                this.dialog_image_edit_model.action = this.editImage
                 this.dialog_image_edit_model.show = true
             },
 
@@ -312,12 +318,12 @@
             
             editImage(){
                 this.loading = true;
-                let postObj = {
-                    Token: this.$TOKEN,
-                    SerialNo: (this.pagination.page - 1) * this.pagination.rowsPerPage,
-                    length: this.pagination.rowsPerPage,
-                    //condition: JSON.stringify(this.dialog_search_model.item),
-                }
+                let editObj = new FormData();
+                editObj.set('Token', this.$TOKEN);
+                editObj.set('SerialNo', this.dialog_image_edit_model.serialNo);
+                editObj.set('Pic1', this.dialog_image_edit_model.pic1);
+                editObj.set('Pic2', this.dialog_image_edit_model.pic2);
+                editObj.set('Pic3', this.dialog_image_edit_model.pic3);
 
                 let self = this;
 
@@ -336,7 +342,7 @@
                     self.loading = false;
                 }
                 
-                httpHelper.excuteGet(this.$HOST + '/ProductPicture', postObj, success, fail);
+                httpHelper.excutePut(this.$HOST + '/ProductPicture', editObj, success, fail);
             },
         },
 

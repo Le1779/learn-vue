@@ -38,7 +38,7 @@
             <v-card-actions class="px-7 py-0">
                 <v-switch v-model="isInStock" label="是否上架"></v-switch>
                 <v-spacer></v-spacer>
-                <v-btn color="red darken-1" text @click="dialog_model.showEditImageAction">修改圖片</v-btn>
+                <v-btn color="red darken-1" text @click="showEditImageDialog">修改圖片</v-btn>
                 <v-btn color="grey darken-1" text @click="close">Cancel</v-btn>
                 <v-btn color="blue darken-1" class="white--text" :loading="dialog_model.loading" :disabled="dialog_model.loading" @click="save">{{actionTitle}}</v-btn>
             </v-card-actions>
@@ -56,7 +56,7 @@
             unitItems: ['個', '條', '根', '包', '斤', '箱', '袋'],
             areaItems: ['全區', '北區', '中區', '南區', '東區'],
             uploadImages: [],
-            
+
             dialog_image_edit_model: {
                 loading: false,
                 show: false,
@@ -99,6 +99,10 @@
                     this.dialog_model.action()
                 }
             },
+
+            showEditImageDialog() {
+                this.dialog_model.showEditImageAction(this.dialog_model.item.SerialNo);
+            }
         },
 
         watch: {
