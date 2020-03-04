@@ -164,14 +164,13 @@
                 item: {
                     SerialNo: '',
                     Name: '',
-                    CreateDate: '',
                     Price: 0,
                     Unit: '',
                     Inventory: 0,
                     Area: '',
                     Remark: '',
                     Image: '',
-                    IsInStock: 1,
+                    IsInStock: -1,
                 },
                 action: null,
             },
@@ -310,7 +309,7 @@
                 let postObj = {
                     startItem: (this.pagination.page - 1) * this.pagination.rowsPerPage,
                     length: this.pagination.rowsPerPage,
-                    //condition: JSON.stringify(this.dialog_search_model.item),
+                    condition: JSON.stringify(this.dialog_search_model.item),
                 };
                 httpHelper.excuteGet(this.url, postObj, success, fail);
 

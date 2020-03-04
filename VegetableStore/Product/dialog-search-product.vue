@@ -90,7 +90,8 @@
             },
             save() {
                 this.loading = true;
-                this.$emit('action', false)
+                this.dialog_model.action();
+                this.close();
             }
         },
 
