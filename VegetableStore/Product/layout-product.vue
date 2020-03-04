@@ -190,48 +190,48 @@
         methods: {
             initialize() {
                 console.log('initialize');
-                this.url = this.$HOST + '/Product'
+                this.url = this.$HOST + '/Product';
             },
 
             showCreateDialog() {
-                this.dialog_create_edit_model.item = Object.assign({}, this.defaultItem)
-                this.dialog_image_edit_model = Object.assign({}, this.defaultImageEditModel)
-                this.dialog_create_edit_model.isEdit = false
-                this.dialog_create_edit_model.action = this.createProduct
-                this.dialog_create_edit_model.showEditImageAction = this.showEditImageDialog
-                this.getSerialNo()
+                this.dialog_create_edit_model.item = Object.assign({}, this.defaultItem);
+                this.dialog_image_edit_model = Object.assign({}, this.defaultImageEditModel);
+                this.dialog_create_edit_model.isEdit = false;
+                this.dialog_create_edit_model.action = this.createProduct;
+                this.dialog_create_edit_model.showEditImageAction = this.showEditImageDialog;
+                this.getSerialNo();
             },
 
             showEditDialog(item) {
-                this.dialog_create_edit_model.item = Object.assign({}, item)
-                this.dialog_image_edit_model = Object.assign({}, this.defaultImageEditModel)
-                this.dialog_create_edit_model.isEdit = true
-                this.dialog_create_edit_model.action = this.editProduct
-                this.dialog_create_edit_model.showEditImageAction = this.showEditImageDialog
-                this.dialog_create_edit_model.show = true
+                this.dialog_create_edit_model.item = Object.assign({}, item);
+                this.dialog_image_edit_model = Object.assign({}, this.defaultImageEditModel);
+                this.dialog_create_edit_model.isEdit = true;
+                this.dialog_create_edit_model.action = this.editProduct;
+                this.dialog_create_edit_model.showEditImageAction = this.showEditImageDialog;
+                this.dialog_create_edit_model.show = true;
             },
 
             showDeleteDialog(item) {
-                this.dialog_delete_model.item = Object.assign({}, item)
-                this.dialog_delete_model.action = this.deleteProduct
-                this.dialog_delete_model.show = true
+                this.dialog_delete_model.item = Object.assign({}, item);
+                this.dialog_delete_model.action = this.deleteProduct;
+                this.dialog_delete_model.show = true;
             },
 
             showSearchDialog() {
-                this.dialog_search_model.action = this.getProducts
-                this.dialog_search_model.show = true
+                this.dialog_search_model.action = this.getProducts;
+                this.dialog_search_model.show = true;
             },
 
             showEditImageDialog(serialNo, isEdit = true) {
                 console.log(serialNo);
-                this.dialog_image_edit_model.serialNo = serialNo
-                var self = this
+                this.dialog_image_edit_model.serialNo = serialNo;
+                var self = this;
                 this.dialog_image_edit_model.action = isEdit ? this.editImage : function() {
-                    self.dialog_image_edit_model.show = false
+                    self.dialog_image_edit_model.show = false;
                 }
-                this.dialog_image_edit_model.show = true
+                this.dialog_image_edit_model.show = true;
                 if (isEdit) {
-                    this.readImage()
+                    this.readImage();
                 }
             },
 
@@ -241,6 +241,7 @@
                 postObj.set('Token', this.$TOKEN);
                 postObj.set('Product', JSON.stringify(this.dialog_create_edit_model.item));
                 console.log(postObj);
+                httpHelper.excutePost(this.url, postObj, success, fail);
 
                 let self = this;
 
@@ -257,8 +258,6 @@
                     self.snackbar_error.message = error
                     self.snackbar_error.show = true
                 }
-
-                httpHelper.excutePost(this.url, postObj, success, fail);
             },
 
             editProduct() {
@@ -267,22 +266,21 @@
                 editObj.set('Token', this.$TOKEN);
                 editObj.set('Product', JSON.stringify(this.dialog_create_edit_model.item));
                 console.log(this.dialog_create_edit_model.item);
+                httpHelper.excutePut(this.url, editObj, success, fail);
 
                 let self = this;
 
                 function success(response) {
-                    self.dialog_create_edit_model.show = false
-                    self.getProducts()
+                    self.dialog_create_edit_model.show = false;
+                    self.getProducts();
                 }
 
                 function fail(error) {
                     console.log(error);
-                    self.dialog_create_edit_model.loading = false
-                    self.snackbar_error.message = error
-                    self.snackbar_error.show = true
+                    self.dialog_create_edit_model.loading = false;
+                    self.snackbar_error.message = error;
+                    self.snackbar_error.show = true;
                 }
-
-                httpHelper.excutePut(this.url, editObj, success, fail);
             },
 
             deleteProduct() {
@@ -290,22 +288,21 @@
                 let deleteObj = new FormData();
                 deleteObj.set('Token', this.$TOKEN);
                 deleteObj.set('SerialNo', this.dialog_delete_model.item.SerialNo);
-
+                httpHelper.excuteDelete(this.url, deleteObj, success, fail);
+                
                 let self = this;
 
                 function success(response) {
-                    self.dialog_delete_model.show = false
-                    self.getProducts()
+                    self.dialog_delete_model.show = false;
+                    self.getProducts();
                 }
 
                 function fail(error) {
                     console.log(error);
-                    self.dialog_delete_model.loading = false
-                    self.snackbar_error.message = error
-                    self.snackbar_error.show = true
+                    self.dialog_delete_model.loading = false;
+                    self.snackbar_error.message = error;
+                    self.snackbar_error.show = true;
                 }
-
-                httpHelper.excuteDelete(this.url, deleteObj, success, fail);
             },
 
             getProducts() {
@@ -314,7 +311,8 @@
                     startItem: (this.pagination.page - 1) * this.pagination.rowsPerPage,
                     length: this.pagination.rowsPerPage,
                     //condition: JSON.stringify(this.dialog_search_model.item),
-                }
+                };
+                httpHelper.excuteGet(this.url, postObj, success, fail);
 
                 let self = this;
 
@@ -322,25 +320,24 @@
                     console.log(response);
                     self.desserts = response.data.Data.data;
                     console.log(self.desserts);
-                    self.totalDesserts = response.data.Data.total
+                    self.totalDesserts = response.data.Data.total;
                     self.loading = false;
                 }
 
                 function fail(error) {
                     console.log(error);
-                    self.snackbar_error.message = error
-                    self.snackbar_error.show = true
+                    self.snackbar_error.message = error;
+                    self.snackbar_error.show = true;
                     self.loading = false;
                 }
-
-                httpHelper.excuteGet(this.url, postObj, success, fail);
             },
 
             readImage() {
                 console.log("readImage");
                 let getObj = {
                     serialNo: this.dialog_image_edit_model.serialNo,
-                }
+                };
+                httpHelper.excuteGet(this.$HOST + '/ProductPicture', getObj, success, fail);
 
                 let self = this;
 
@@ -358,10 +355,8 @@
                     self.snackbar_error.show = true
                     self.loading = false
                 }
-
-                httpHelper.excuteGet(this.$HOST + '/ProductPicture', getObj, success, fail);
                 
-                function isNull(data){
+                function isNull(data) {
                     return data == 'null' || data == null;
                 }
             },
@@ -376,53 +371,52 @@
                 editObj.set('Pic1', replaceImageData(this.dialog_image_edit_model.pic1));
                 editObj.set('Pic2', replaceImageData(this.dialog_image_edit_model.pic2));
                 editObj.set('Pic3', replaceImageData(this.dialog_image_edit_model.pic3));
+                httpHelper.excutePut(this.$HOST + '/ProductPicture', editObj, success, fail);
 
                 let self = this;
+
                 function success(response) {
                     console.log(response);
-                    self.dialog_image_edit_model.show = false
-                    self.dialog_create_edit_model.show = false
+                    self.dialog_image_edit_model.show = false;
+                    self.dialog_create_edit_model.show = false;
                     self.loading = false;
                 }
 
                 function fail(error) {
                     console.log(error);
-                    self.snackbar_error.message = error
-                    self.snackbar_error.show = true
+                    self.snackbar_error.message = error;
+                    self.snackbar_error.show = true;
                     self.loading = false;
                 }
 
-                httpHelper.excutePut(this.$HOST + '/ProductPicture', editObj, success, fail);
-                
-                function replaceImageData(data){
-                    if(data == '' || data == null){
-                        return 'null'
-                    }else {
-                        return data.replace('data:image/jpeg;base64,', '')
+                function replaceImageData(data) {
+                    if (data == '' || data == null) {
+                        return 'null';
+                    } else {
+                        return data.replace('data:image/jpeg;base64,', '');
                     }
                 }
             },
 
             getSerialNo() {
                 console.log("getSerialNo");
+                httpHelper.excuteGet(this.$HOST + '/Base/GetSerialNo', null, success, fail);
 
                 let self = this;
 
                 function success(response) {
-                    self.dialog_create_edit_model.item.SerialNo = response.data.Data
-                    self.dialog_image_edit_model.serialNo = response.data.Data
-                    self.dialog_create_edit_model.show = true
-                    self.loading = false
+                    self.dialog_create_edit_model.item.SerialNo = response.data.Data;
+                    self.dialog_image_edit_model.serialNo = response.data.Data;
+                    self.dialog_create_edit_model.show = true;
+                    self.loading = false;
                 }
 
                 function fail(error) {
-                    console.log(error)
-                    self.snackbar_error.message = error
-                    self.snackbar_error.show = true
-                    self.loading = false
+                    console.log(error);
+                    self.snackbar_error.message = error;
+                    self.snackbar_error.show = true;
+                    self.loading = false;
                 }
-
-                httpHelper.excuteGet(this.$HOST + '/Base/GetSerialNo', null, success, fail);
             },
         },
 
