@@ -13,7 +13,7 @@
                                 </v-toolbar-title>
                                 <v-divider class="mx-4" inset vertical></v-divider>
                                 <v-spacer></v-spacer>
-                                <v-btn color="primary" dark class="mb-2" @click="showCreateDialog()">新建商品</v-btn>
+                                <v-btn color="primary" dark class="mb-2" @click="showCreateDialog()" :loading="loading">新建商品</v-btn>
                             </v-toolbar>
                         </template>
 
@@ -110,6 +110,7 @@
             desserts: [],
 
             defaultItem: {
+                SerialNo: '',
                 Name: '',
                 CreateDate: '',
                 Price: 0,
@@ -117,8 +118,18 @@
                 Inventory: 0,
                 Area: '',
                 Remark: '',
-                Image: [],
+                Image: '',
                 IsInStock: 0,
+            },
+
+            defaultImageEditModel: {
+                loading: false,
+                show: false,
+                serialNo: '',
+                pic1: '',
+                pic2: '',
+                pic3: '',
+                action: null,
             },
 
             dialog_create_edit_model: {
@@ -151,6 +162,7 @@
                 loading: false,
                 show: false,
                 item: {
+                    SerialNo: '',
                     Name: '',
                     CreateDate: '',
                     Price: 0,
@@ -183,15 +195,16 @@
 
             showCreateDialog() {
                 this.dialog_create_edit_model.item = Object.assign({}, this.defaultItem)
+                this.dialog_image_edit_model = Object.assign({}, this.defaultImageEditModel)
                 this.dialog_create_edit_model.isEdit = false
                 this.dialog_create_edit_model.action = this.createProduct
                 this.dialog_create_edit_model.showEditImageAction = this.showEditImageDialog
-                this.dialog_create_edit_model.show = true
+                this.getSerialNo()
             },
 
             showEditDialog(item) {
-                //item.Image = JSON.parse("[" + item.Image + "]")
                 this.dialog_create_edit_model.item = Object.assign({}, item)
+                this.dialog_image_edit_model = Object.assign({}, this.defaultImageEditModel)
                 this.dialog_create_edit_model.isEdit = true
                 this.dialog_create_edit_model.action = this.editProduct
                 this.dialog_create_edit_model.showEditImageAction = this.showEditImageDialog
@@ -209,12 +222,17 @@
                 this.dialog_search_model.show = true
             },
 
-            showEditImageDialog(serialNo) {
+            showEditImageDialog(serialNo, isEdit = true) {
                 console.log(serialNo);
                 this.dialog_image_edit_model.serialNo = serialNo
-                this.dialog_image_edit_model.action = this.editImage
+                var self = this
+                this.dialog_image_edit_model.action = isEdit ? this.editImage : function() {
+                    self.dialog_image_edit_model.show = false
+                }
                 this.dialog_image_edit_model.show = true
-                this.readImage()
+                if (isEdit) {
+                    this.readImage()
+                }
             },
 
             createProduct() {
@@ -228,6 +246,7 @@
 
                 function success(response) {
                     console.log(response);
+                    self.editImage()
                     self.dialog_create_edit_model.show = false
                     self.getProducts()
                 }
@@ -327,10 +346,9 @@
 
                 function success(response) {
                     var imgs = JSON.parse("[" + response.data.Data + "]")
-                    console.log(imgs)
-                    self.dialog_image_edit_model.pic1 = imgs[0][0] == 'null' ? '' : imgs[0][0]
-                    self.dialog_image_edit_model.pic2 = imgs[0][1] == 'null' ? '' : imgs[0][1]
-                    self.dialog_image_edit_model.pic3 = imgs[0][2] == 'null' ? '' : imgs[0][2]
+                    self.dialog_image_edit_model.pic1 = isNull(imgs[0][0]) ? '' : 'data:image/jpeg;base64,' + imgs[0][0]
+                    self.dialog_image_edit_model.pic2 = isNull(imgs[0][1]) ? '' : 'data:image/jpeg;base64,' + imgs[0][1]
+                    self.dialog_image_edit_model.pic3 = isNull(imgs[0][2]) ? '' : 'data:image/jpeg;base64,' + imgs[0][2]
                     self.loading = false
                 }
 
@@ -342,22 +360,28 @@
                 }
 
                 httpHelper.excuteGet(this.$HOST + '/ProductPicture', getObj, success, fail);
+                
+                function isNull(data){
+                    return data == 'null' || data == null;
+                }
             },
 
             editImage() {
                 console.log("editImage");
+                replaceImageData();
                 this.loading = true;
                 let editObj = new FormData();
                 editObj.set('Token', this.$TOKEN);
                 editObj.set('SerialNo', this.dialog_image_edit_model.serialNo);
-                editObj.set('Pic1', this.dialog_image_edit_model.pic1);
-                editObj.set('Pic2', this.dialog_image_edit_model.pic2);
-                editObj.set('Pic3', this.dialog_image_edit_model.pic3);
+                editObj.set('Pic1', replaceImageData(this.dialog_image_edit_model.pic1));
+                editObj.set('Pic2', replaceImageData(this.dialog_image_edit_model.pic2));
+                editObj.set('Pic3', replaceImageData(this.dialog_image_edit_model.pic3));
 
                 let self = this;
-
                 function success(response) {
                     console.log(response);
+                    self.dialog_image_edit_model.show = false
+                    self.dialog_create_edit_model.show = false
                     self.loading = false;
                 }
 
@@ -369,6 +393,36 @@
                 }
 
                 httpHelper.excutePut(this.$HOST + '/ProductPicture', editObj, success, fail);
+                
+                function replaceImageData(data){
+                    if(data == '' || data == null){
+                        return 'null'
+                    }else {
+                        return data.replace('data:image/jpeg;base64,', '')
+                    }
+                }
+            },
+
+            getSerialNo() {
+                console.log("getSerialNo");
+
+                let self = this;
+
+                function success(response) {
+                    self.dialog_create_edit_model.item.SerialNo = response.data.Data
+                    self.dialog_image_edit_model.serialNo = response.data.Data
+                    self.dialog_create_edit_model.show = true
+                    self.loading = false
+                }
+
+                function fail(error) {
+                    console.log(error)
+                    self.snackbar_error.message = error
+                    self.snackbar_error.show = true
+                    self.loading = false
+                }
+
+                httpHelper.excuteGet(this.$HOST + '/Base/GetSerialNo', null, success, fail);
             },
         },
 

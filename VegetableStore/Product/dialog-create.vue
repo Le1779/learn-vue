@@ -3,6 +3,7 @@
         <v-card>
             <v-card-title>
                 <span class="headline">{{ title }}</span>
+                <span class="ml-2 subtitle-1">{{dialog_model.item.SerialNo}}</span>
             </v-card-title>
 
             <v-card-text>
@@ -101,7 +102,7 @@
             },
 
             showEditImageDialog() {
-                this.dialog_model.showEditImageAction(this.dialog_model.item.SerialNo);
+                this.dialog_model.showEditImageAction(this.dialog_model.item.SerialNo, this.dialog_model.isEdit);
             }
         },
 
