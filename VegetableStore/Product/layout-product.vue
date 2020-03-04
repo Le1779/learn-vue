@@ -53,7 +53,7 @@
     module.exports = {
         data: () => ({
             url: '',
-            
+
             loading: false,
 
             pagination: {
@@ -68,7 +68,7 @@
             headers: [{
                     text: '商品序號',
                     value: 'SerialNo',
-                },{
+                }, {
                     text: '商品名稱',
                     value: 'Name',
                 },
@@ -136,7 +136,7 @@
                 item: '',
                 action: null,
             },
-            
+
             dialog_image_edit_model: {
                 loading: false,
                 show: false,
@@ -190,7 +190,7 @@
             },
 
             showEditDialog(item) {
-                item.Image = JSON.parse("[" + item.Image + "]")
+                //item.Image = JSON.parse("[" + item.Image + "]")
                 this.dialog_create_edit_model.item = Object.assign({}, item)
                 this.dialog_create_edit_model.isEdit = true
                 this.dialog_create_edit_model.action = this.editProduct
@@ -208,12 +208,13 @@
                 this.dialog_search_model.action = this.getProducts
                 this.dialog_search_model.show = true
             },
-            
-            showEditImageDialog(serialNo){
+
+            showEditImageDialog(serialNo) {
                 console.log(serialNo);
                 this.dialog_image_edit_model.serialNo = serialNo
                 this.dialog_image_edit_model.action = this.editImage
                 this.dialog_image_edit_model.show = true
+                this.readImage()
             },
 
             createProduct() {
@@ -312,11 +313,39 @@
                     self.snackbar_error.show = true
                     self.loading = false;
                 }
-                
+
                 httpHelper.excuteGet(this.url, postObj, success, fail);
             },
-            
-            editImage(){
+
+            readImage() {
+                console.log("readImage");
+                let getObj = {
+                    serialNo: this.dialog_image_edit_model.serialNo,
+                }
+
+                let self = this;
+
+                function success(response) {
+                    var imgs = JSON.parse("[" + response.data.Data + "]")
+                    console.log(imgs)
+                    self.dialog_image_edit_model.pic1 = imgs[0][0] == 'null' ? '' : imgs[0][0]
+                    self.dialog_image_edit_model.pic2 = imgs[0][1] == 'null' ? '' : imgs[0][1]
+                    self.dialog_image_edit_model.pic3 = imgs[0][2] == 'null' ? '' : imgs[0][2]
+                    self.loading = false
+                }
+
+                function fail(error) {
+                    console.log(error)
+                    self.snackbar_error.message = error
+                    self.snackbar_error.show = true
+                    self.loading = false
+                }
+
+                httpHelper.excuteGet(this.$HOST + '/ProductPicture', getObj, success, fail);
+            },
+
+            editImage() {
+                console.log("editImage");
                 this.loading = true;
                 let editObj = new FormData();
                 editObj.set('Token', this.$TOKEN);
@@ -329,9 +358,6 @@
 
                 function success(response) {
                     console.log(response);
-                    self.desserts = response.data.Data.data;
-                    console.log(self.desserts);
-                    self.totalDesserts = response.data.Data.total
                     self.loading = false;
                 }
 
@@ -341,7 +367,7 @@
                     self.snackbar_error.show = true
                     self.loading = false;
                 }
-                
+
                 httpHelper.excutePut(this.$HOST + '/ProductPicture', editObj, success, fail);
             },
         },
