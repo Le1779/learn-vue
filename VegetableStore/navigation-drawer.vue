@@ -60,14 +60,14 @@
                     link: '/user'
                 },
                 {
-                    icon: 'description',
-                    text: '訂單管理',
-                    link: '/order'
-                },
-                {
                     icon: 'shopping_cart',
                     text: '商品管理',
                     link: '/product'
+                },
+                {
+                    icon: 'description',
+                    text: '訂單管理',
+                    link: '/order'
                 },
                 {
                     icon: 'shopping_cart',
