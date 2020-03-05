@@ -68,31 +68,31 @@
             searchCondition: {},
 
             headers: [{
-                    text: 'Priority',
+                    text: '權限',
                     value: 'priority',
                 },
                 {
-                    text: 'Name',
+                    text: '名稱',
                     value: 'Name'
                 },
                 {
-                    text: 'Email',
+                    text: '帳號',
                     value: 'Email'
                 },
                 {
-                    text: 'Address',
+                    text: '地址',
                     value: 'Address'
                 },
                 {
-                    text: 'Gender',
+                    text: '性別',
                     value: 'gender'
                 },
                 {
-                    text: 'Phone',
+                    text: '電話',
                     value: 'Phone'
                 },
                 {
-                    text: 'Birthday',
+                    text: '生日',
                     value: 'Birthday'
                 },
                 {

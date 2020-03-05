@@ -40,7 +40,7 @@
                 <v-switch v-model="isInStock" label="是否上架"></v-switch>
                 <v-spacer></v-spacer>
                 <v-btn color="red darken-1" text @click="showEditImageDialog">修改圖片</v-btn>
-                <v-btn color="grey darken-1" text @click="close">Cancel</v-btn>
+                <v-btn color="grey darken-1" text @click="close">取消</v-btn>
                 <v-btn color="blue darken-1" class="white--text" :loading="dialog_model.loading" :disabled="dialog_model.loading" @click="save">{{actionTitle}}</v-btn>
             </v-card-actions>
         </v-card>

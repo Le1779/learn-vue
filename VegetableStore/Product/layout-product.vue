@@ -101,7 +101,7 @@
                     value: 'instock'
                 },
                 {
-                    text: 'Actions',
+                    text: '編輯/刪除',
                     value: 'action',
                     sortable: false
                 },
