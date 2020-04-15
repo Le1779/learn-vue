@@ -4,6 +4,13 @@
             <v-col cols=12>
                 <v-card>
                     <v-data-table :headers="headers" :items="advertise" :loading="loading" :options.sync="pagination" :server-items-length="totalAdvertise" :footer-props="footerProps">
+                       <template v-slot:top>
+                            <v-toolbar flat>
+                                <v-spacer></v-spacer>
+                                <v-btn color="primary" dark class="mb-2" @click="showCreateDialog()" :loading="loading">新增廣告</v-btn>
+                            </v-toolbar>
+                        </template>
+                        
                         <template v-slot:item="{ item }">
                            <tr>
                             <td>
@@ -27,6 +34,7 @@
             </v-col>
         </v-row>
         
+        <dialog-create-edit :dialog_model=dialog_create_edit_model></dialog-create-edit>
         <dialog-delete :dialog_model=dialog_delete_model></dialog-delete>
 
         <v-snackbar v-model="snackbar_error.show" :timeout="snackbar_error.timeout">{{ snackbar_error.message }}</v-snackbar>
@@ -70,6 +78,20 @@
                 itemsPerPageAllText: '全部'
             },
             
+            defaultItem: {
+                ResourceUrl: '',
+                StartDate: '',
+                EndDate: '',
+            },
+            
+            dialog_create_edit_model: {
+                loading: false,
+                show: false,
+                isEdit: false,
+                item: '',
+                action: null,
+            },
+            
             dialog_delete_model: {
                 loading: false,
                 show: false,
@@ -89,10 +111,41 @@
         },
 
         methods: {
+            showCreateDialog() {
+                this.dialog_create_edit_model.item = Object.assign({}, this.defaultItem);
+                this.dialog_create_edit_model.action = this.create;
+                this.dialog_create_edit_model.isEdit = false;
+                this.dialog_create_edit_model.show = true;
+            },
+            
             showDeleteDialog(item) {
                 this.dialog_delete_model.item = Object.assign({}, item);
                 this.dialog_delete_model.action = this.delete;
                 this.dialog_delete_model.show = true;
+            },
+            
+            create(){
+                console.log("create");
+                let postObj = new FormData();
+                postObj.set('Token', this.$TOKEN);
+                postObj.set('Advertise', JSON.stringify(this.dialog_create_edit_model.item));
+                console.log(JSON.stringify(this.dialog_create_edit_model.item));
+                httpHelper.excutePost(this.url, postObj, success, fail);
+
+                let self = this;
+
+                function success(response) {
+                    console.log(response);
+                    self.dialog_create_edit_model.show = false
+                    self.getData()
+                }
+
+                function fail(error) {
+                    console.log(error);
+                    self.dialog_create_edit_model.loading = false
+                    self.snackbar_error.message = error
+                    self.snackbar_error.show = true
+                }
             },
             
             delete() {
@@ -151,6 +204,7 @@
         },
         
         components: {
+            'dialog-create-edit': httpVueLoader('Advertise/dialog-create-edit.vue'),
             'dialog-delete': httpVueLoader('Advertise/dialog-delete.vue'),
         }
     }
