@@ -70,9 +70,9 @@
                     link: '/order'
                 },
                 {
-                    icon: 'shopping_cart',
-                    text: '商品管理(卡片版本)',
-                    link: '/product-card'
+                    icon: 'subscriptions',
+                    text: '廣告管理',
+                    link: '/advertise'
                 },
             ],
         }),
