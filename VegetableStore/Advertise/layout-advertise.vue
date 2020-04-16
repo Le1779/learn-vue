@@ -20,9 +20,6 @@
                                 {{ item.StartDate }} ~ {{ item.EndDate }}
                             </td>
                             <td>
-                                <v-icon small class="mr-2" @click="showEditDialog(item)">
-                                    edit
-                                </v-icon>
                                 <v-icon small @click="showDeleteDialog(item)">
                                     delete
                                 </v-icon>
@@ -159,7 +156,7 @@
 
                 function success(response) {
                     self.dialog_delete_model.show = false;
-                    self.getProducts();
+                    self.getData();
                 }
 
                 function fail(error) {
