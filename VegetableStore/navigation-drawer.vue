@@ -74,6 +74,11 @@
                     text: '廣告管理',
                     link: '/advertise'
                 },
+                {
+                    icon: 'info',
+                    text: '其他設定',
+                    link: '/other'
+                },
             ],
         }),
 
