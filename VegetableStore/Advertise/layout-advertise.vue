@@ -4,33 +4,46 @@
             <v-col cols=12>
                 <v-card>
                     <v-data-table :headers="headers" :items="advertise" :loading="loading" :options.sync="pagination" :server-items-length="totalAdvertise" :footer-props="footerProps">
-                       <template v-slot:top>
+                        <template v-slot:top>
                             <v-toolbar flat>
                                 <v-spacer></v-spacer>
                                 <v-btn color="primary" dark class="mb-2" @click="showCreateDialog()" :loading="loading">新增廣告</v-btn>
                             </v-toolbar>
                         </template>
-                        
+
                         <template v-slot:item="{ item }">
-                           <tr>
-                            <td>
-                                <v-img :src="item.ResourceUrl" :lazy-src="item.ResourceUrl" width="400" class="ma-2"></v-img>
-                            </td>
-                            <td>
-                                {{ item.StartDate }} ~ {{ item.EndDate }}
-                            </td>
-                            <td>
-                                <v-icon small @click="showDeleteDialog(item)">
-                                    delete
-                                </v-icon>
-                            </td>
-                           </tr>
+                            <tr>
+                                <td>
+                                    <v-img :src="item.ResourceUrl" :lazy-src="item.ResourceUrl" width="400" class="ma-2"></v-img>
+                                </td>
+                                <td>
+                                    <v-chip v-if="item.Link != null" class="ma-2" :href="item.Link" target="_blank">
+                                        連結
+                                    </v-chip>
+                                </td>
+                                <td>
+                                    <div style="text-align: center;">
+                                        {{ item.StartDate }}
+                                    </div>
+                                    <div style="text-align: center;">
+                                        ~
+                                    </div>
+                                    <div style="text-align: center;">
+                                        {{ item.EndDate }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <v-icon small @click="showDeleteDialog(item)">
+                                        delete
+                                    </v-icon>
+                                </td>
+                            </tr>
                         </template>
                     </v-data-table>
                 </v-card>
             </v-col>
         </v-row>
-        
+
         <dialog-create-edit :dialog_model=dialog_create_edit_model></dialog-create-edit>
         <dialog-delete :dialog_model=dialog_delete_model></dialog-delete>
 
@@ -59,6 +72,9 @@
                     text: '圖片',
                 },
                 {
+                    text: '連結',
+                },
+                {
                     text: '期限',
                 },
                 {
@@ -74,13 +90,13 @@
                 itemsPerPageText: '每頁比數',
                 itemsPerPageAllText: '全部'
             },
-            
+
             defaultItem: {
                 ResourceUrl: '',
                 StartDate: '',
                 EndDate: '',
             },
-            
+
             dialog_create_edit_model: {
                 loading: false,
                 show: false,
@@ -88,7 +104,7 @@
                 item: '',
                 action: null,
             },
-            
+
             dialog_delete_model: {
                 loading: false,
                 show: false,
@@ -114,14 +130,14 @@
                 this.dialog_create_edit_model.isEdit = false;
                 this.dialog_create_edit_model.show = true;
             },
-            
+
             showDeleteDialog(item) {
                 this.dialog_delete_model.item = Object.assign({}, item);
                 this.dialog_delete_model.action = this.delete;
                 this.dialog_delete_model.show = true;
             },
-            
-            create(){
+
+            create() {
                 console.log("create");
                 let postObj = new FormData();
                 postObj.set('Token', this.$TOKEN);
@@ -144,14 +160,14 @@
                     self.snackbar_error.show = true
                 }
             },
-            
+
             delete() {
                 console.log("delete");
                 let deleteObj = new FormData();
                 deleteObj.set('Token', this.$TOKEN);
                 deleteObj.set('ID', this.dialog_delete_model.item.ID);
                 httpHelper.excuteDelete(this.url, deleteObj, success, fail);
-                
+
                 let self = this;
 
                 function success(response) {
@@ -166,7 +182,7 @@
                     self.snackbar_error.show = true;
                 }
             },
-            
+
             getData() {
                 this.loading = true;
                 let getObj = {};
@@ -199,7 +215,7 @@
                 deep: true
             },
         },
-        
+
         components: {
             'dialog-create-edit': httpVueLoader('Advertise/dialog-create-edit.vue'),
             'dialog-delete': httpVueLoader('Advertise/dialog-delete.vue'),

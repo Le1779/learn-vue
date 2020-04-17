@@ -26,6 +26,9 @@
                                 </v-menu>
                             </v-col>
                             <v-col cols="12">
+                                <v-text-field v-model="dialog_model.item.Link" label="連結" :rules="notNullRules"></v-text-field>
+                            </v-col>
+                            <v-col cols="12">
                                 <v-file-input v-model="pic" :rules="imgRules" accept="image/png, image/jpeg, image/bmp" placeholder="上傳廣告圖片" counter="1" prepend-icon="mdi-camera" label="廣告圖片"></v-file-input>
                                 <v-img :src="dialog_model.item.ResourceUrl" height="300px" contain></v-img>
                             </v-col>
