@@ -33,6 +33,7 @@
 
 <script>
     module.exports = {
+        props: ["snackbar_model"],
         data: () => ({
             url: '',
             loading: false,
@@ -79,12 +80,6 @@
                 item: '',
                 action: null,
             },
-
-            snackbar_model: {
-                show: false,
-                timeout: 5000,
-                message: '',
-            }
         }),
 
         created() {
