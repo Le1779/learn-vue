@@ -17,6 +17,12 @@
                             </v-toolbar>
                         </template>
 
+                        <template v-slot:item.youtube="{ item }">
+                            <v-chip v-if="item.YouTubeUrl != null" class="ma-2" :href="item.YouTubeUrl" target="_blank">
+                                連結
+                            </v-chip>
+                        </template>
+
                         <template v-slot:item.instock="{ item }">
                             <v-icon v-if="item.IsInStock == 1" color="teal">mdi-check</v-icon>
                             <v-icon v-if="item.IsInStock != 1" color="red">mdi-close</v-icon>
@@ -101,6 +107,10 @@
                     value: 'instock'
                 },
                 {
+                    text: 'Youtube',
+                    value: 'youtube'
+                },
+                {
                     text: '編輯/刪除',
                     value: 'action',
                     sortable: false
@@ -120,6 +130,7 @@
                 Remark: '',
                 Image: '',
                 IsInStock: 0,
+                YouTubeUrl: ''
             },
 
             defaultImageEditModel: {
@@ -288,7 +299,7 @@
                 deleteObj.set('Token', this.$TOKEN);
                 deleteObj.set('SerialNo', this.dialog_delete_model.item.SerialNo);
                 httpHelper.excuteDelete(this.url, deleteObj, success, fail);
-                
+
                 let self = this;
 
                 function success(response) {
@@ -354,7 +365,7 @@
                     self.snackbar_error.show = true
                     self.loading = false
                 }
-                
+
                 function isNull(data) {
                     return data == 'null' || data == null;
                 }

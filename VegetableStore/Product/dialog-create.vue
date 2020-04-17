@@ -29,6 +29,9 @@
                                 <v-select v-model="dialog_model.item.Area" :items="areaItems" label="銷售地區" :rules="notNullRules"></v-select>
                             </v-col>
                             <v-col cols="12">
+                                <v-text-field v-model="dialog_model.item.YouTubeUrl" label="Youtube"></v-text-field>
+                            </v-col>
+                            <v-col cols="12">
                                 <v-textarea v-model="dialog_model.item.Remark" label="商品敘述" outlined></v-textarea>
                             </v-col>
                         </v-row>
