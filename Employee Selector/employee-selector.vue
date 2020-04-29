@@ -1,7 +1,8 @@
 <template>
     <v-content>
-        <div class="employee-selector-input" @click="expandSelector()">
-            <input type="text" v-model="searchKeyword">
+       <p style="color: white; margin-bottom: 8px;">選擇人員</p>
+        <div class="employee-selector-input" @click.stop="expandSelector">
+            <input type="text" v-model="parentObject.searchKeyword">
             <div class="employee-selector-chips">
                 <div class="chip" v-for="(item, i) in selectedItems">
                     {{item.employee_name}}
@@ -9,12 +10,7 @@
             </div>
         </div>
 
-        <employee-menu :view_model="organization" :selected_items="selectedItems" :search_keyword="searchKeyword"></employee-menu>
-
-        <v-text-field label="Regular"></v-text-field>
-        <v-card>
-            TEST
-        </v-card>
+        <employee-menu :view_model="organization" :selected_items="selectedItems" :parent_object="parentObject" v-click-outside="collapseSelector" v-if="expandMenu"></employee-menu>
     </v-content>
 
 </template>
@@ -213,9 +209,12 @@
 
             selectedItems: [],
 
-            searchKeyword: '',
+            parentObject: {
+                searchKeyword: '',
+            },
             
-            
+            expandMenu: false,
+
         }),
 
         computed: {
@@ -223,7 +222,7 @@
         },
 
         watch: {
-            
+
         },
 
         created() {
@@ -233,19 +232,18 @@
         methods: {
             expandSelector() {
                 console.log("expand")
+                this.expandMenu = true
+            },
+            
+            collapseSelector() {
+                console.log("collapse")
+                this.expandMenu = false
             },
 
             clickItem() {
                 console.log("clickItem")
 
             },
-
-            clickAction() {
-                console.log("clickAction")
-                event.stopPropagation();
-            },
-
-            
         },
 
         components: {
@@ -258,7 +256,7 @@
 <style>
     .employee-selector-input {
         width: 100%;
-        padding: 4px 2px;
+        padding: 8px 8px;
         border: 1px solid #5E6169;
         border-radius: 4px;
         background-color: #5E6169;
@@ -279,7 +277,7 @@
         min-width: 0;
         width: 100%;
         max-height: 32px;
-        color: rgba(0, 0, 0, .87);
+        color: rgba(255, 255, 255, .87);
     }
 
     .employee-selector-input input::selection {

@@ -39,7 +39,7 @@
 
 <script scoped>
     module.exports = {
-        props: ["view_model", "selected_items", "search_keyword"],
+        props: ["view_model", "selected_items", "parent_object"],
         data: () => ({
             searchMember: [],
             currentMember: [],
@@ -52,10 +52,11 @@
         },
 
         watch: {
-            'search_keyword': {
+            'parent_object.searchKeyword': {
                 handler() {
+                    this.backToParent()
                     this.searchItems = []
-                    this.searchOrg(this.view_model, this.search_keyword)
+                    this.searchOrg(this.view_model, this.parent_object.searchKeyword)
                 },
             },
         },
@@ -78,7 +79,6 @@
                 var unselectAll = false
                 if (item.selected_count == item.member.length) {
                     unselectAll = true
-                    console.log("delete all")
                 }
 
                 let self = this
@@ -121,6 +121,7 @@
             },
 
             selectSearchEmployee(item) {
+                this.parent_object.searchKeyword = ""
                 this.findDepartment(this.view_model, item.employee_email)
                 this.selectEmployee(item)
             },
@@ -297,7 +298,7 @@
 
     .employee-item {
         display: grid;
-        grid-template-rows: auto 12px;
+        grid-template-rows: auto 20px;
         box-sizing: initial;
         align-items: center;
         letter-spacing: normal;
