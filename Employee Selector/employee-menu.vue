@@ -1,11 +1,13 @@
 <template>
     <v-content class="employee-selector-selector">
         <div class="departments-container">
-            <div class="department-item" v-for="(item, i) in view_model">
-                <div class="department-item-hover" :class="{ selected: item.selected }"></div>
-                <div class="item-title">
+            <div class="department-item" v-for="(item, i) in view_model" :class="{ selected: item.selected_count > 0 }">
+                <div class="item-title" @click="selectDepartment(item)">
                     {{item.department_name}}
-                    <div class="item-status">{{item.member.length}}位成員</div>
+                    <div class="item-status">
+                        <div v-if="item.selected_count > 0" class="item-selected-count">選擇{{item.selected_count}}位</div>
+                        {{item.member.length}}位成員
+                    </div>
                 </div>
 
                 <div class="item-action material-icons" @click="showMember(i)">keyboard_arrow_right</div>
@@ -16,10 +18,9 @@
                 <div class="item-action material-icons" @click="backToParent">keyboard_arrow_left</div>
             </div>
             <div class="employees-list">
-                <div class="employee-item" v-for="(item, i) in currentMember">
-                    <div class="employee-item-hover" :class="{ selected: item.selected }"></div>
-                    <div class="item-name">{{item.UserName}}</div>
-                    <div class="item-email">{{item.Email}}</div>
+                <div class="employee-item" v-for="(item, i) in currentMember" @click="selectEmployee(item)" :class="{ selected: item.selected }">
+                    <div class="item-name">{{item.employee_name}}</div>
+                    <div class="item-email">{{item.employee_email}}</div>
                 </div>
             </div>
         </div>
@@ -30,9 +31,10 @@
 
 <script scoped>
     module.exports = {
-        props: ["view_model"],
+        props: ["view_model", "selected_items"],
         data: () => ({
-            currentMember: []
+            currentMember: [],
+            currentDepartment: null,
         }),
 
         computed: {
@@ -49,10 +51,29 @@
             showMember(index) {
                 console.log(this.view_model[index]);
                 this.currentMember = this.view_model[index].member
+                this.currentDepartment = this.view_model[index]
             },
 
             backToParent() {
                 this.currentMember = []
+            },
+
+            selectDepartment(item) {
+                this.currentDepartment = item
+                let self = this
+                item.member.forEach(function(value, index) {
+                    self.selectEmployee(value)
+                });
+            },
+
+            selectEmployee(item) {
+                if (item.selected) {
+                    item.selected = false
+                    this.currentDepartment.selected_count--
+                } else {
+                    item.selected = true
+                    this.currentDepartment.selected_count++
+                }
             }
         },
 
@@ -95,21 +116,8 @@
         border-top: 1px solid #686B72;
     }
 
-    .department-item-hover {
-        content: "";
-        position: absolute;
-        width: 100%;
-        height: 48px;
-        background-color: #E97493;
-        opacity: 0;
-        left: 0;
-        top: 0;
-        display: none;
-    }
-
-    .department-item-hover.selected {
-        opacity: 0.1;
-        display: block;
+    .department-item.selected {
+        background-color: #75717C;
     }
 
     .department-item .item-title {
@@ -132,6 +140,12 @@
         line-height: 48px;
         font-size: 12px;
         opacity: .7;
+        margin-right: 8px;
+    }
+
+    .item-selected-count {
+        display: inline-block;
+        color: #E97493;
         margin-right: 8px;
     }
 
@@ -167,6 +181,7 @@
     .back-to-parent {
         height: 15%;
         color: white;
+        box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
     }
 
     .back-to-parent .item-action {
@@ -206,6 +221,17 @@
 
     .employee-item:hover {
         background-color: #937281;
+    }
+
+    .employee-item.selected {
+        background-color: #75717C;
+    }
+
+    .employee-item-hover {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        background-color: #75717C;
     }
 
     .item-name {}
