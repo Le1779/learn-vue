@@ -1,7 +1,7 @@
 <template>
     <v-content>
         <div class="employee-selector-input" @click="expandSelector()">
-            <input type="text">
+            <input type="text" v-model="searchKeyword">
             <div class="employee-selector-chips">
                 <div class="chip" v-for="(item, i) in selectedItems">
                     {{item.employee_name}}
@@ -9,7 +9,7 @@
             </div>
         </div>
 
-        <employee-menu :view_model="organization" :selected_items="selectedItems"></employee-menu>
+        <employee-menu :view_model="organization" :selected_items="selectedItems" :search_keyword="searchKeyword"></employee-menu>
 
         <v-text-field label="Regular"></v-text-field>
         <v-card>
@@ -211,7 +211,11 @@
                 }]
             }],
 
-            selectedItems: []
+            selectedItems: [],
+
+            searchKeyword: '',
+            
+            
         }),
 
         computed: {
@@ -219,7 +223,7 @@
         },
 
         watch: {
-
+            
         },
 
         created() {
@@ -239,7 +243,9 @@
             clickAction() {
                 console.log("clickAction")
                 event.stopPropagation();
-            }
+            },
+
+            
         },
 
         components: {
@@ -301,7 +307,7 @@
         white-space: nowrap;
         font-size: 14px;
         height: 32px;
-        border-radius: 4px;   
+        border-radius: 4px;
         margin: 4px 2px;
     }
 

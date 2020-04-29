@@ -13,6 +13,14 @@
                 <div class="item-action material-icons" @click="showMember(i)">keyboard_arrow_right</div>
             </div>
         </div>
+        <div class="search-container" :class="{show: searchItems.length > 0}">
+            <div class="search-list">
+                <div class="employee-item" v-for="(item, i) in searchItems" @click="selectSearchEmployee(item)" :class="{ selected: item.selected }">
+                    <div class="item-name">{{item.employee_name}}</div>
+                    <div class="item-email">{{item.employee_email}}</div>
+                </div>
+            </div>
+        </div>
         <div class="employees-container" :class="{show: currentMember.length > 0}">
             <div class="back-to-parent">
                 <div class="item-action material-icons" @click="backToParent">keyboard_arrow_left</div>
@@ -31,10 +39,12 @@
 
 <script scoped>
     module.exports = {
-        props: ["view_model", "selected_items"],
+        props: ["view_model", "selected_items", "search_keyword"],
         data: () => ({
+            searchMember: [],
             currentMember: [],
             currentDepartment: null,
+            searchItems: []
         }),
 
         computed: {
@@ -42,7 +52,12 @@
         },
 
         watch: {
-
+            'search_keyword': {
+                handler() {
+                    this.searchItems = []
+                    this.searchOrg(this.view_model, this.search_keyword)
+                },
+            },
         },
 
         created() {},
@@ -70,7 +85,7 @@
                 item.member.forEach(function(value, index) {
                     if (unselectAll) {
                         self.unselectItem(value)
-                    }else {
+                    } else {
                         self.selectItem(value)
                     }
                 });
@@ -103,7 +118,55 @@
                 if (index > -1) {
                     this.selected_items.splice(index, 1)
                 }
-            }
+            },
+
+            selectSearchEmployee(item) {
+                this.findDepartment(this.view_model, item.employee_email)
+                this.selectEmployee(item)
+            },
+
+            findDepartment(obj, query) {
+                if (query === "") {
+                    return
+                }
+
+                let self = this
+                for (var key in obj) {
+                    var value = obj[key];
+                    if (typeof value === 'object') {
+                        var isFind = self.findDepartment(value, query);
+                        if (isFind) {
+                            if (obj['department_name'] === undefined) {
+                                return true
+                            }
+                            self.currentDepartment = obj
+                            return
+                        }
+                    }
+
+                    if (value === query) {
+                        return true
+                    }
+                }
+            },
+
+            searchOrg(obj, query) {
+                if (query === "") {
+                    return
+                }
+
+                let self = this
+                for (var key in obj) {
+                    var value = obj[key];
+                    if (typeof value === 'object') {
+                        self.searchOrg(value, query);
+                    }
+
+                    if (value.toString().indexOf(query) > -1) {
+                        this.searchItems.push(obj)
+                    }
+                }
+            },
         },
 
         components: {
@@ -268,6 +331,26 @@
     .item-email {
         font-size: 12px;
         opacity: .7
+    }
+
+    .search-container {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: -100%;
+        background-color: #5E6169;
+        transition: all .25s;
+    }
+
+    .search-container.show {
+        left: 0;
+    }
+
+    .search-list {
+        overflow-y: auto;
+        height: 100%;
+        width: 100%;
     }
 
 </style>
