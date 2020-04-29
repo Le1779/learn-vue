@@ -3,8 +3,9 @@
         <div class="employee-selector-input" @click="expandSelector()">
             <input type="text">
             <div class="employee-selector-chips">
-                <v-chip label>Label</v-chip>
-                <div class="chip">Keivn</div>
+                <div class="chip" v-for="(item, i) in selectedItems">
+                    {{item.employee_name}}
+                </div>
             </div>
         </div>
 
@@ -300,7 +301,8 @@
         white-space: nowrap;
         font-size: 14px;
         height: 32px;
-        border-radius: 4px;
+        border-radius: 4px;   
+        margin: 4px 2px;
     }
 
     .employee-selector-chips .chip:hover {

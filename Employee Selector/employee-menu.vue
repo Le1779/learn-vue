@@ -60,19 +60,48 @@
 
             selectDepartment(item) {
                 this.currentDepartment = item
+                var unselectAll = false
+                if (item.selected_count == item.member.length) {
+                    unselectAll = true
+                    console.log("delete all")
+                }
+
                 let self = this
                 item.member.forEach(function(value, index) {
-                    self.selectEmployee(value)
+                    if (unselectAll) {
+                        self.unselectItem(value)
+                    }else {
+                        self.selectItem(value)
+                    }
                 });
             },
 
             selectEmployee(item) {
                 if (item.selected) {
-                    item.selected = false
-                    this.currentDepartment.selected_count--
+                    this.unselectItem(item)
                 } else {
-                    item.selected = true
-                    this.currentDepartment.selected_count++
+                    this.selectItem(item)
+                }
+            },
+
+            selectItem(item) {
+                if (item.selected) {
+                    return
+                }
+                item.selected = true
+                this.currentDepartment.selected_count++
+                this.selected_items.push(item)
+            },
+
+            unselectItem(item) {
+                if (!item.selected) {
+                    return
+                }
+                item.selected = false
+                this.currentDepartment.selected_count--
+                var index = this.selected_items.indexOf(item)
+                if (index > -1) {
+                    this.selected_items.splice(index, 1)
                 }
             }
         },
