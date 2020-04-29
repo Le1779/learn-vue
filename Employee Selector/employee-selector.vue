@@ -1,16 +1,21 @@
 <template>
     <v-content>
-       <p style="color: white; margin-bottom: 8px;">選擇人員</p>
+        <p style="color: white; margin-bottom: 8px;">選擇人員</p>
         <div class="employee-selector-input" @click.stop="expandSelector">
-            <input type="text" v-model="parentObject.searchKeyword">
-            <div class="employee-selector-chips">
-                <div class="chip" v-for="(item, i) in selectedItems">
-                    {{item.employee_name}}
+            <input type="text" v-model="parentObject.searchKeyword" placeholder="輸入關鍵字">
+            <div class="employee-selector-chips-container">
+                <div class="employee-selector-chips">
+                    <div class="chip" v-for="(item, i) in selectedItems">
+                        {{item.employee_name}}
+                    </div>
                 </div>
             </div>
         </div>
+        <transition name="fade">
+            <employee-menu :view_model="organization" :selected_items="selectedItems" :parent_object="parentObject" v-click-outside="collapseSelector" v-if="expandMenu"></employee-menu>
+        </transition>
 
-        <employee-menu :view_model="organization" :selected_items="selectedItems" :parent_object="parentObject" v-click-outside="collapseSelector" v-if="expandMenu"></employee-menu>
+
     </v-content>
 
 </template>
@@ -19,8 +24,7 @@
 <script>
     module.exports = {
         data: () => ({
-            organization: [
-                {
+            organization: [{
                 "department_name": "PM",
                 "department_code": "HQ-03",
                 "selected_count": 0,
@@ -212,7 +216,7 @@
             parentObject: {
                 searchKeyword: '',
             },
-            
+
             expandMenu: false,
 
         }),
@@ -234,10 +238,11 @@
                 console.log("expand")
                 this.expandMenu = true
             },
-            
+
             collapseSelector() {
                 console.log("collapse")
                 this.expandMenu = false
+                this.parentObject.searchKeyword = ''
             },
 
             clickItem() {
@@ -254,6 +259,49 @@
 </script>
 
 <style>
+    .fade-enter-active,
+    .fade-leave-active {
+        transition: opacity .25s;
+    }
+
+    .fade-enter,
+    .fade-leave-to {
+        opacity: 0;
+    }
+
+    .employee-selector-chips-container::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+    }
+
+    .employee-selector-chips-container::-webkit-scrollbar-track {
+        background: #5E6169;
+    }
+
+    .employee-selector-chips-container::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+
+    .employee-selector-chips-container::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    .employee-selector-input input::placeholder {
+        color: rgba(255, 255, 255, .75);
+        ;
+        opacity: 1;
+    }
+
+    .employee-selector-input input:-ms-input-placeholder {
+        color: rgba(255, 255, 255, .75);
+        ;
+    }
+
+    .employee-selector-input input::-ms-input-placeholder {
+        color: rgba(255, 255, 255, .75);
+        ;
+    }
+
     .employee-selector-input {
         width: 100%;
         padding: 8px 8px;
@@ -283,6 +331,16 @@
     .employee-selector-input input::selection {
         background-color: #E97493;
         color: white;
+    }
+
+    .employee-selector-chips-container {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .employee-selector-chips {
+        width: max-content;
+        overflow-y: hidden;
     }
 
     .employee-selector-chips .chip {

@@ -177,7 +177,24 @@
 
 </script>
 
-<style>
+<style scoped>
+    ::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #5E6169;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+    
     .employee-selector-selector {
         width: 100%;
         margin-top: 8px;
