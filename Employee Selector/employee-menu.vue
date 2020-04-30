@@ -1,5 +1,5 @@
 <template>
-    <v-content class="employee-selector-selector">
+    <div class="employee-selector-selector">
         <div class="departments-container">
             <div class="department-item" v-for="(item, i) in view_model" :class="{ selected: item.selected_count > 0 }">
                 <div class="item-title" @click="selectDepartment(item)">
@@ -32,7 +32,7 @@
                 </div>
             </div>
         </div>
-    </v-content>
+    </div>
 
 </template>
 
@@ -161,9 +161,7 @@
                     var value = obj[key];
                     if (typeof value === 'object') {
                         self.searchOrg(value, query);
-                    }
-
-                    if (value.toString().indexOf(query) > -1) {
+                    }else if (value.toString().indexOf(query) > -1 && key !== 'selected') {
                         this.searchItems.push(obj)
                     }
                 }
@@ -196,7 +194,7 @@
     }
     
     .employee-selector-selector {
-        width: 100%;
+        width: 500px;
         margin-top: 8px;
         position: absolute;
         background-color: #5E6169;

@@ -4,9 +4,6 @@
 <head>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../vue/css/font-awesome.min.css">
     <style>
         html,
         body {
@@ -15,16 +12,44 @@
             height: 100vh;
             overflow: hidden
         }
+
+        #getSelectedItem {
+            color: #6E7179;
+            padding: 8px;
+            background-color: white;
+            border-radius: 2px;
+            margin: 8px;
+        }
+        
+        #result{
+            color: #6E7179;
+            padding: 16px;
+            background-color: white;
+            border-radius: 2px;
+            margin: 8px;
+        }
+        
+        .result{
+            display: inline-block;
+            background-color: #6E7179;
+            color: white;
+            padding: 8px;
+            margin: 4px;
+            border-radius: 8px;
+        }
+        
     </style>
 </head>
 
 <body>
     <div id="app" style="width: 500px; margin: auto; padding-top: 100px">
         <employee-selector></employee-selector>
+        <button id="getSelectedItem" onclick="getSelectedItem()">Get Selected Item</button>
+        <div id="result"></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="../vue/js/httpVueLoader.js"></script>
     <script>
         Vue.directive('click-outside', {
@@ -44,12 +69,20 @@
             },
         })
 
-        new Vue({
+        var employeeSelector = new Vue({
             el: '#app',
-            vuetify: new Vuetify(),
             components: {
                 'employee-selector': httpVueLoader('employee-selector.vue')
             }
         })
+
+        function getSelectedItem() {
+            var selectedItems = employeeSelector.$children[0].selectedItems;
+            console.log(selectedItems)            
+            document.getElementById("result").innerHTML = ""
+            selectedItems.forEach(function(value, index) {
+                document.getElementById("result").innerHTML += `<div class="result">${value.employee_name}</div>`
+            });
+        }
     </script>
 </body></html>

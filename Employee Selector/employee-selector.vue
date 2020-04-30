@@ -1,5 +1,5 @@
 <template>
-    <v-content>
+    <div>
         <p style="color: white; margin-bottom: 8px;">選擇人員</p>
         <div class="employee-selector-input" @click.stop="expandSelector">
             <input type="text" v-model="parentObject.searchKeyword" placeholder="輸入關鍵字">
@@ -16,7 +16,7 @@
         </transition>
 
 
-    </v-content>
+    </div>
 
 </template>
 
@@ -230,7 +230,7 @@
         },
 
         created() {
-
+            //this.getOrganization()
         },
 
         methods: {
@@ -245,10 +245,15 @@
                 this.parentObject.searchKeyword = ''
             },
 
-            clickItem() {
-                console.log("clickItem")
-
-            },
+            getOrganization() {
+                axios.get('http://localhost:28516/Home/GetOrganization')
+                    .then(function(response) {
+                        console.log(response);
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            }
         },
 
         components: {
@@ -326,6 +331,10 @@
         width: 100%;
         max-height: 32px;
         color: rgba(255, 255, 255, .87);
+        border-radius: 0;
+        border-radius: 0;
+        background-color: transparent;
+        border-style: none;
     }
 
     .employee-selector-input input::selection {
