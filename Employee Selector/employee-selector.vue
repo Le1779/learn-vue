@@ -10,6 +10,7 @@
                     </div>
                 </div>
             </div>
+            <div class="loader" v-if="loading"></div>
         </div>
         <transition name="fade">
             <employee-menu :view_model="organization" :selected_items="selectedItems" :parent_object="parentObject" v-click-outside="collapseSelector" v-if="expandMenu"></employee-menu>
@@ -219,6 +220,8 @@
 
             expandMenu: false,
 
+            loading: true,
+
         }),
 
         computed: {
@@ -236,6 +239,10 @@
         methods: {
             expandSelector() {
                 console.log("expand")
+                if (this.loading) {
+                    return
+                }
+
                 this.expandMenu = true
             },
 
@@ -308,6 +315,7 @@
     }
 
     .employee-selector-input {
+        position: relative;
         width: 100%;
         padding: 8px 8px;
         border: 1px solid #5E6169;
@@ -378,6 +386,39 @@
 
     .employee-selector-chips .chip:hover {
         background-color: #F984A3;
+    }
+
+    .loader {
+        position: absolute;
+        top: 9px;
+        right: 8px;
+        border: 4px solid #6E7179;
+        border-radius: 50%;
+        border-top: 4px solid #F984A3;
+        width: 24px;
+        height: 24px;
+        -webkit-animation: spin 2s linear infinite;
+        animation: spin 2s linear infinite;
+    }
+
+    @-webkit-keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
     }
 
 </style>
