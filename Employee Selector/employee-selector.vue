@@ -220,7 +220,7 @@
 
             expandMenu: false,
 
-            loading: true,
+            loading: false,
 
         }),
 
