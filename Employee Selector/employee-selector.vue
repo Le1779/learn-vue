@@ -25,7 +25,8 @@
 <script>
     module.exports = {
         data: () => ({
-            organization: [{
+            organization: [
+                {
                 "department_name": "PM",
                 "department_code": "HQ-03",
                 "selected_count": 0,
