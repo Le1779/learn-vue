@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app" style="width: 500px; margin: auto; padding-top: 100px">
+       jQuery
+        <input type="text" id="inputMessage" style="width:100%;" />
+        <div>
+            Message:
+            <span id="message"></span>
+        </div>
+
+        <div id="time" style="margin:24px;"></div>
+        
+        <div id="test"></div>
+    </div>
+</body></html>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+    $(document).ready(function() {
+        getTime();
+        setInterval(() => {
+            getTime();
+        }, 1000)
+        
+        changeEventBind();
+    })
+
+    function getTime() {
+        $('#time').html(String(new Date()));
+        updateTest();
+    }
+    
+    function changeEventBind() {
+        $('#inputMessage').bind('change keydown keyup', function(event) {
+            var inputValue = $(this).val();
+            $('#message').html(inputValue)
+            updateTest();
+        });
+    }
+    
+    function updateTest() {
+        var now = $('#time').html();
+        var message = $('#message').html();
+        $('#test').html(`現在${now} 有人說${message}`);
+    }
+</script>
