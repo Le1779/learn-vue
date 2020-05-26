@@ -25,191 +25,255 @@
 <script>
     module.exports = {
         data: () => ({
-            organization: [
-                {
+            organization: [{
                 "department_name": "PM",
                 "department_code": "HQ-03",
                 "selected_count": 0,
                 "member": [{
+                    "employee_id": "908",
                     "employee_name": "李安",
                     "employee_email": "annlee@dynacw.com",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": true
                 }, {
+                    "employee_id": "927",
                     "employee_name": "劉穎潔",
                     "employee_email": "serena@dynacw.com",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": false
                 }, {
-                    "employee_name": "陳濟銘",
-                    "employee_email": "jimmychen@dynacw.com",
-                    "selected": false
-                }, {
+                    "employee_id": "2117",
                     "employee_name": "姜政男",
                     "employee_email": "masao@dynacw.com",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": false
                 }, {
+                    "employee_id": "2001",
                     "employee_name": "季佐華",
                     "employee_email": "rayji@dynacw.co.jp",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": true
                 }, {
+                    "employee_id": "2118",
                     "employee_name": "鄭力維",
                     "employee_email": "stevencheng@dynacw.com",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": true
                 }, {
+                    "employee_id": "2006",
                     "employee_name": "謝明憲",
                     "employee_email": "mshsieh@dynacw.com",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": true
                 }, {
+                    "employee_id": "2049",
                     "employee_name": "章君豪",
                     "employee_email": "chunhao@dynacw.com",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": false
                 }, {
+                    "employee_id": "2032",
                     "employee_name": "李泓儒",
                     "employee_email": "scottlee@dynacw.com",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": true
                 }]
             }, {
-                "department_name": "RD",
-                "department_code": "HQ-51",
+                "department_name": "IA",
+                "department_code": "HQ-51-01",
                 "selected_count": 0,
                 "member": [{
+                    "employee_id": "2063",
                     "employee_name": "廖仁毅",
                     "employee_email": "jackyl@dynacw.com",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": false
                 }, {
+                    "employee_id": "2064",
                     "employee_name": "賴育樟",
                     "employee_email": "joelai@dynacw.com",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": false
                 }, {
+                    "employee_id": "2065",
                     "employee_name": "周秉叡",
                     "employee_email": "brchou@dynacw.com",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": false
                 }, {
+                    "employee_id": "938",
                     "employee_name": "王富仁",
                     "employee_email": "alanwang@dynacw.com",
-                    "selected": false
-                }, {
+                    "selected": false,
+                    "isLeader": true
+                }]
+            }, {
+                "department_name": "Gaiji",
+                "department_code": "HQ-51-02",
+                "selected_count": 0,
+                "member": [{
+                    "employee_id": "2055",
                     "employee_name": "陳俊宇",
                     "employee_email": "chunyu@dynacw.com",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": false
                 }, {
+                    "employee_id": "2058",
                     "employee_name": "張文軒",
                     "employee_email": "henry@dynacw.com",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": false
                 }, {
+                    "employee_id": "2059",
                     "employee_name": "薛茗方",
                     "employee_email": "mfhsueh@dynacw.com",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": false
                 }, {
+                    "employee_id": "648",
                     "employee_name": "林俊男",
                     "employee_email": "jameslin@dynacw.com",
-                    "selected": false
-                }, {
+                    "selected": false,
+                    "isLeader": true
+                }]
+            }, {
+                "department_name": "Retail",
+                "department_code": "HQ-51-03",
+                "selected_count": 0,
+                "member": [{
+                    "employee_id": "2056",
                     "employee_name": "陳明芬",
                     "employee_email": "elychen@dynacw.com",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": false
                 }, {
+                    "employee_id": "2060",
                     "employee_name": "吳國揚",
                     "employee_email": "kywu@dynacw.com",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": false
                 }, {
+                    "employee_id": "2061",
                     "employee_name": "吳怡靜",
                     "employee_email": "jillwu@dynacw.com",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": false
                 }, {
+                    "employee_id": "2062",
                     "employee_name": "曾慶君",
                     "employee_email": "carson@dynacw.com",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": false
                 }, {
+                    "employee_id": "679",
                     "employee_name": "戴彧寧",
                     "employee_email": "taylor@dynacw.com",
-                    "selected": false
-                }, {
-                    "employee_name": "徐佳羚",
-                    "employee_email": "ponyhsu@dynacw.com",
-                    "selected": false
-                }, {
-                    "employee_name": "傅柏荏",
-                    "employee_email": "borenfu@dynacw.com",
-                    "selected": false
-                }, {
-                    "employee_name": "翁孟廷",
-                    "employee_email": "martinweng@dynacw.com",
-                    "selected": false
-                }, {
+                    "selected": false,
+                    "isLeader": true
+                }]
+            }, {
+                "department_name": "NTD",
+                "department_code": "HQ-51-04",
+                "selected_count": 0,
+                "member": [{
+                    "employee_id": "2004",
                     "employee_name": "樂仲珉",
                     "employee_email": "kevinle@dynacw.com",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": false
                 }, {
+                    "employee_id": "2005",
                     "employee_name": "詹正良",
                     "employee_email": "liangChan@dynacw.com",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": true
                 }]
             }, {
                 "department_name": "FD",
                 "department_code": "HQ-52",
                 "selected_count": 0,
                 "member": [{
+                    "employee_id": "2066",
                     "employee_name": "簡亨儒",
                     "employee_email": "franzchien@dynacw.com",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": true
                 }, {
+                    "employee_id": "2067",
                     "employee_name": "謝德林",
                     "employee_email": "dlhsieh@dynacw.com",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": false
                 }, {
+                    "employee_id": "2068",
                     "employee_name": "葛幼寧",
                     "employee_email": "yuning@dynacw.com",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": false
                 }, {
+                    "employee_id": "2122",
                     "employee_name": "劉素禎",
                     "employee_email": "janeliu@dynacw.com",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": false
                 }, {
+                    "employee_id": "2069",
                     "employee_name": "賴麗華",
                     "employee_email": "kitty@dynacw.com",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": false
                 }, {
+                    "employee_id": "2070",
                     "employee_name": "楊慧賢",
                     "employee_email": "sandyy@dynacw.com",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": false
                 }, {
+                    "employee_id": "2071",
                     "employee_name": "許益慧",
                     "employee_email": "yihui@dynacw.com",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": false
                 }]
             }, {
                 "department_name": "QA",
                 "department_code": "HQ-53",
                 "selected_count": 0,
                 "member": [{
-                    "employee_name": "楊育芳",
-                    "employee_email": "tomyang@dynacw.com",
-                    "selected": false
-                }, {
+                    "employee_id": "2073",
                     "employee_name": "黃孟維",
                     "employee_email": "wayne@dynacw.com",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": false
                 }, {
+                    "employee_id": "2074",
                     "employee_name": "陳麗芳",
                     "employee_email": "angela@dynacw.co",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": false
                 }, {
+                    "employee_id": "2146",
                     "employee_name": "曹晉睿",
                     "employee_email": "raytsao@dynacw.com",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": true
                 }]
             }, {
                 "department_name": "Support",
                 "department_code": "HQ-54",
                 "selected_count": 0,
                 "member": [{
+                    "employee_id": "2138",
                     "employee_name": "徐春玲",
                     "employee_email": "borenfu@dynacw.com",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": true
                 }, {
+                    "employee_id": "2139",
                     "employee_name": "林珮懿",
                     "employee_email": "peiyilin@dynacw.com",
-                    "selected": false
+                    "selected": false,
+                    "isLeader": false
                 }]
             }],
 
