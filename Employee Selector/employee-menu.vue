@@ -2,7 +2,7 @@
     <div class="employee-selector-selector">
         <div class="departments-container">
             <div class="department-item" v-for="(item, i) in view_model" :class="{ selected: item.selected_count > 0 }">
-                <div class="item-title" @click="selectDepartment(item)">
+                <div class="item-title" @click="showMember(i)">
                     {{item.department_name}}
                     <div class="item-status">
                         <div v-if="item.selected_count > 0" class="item-selected-count">選擇{{item.selected_count}}位</div>
@@ -72,23 +72,6 @@
 
             backToParent() {
                 this.currentMember = []
-            },
-
-            selectDepartment(item) {
-                this.currentDepartment = item
-                var unselectAll = false
-                if (item.selected_count == item.member.length) {
-                    unselectAll = true
-                }
-
-                let self = this
-                item.member.forEach(function(value, index) {
-                    if (unselectAll) {
-                        self.unselectItem(value)
-                    } else {
-                        self.selectItem(value)
-                    }
-                });
             },
 
             selectEmployee(item) {
