@@ -1,7 +1,8 @@
 <template>
     <div>
-        <div class="fake-button">Button 1</div>
-        <div class="fake-button">Button 2</div>
+        <div class="fake-button" @click="filter.current='Related'">Related</div>
+        <div class="fake-button" @click="filter.current='All'">All</div>
+        <div class="fake-button" @click="filter.current='Department'">Department</div>
         <div class="fake-button" @click="filter.current='Confidential'">Confidential</div>
     </div>
 </template>

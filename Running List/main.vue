@@ -11,7 +11,7 @@
         data: () => ({
             fakeData: null,
             filter: {
-                current: '',
+                current: 'Related',
             }
         }),
 
@@ -27,7 +27,6 @@
             var self = this;
             axios.get('./data.json')
                 .then((res) => {
-                    console.log(res.data);
                     self.fakeData = res.data;
                 }).catch((err) => {
                     console.log(err);
