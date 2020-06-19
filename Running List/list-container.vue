@@ -2,16 +2,19 @@
     <div>
         {{filter.current}} {{isVisible.length}}
         <table>
-            <thead>
-                <tr>
-                    <th v-for="(item, index) in tableHeader">{{item}}</th>
-                </tr>
-            </thead>
+            <list-header :model="headerModel"></list-header>
             <tbody>
-                <template v-for="(item, key, index) in view_model">
+                <template v-for="(item, index) in this.view_model">
                     <template v-for="(order, subKey, subIndex) in item.WorkingOrders">
                         <tr v-if="isVisible.includes(index)" :class="[subIndex > 0 ? 'subRow' : '', isExpand.includes(index) ? 'expand' : '']">
-                            <td>{{order.AppInstanceID}} {{Object.keys(item.WorkingOrders).length}}</td>
+                            <td>{{order.AppInstanceID}}</td>
+                            <td>{{formatDate(order.AppliedDate, true)}}</td>
+                            <td>{{order.Staff}}</td>
+                            <td>{{order.ProjectName}}</td>
+                            <td>{{order.CustomerName}}</td>
+                            <td>{{formatDate(order.PlanFinishDate)}}</td>
+                            <td>{{Math.round(order.SpendDays * 10) / 10}}</td>
+                            <td>{{order.PreviousUserName}} > {{order.AssignedUserName}}</td>
                             <td>
                                 <button v-if="subIndex==0" @click="expand(index)" :disabled="Object.keys(item.WorkingOrders).length == 1">Expand</button>
                             </td>
@@ -29,14 +32,29 @@
     module.exports = {
         props: ["view_model", "filter"],
         data: () => ({
-            tableHeader: ["工單號碼", "工單建立日期", "專案負責人", "專案名稱", "客戶名稱", "預定完成日", "工期進度(天數)", "上一關 → 待處理", "工單詳情"],
             isVisible: [],
             isExpand: [],
             userID: '2004',
-            departmentMemper: ["樂仲珉", "詹正良"]
+            departmentMemper: ["樂仲珉", "詹正良"],
+            headerModel: {
+                column: ["工單號碼", "工單建立日期", "專案負責人", "專案名稱", "客戶名稱", "預定完成日", "工期進度(天數)", "上一關 → 待處理", "工單詳情"],
+                orderByIndex: 1,
+                desc: true,
+            },
         }),
 
-        computed: {},
+        computed: {
+            ordered: function() {
+                this.view_model = Object.keys(this.view_model)
+                    .map(t => {
+                        this.$set(this.view_model[t], 'key', t)
+                        return this.view_model[t]
+                    })
+                    .sort(this.compare)
+                console.log(this.view_model)
+                return this.view_model
+            }
+        },
 
         watch: {
             'filter.current': {
@@ -48,9 +66,24 @@
             'view_model': {
                 handler() {
                     console.log(this.view_model);
-                    console.log(Object.keys(this.view_model));
                     this.filtering();
                 },
+            },
+
+            headerModel: {
+                handler() {
+                    console.log("headerModel change")
+                    var propName = ['AppInstanceID', 'AppliedDate', 'Staff', 'ProjectName', 'CustomerName', 'PlanFinishDate', 'SpendDays']
+                    
+                    this.view_model = Object.keys(this.view_model)
+                        .map(t => {
+                            this.$set(this.view_model[t], 'key', t)
+                            return this.view_model[t]
+                        })
+                        .sort(this.sortProperty(propName[this.headerModel.orderByIndex], this.headerModel.desc))
+                    console.log(this.view_model)
+                },
+                deep: true
             },
         },
 
@@ -112,7 +145,7 @@
             showAll(index) {
                 this.setVisible(index, true);
             },
-            
+
             showDepartment(order, index) {
                 this.setVisible(index, this.departmentMemper.indexOf(order.AssignedUserName) != -1)
             },
@@ -140,9 +173,45 @@
                     }
                 }
             },
+
+            formatDate(date, showTime = false) {
+                var d = new Date(date),
+                    month = '' + (d.getMonth() + 1),
+                    day = '' + d.getDate(),
+                    year = d.getFullYear(),
+                    hour = d.getHours(),
+                    minutes = d.getMinutes()
+
+                if (month.length < 2)
+                    month = '0' + month;
+                if (day.length < 2)
+                    day = '0' + day;
+                if (hour.length < 2)
+                    hour = '0' + hour;
+                if (minutes.length < 2)
+                    minutes = '0' + minutes;
+
+                if (showTime) {
+                    return [year, month, day].join('/') + ' ' + [hour, minutes].join(':');
+                } else {
+                    return [year, month, day].join('/');
+                }
+            },
+
+            sortProperty(prop, isDesc) {
+                return (a, b) => {
+                    if (a.NewestWorkingOrder[prop] < b.NewestWorkingOrder[prop])
+                        return isDesc ? -1 : 1;
+                    if (a.NewestWorkingOrder[prop] > b.NewestWorkingOrder[prop])
+                        return isDesc ? 1 : -1;
+                    return 0;
+                }
+            },
         },
 
-        components: {}
+        components: {
+            'list-header': httpVueLoader('list-header.vue'),
+        }
     }
 
 </script>
