@@ -17,8 +17,9 @@
                             <div v-if="subIndex==0" style="position:relative;">
                                 <div class="button-group">
                                     <button :class="[order.StaffID == userID ? 'light' : 'dark']">{{order.StaffID == userID ? '編輯':'詳情'}}</button>
-                                    <button @click="expand(index)" :disabled="Object.keys(item.SubOrder).length == 1" class="material-icons">
-                                        展開 {{isExpand.includes(index) ? 'expand_less' : 'expand_more'}}
+                                    <button @click="expand(index)" :disabled="Object.keys(item.SubOrder).length == 1" class="expend-button">
+                                        展開
+                                        <div class="material-icons">{{isExpand.includes(index) ? 'expand_less' : 'expand_more'}}</div>
                                     </button>
                                 </div>
                                 <div class="tags">
@@ -45,11 +46,11 @@
             orderList: [],
             isVisible: [],
             isExpand: [],
-            
+
             userID: '2118', //'2004',
             departmentMemper: ["樂仲珉", "詹正良"],
             readyListID: ['WO-20180416-205A', 'WO-20180416-5F2C'],
-            
+
             headerModel: {
                 column: [{
                     name: '工單號碼',
@@ -201,7 +202,7 @@
                 if (this.isExpand.includes(index)) {
                     classStr += ' expand'
                 }
-                
+
                 if (this.readyListID.includes(order.AppInstanceID)) {
                     classStr += ' shelved'
                 }
@@ -371,7 +372,8 @@
         float: left;
         border-radius: 0px;
         border: 1px solid transparent;
-        transition: all 0.15s
+        transition: all 0.15s;
+        white-space: nowrap;
     }
 
     .dark {
@@ -386,6 +388,11 @@
 
     button:hover {
         background-color: #ADADAD;
+    }
+
+    button:disabled {
+        color: -internal-light-dark-color(rgba(16, 16, 16, 0.3), rgb(170, 170, 170));
+        background-color: -internal-light-dark-color(rgba(239, 239, 239, 0.3), rgba(19, 1, 1, 0.3));
     }
 
     button.dark:hover {
@@ -404,6 +411,11 @@
         font-size: 14px;
     }
 
+    .expend-button {
+        display: inline-grid;
+        grid-template-columns: auto 24px;
+    }
+
     .tags {
         position: absolute;
         display: inline-block;
@@ -420,12 +432,12 @@
         border-radius: 5px;
         color: white;
     }
-    
+
     .related .tag.blue {
         display: inline-block;
         background-color: #428BCA;
     }
-    
+
     .shelved .tag.pink {
         display: inline-block;
         background-color: #FF4C64;

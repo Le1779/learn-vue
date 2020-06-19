@@ -2,7 +2,10 @@
     <thead>
         <tr>
             <th v-for="(item, index) in model.column" @click="onOrderByButtonClick(index)">
-                <div class="material-icons">{{item.name}} {{model.orderByIndex == index ? model.desc ? 'arrow_upward' : 'arrow_downward' : ''}}</div>
+                <div>
+                    {{item.name}}
+                    <div class="material-icons">{{model.orderByIndex == index ? model.desc ? 'arrow_upward' : 'arrow_downward' : ''}}</div>
+                </div>
             </th>
         </tr>
     </thead>
@@ -53,7 +56,12 @@
         cursor: pointer;
     }
 
-    th>div.material-icons {
+    th > div {
+        display: inline-grid;
+        grid-template-columns: auto 24px;
+    }
+    
+    th > .material-icons {
         font-size: medium;
         font-weight: bold;
     }
