@@ -56,7 +56,7 @@
         padding: 8px 12px;
         border-radius: 5px;
         margin-left: 30px;
-        transition: 0.2 opacity 0.5 ease-in-out;
+        transition: 0.15s opacity 0.15s ease-in-out;
     }
 
     .filter-button.hidden {
@@ -66,8 +66,6 @@
     .filter-button .material-icons {
         padding-left: 2px;
         color: #E63061;
-        font-size: normal;
-
     }
 
     .filter-button.hidden .material-icons {

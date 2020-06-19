@@ -367,13 +367,14 @@
     }
 
     .button-group button {
-        padding: 10px 24px;
+        padding: 6px 12px;
         cursor: pointer;
         float: left;
         border-radius: 0px;
         border: 1px solid transparent;
         transition: all 0.15s;
         white-space: nowrap;
+        color: black;
     }
 
     .dark {
@@ -381,7 +382,7 @@
         color: white;
     }
 
-    .light {
+    .button-group button.light {
         background-color: #FF4C64;
         color: white;
     }
@@ -391,8 +392,8 @@
     }
 
     button:disabled {
-        color: -internal-light-dark-color(rgba(16, 16, 16, 0.3), rgb(170, 170, 170));
-        background-color: -internal-light-dark-color(rgba(239, 239, 239, 0.3), rgba(19, 1, 1, 0.3));
+        color: rgba(16, 16, 16, 0.3);
+        background-color: rgba(239, 239, 239, 0.3);
     }
 
     button.dark:hover {
