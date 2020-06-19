@@ -4,8 +4,8 @@
         <table>
             <list-header :model="headerModel"></list-header>
             <tbody>
-                <template v-for="(item, index) in this.view_model">
-                    <template v-for="(order, subKey, subIndex) in item.WorkingOrders">
+                <template v-for="(item, index) in orderList">
+                    <template v-for="(order, subIndex) in item.SubOrder">
                         <tr v-if="isVisible.includes(index)" :class="[subIndex > 0 ? 'subRow' : '', isExpand.includes(index) ? 'expand' : '']">
                             <td>{{order.AppInstanceID}}</td>
                             <td>{{formatDate(order.AppliedDate, true)}}</td>
@@ -16,7 +16,7 @@
                             <td>{{Math.round(order.SpendDays * 10) / 10}}</td>
                             <td>{{order.PreviousUserName}} > {{order.AssignedUserName}}</td>
                             <td>
-                                <button v-if="subIndex==0" @click="expand(index)" :disabled="Object.keys(item.WorkingOrders).length == 1">Expand</button>
+                                <button v-if="subIndex==0" @click="expand(index)" :disabled="Object.keys(item.SubOrder).length == 1">Expand</button>
                             </td>
                         </tr>
                     </template>
@@ -32,6 +32,7 @@
     module.exports = {
         props: ["view_model", "filter"],
         data: () => ({
+            orderList: [],
             isVisible: [],
             isExpand: [],
             userID: '2004',
@@ -66,6 +67,7 @@
             'view_model': {
                 handler() {
                     console.log(this.view_model);
+                    this.organizeData()
                     this.filtering();
                 },
             },
@@ -75,13 +77,7 @@
                     console.log("headerModel change")
                     var propName = ['AppInstanceID', 'AppliedDate', 'Staff', 'ProjectName', 'CustomerName', 'PlanFinishDate', 'SpendDays']
                     
-                    this.view_model = Object.keys(this.view_model)
-                        .map(t => {
-                            this.$set(this.view_model[t], 'key', t)
-                            return this.view_model[t]
-                        })
-                        .sort(this.sortProperty(propName[this.headerModel.orderByIndex], this.headerModel.desc))
-                    console.log(this.view_model)
+                    this.orderList.sort(this.sortProperty(propName[this.headerModel.orderByIndex], this.headerModel.desc))
                 },
                 deep: true
             },
@@ -90,6 +86,27 @@
         created() {},
 
         methods: {
+            organizeData(){
+                var self = this
+                Object.keys(this.view_model).forEach((item, index) => {
+                    var orderObj = {}
+                    orderObj['SubOrder'] = []
+                    var mainOrder = self.view_model[item].NewestWorkingOrder
+                    var subOrders = self.view_model[item].WorkingOrders
+                    Object.keys(subOrders).forEach((subItem, subIndex) => {
+                        orderObj['SubOrder'].push(subOrders[subItem])
+                        if (mainOrder.SpendDays < subOrders[subItem].SpendDays) {
+                            mainOrder.SpendDays = subOrders[subItem].SpendDays
+                        }
+                    });
+                    
+                    orderObj['MainOrder'] = mainOrder
+                    
+                    self.orderList.push(orderObj)
+                });
+                console.log(this.orderList)
+            },
+        
             expand(id) {
                 console.log(id)
                 var index = this.isExpand.indexOf(id);
@@ -115,8 +132,9 @@
 
             filtering() {
                 var self = this;
-                Object.keys(this.view_model).forEach((item, index) => {
-                    Object.keys(self.view_model[item].WorkingOrders).forEach((subItem, subIndex) => {
+                
+                this.orderList.forEach((item, index) => {
+                    item.SubOrder.forEach((subItem, subIndex) => {
                         switch (self.filter.current) {
                             case 'All':
                                 console.log("only show all.")
@@ -124,15 +142,15 @@
                                 break;
                             case 'Related':
                                 console.log("only show related.")
-                                self.showRelated(self.view_model[item].WorkingOrders[subItem], self.view_model[item].NewestWorkingOrder, index);
+                                self.showRelated(subItem, item.MainOrder, index);
                                 break;
                             case 'Department':
                                 console.log("only show department.")
-                                self.showDepartment(self.view_model[item].WorkingOrders[subItem], index);
+                                self.showDepartment(subItem, index);
                                 break;
                             case 'Confidential':
                                 console.log("only show confidential.")
-                                self.showConfidential(self.view_model[item].WorkingOrders[subItem], index);
+                                self.showConfidential(subItem, index);
                                 break;
                             default:
                                 console.log("show all.");
@@ -200,9 +218,9 @@
 
             sortProperty(prop, isDesc) {
                 return (a, b) => {
-                    if (a.NewestWorkingOrder[prop] < b.NewestWorkingOrder[prop])
+                    if (a.MainOrder[prop] < b.MainOrder[prop])
                         return isDesc ? -1 : 1;
-                    if (a.NewestWorkingOrder[prop] > b.NewestWorkingOrder[prop])
+                    if (a.MainOrder[prop] > b.MainOrder[prop])
                         return isDesc ? 1 : -1;
                     return 0;
                 }
