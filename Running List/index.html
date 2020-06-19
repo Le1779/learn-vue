@@ -11,27 +11,108 @@
             width: 100vw;
             height: 100vh;
         }
-
     </style>
 </head>
 
 <body>
     <div id="app">
-        <running-list></running-list>
+        <running-list :view_model="viewModel"></running-list>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="../vue/js/httpVueLoader.js"></script>
     <script>
-        new Vue({
-            el: '#app',
-            components: {
-                'running-list': httpVueLoader('main.vue')
-            }
-        })
-
+        $.getJSON("data.json", function(json) {
+            new Vue({
+                el: '#app',
+                data: function() {
+                    return {
+                        viewModel: {
+                            orderData: json,
+                            userID: '2004',
+                            departmentMember: {
+                                樂仲珉: "樂仲珉",
+                                詹正良: "詹正良"
+                            },
+                            readyList: [{
+                                "Status": 1015,
+                                "ProjectManager": null,
+                                "SpendDays": 4.1286420207326389,
+                                "EndedDateTime": null,
+                                "TotalDays": 0,
+                                "Version": null,
+                                "LogTime": null,
+                                "IsUploadNas": true,
+                                "WorkingOrderID": 89,
+                                "TaskID": 411,
+                                "CustomerID": 388,
+                                "CustomerName": "範例1",
+                                "WorkingOrderType": "New-WO-20180416-CBE6",
+                                "ProjectName": "Test Confidential Working Order",
+                                "SpecExcelFile": "WO-FileName (3).xlsx",
+                                "ProjectOutput": "其他",
+                                "NAS": null,
+                                "InstallerSpec": "免",
+                                "SupportOS": "Windows 8.1/10Mac OS X 10.9.5 以上",
+                                "TestComparePath": "\\\\Nasfd2\\Product\\Retail\\JP\\Exchange\\TT5718\\Modify\\DFKyouGeki-W7\\TTM\\Original",
+                                "FirstDealDepart": 0,
+                                "PlanFinishDate": "2020-04-30T18:00:00",
+                                "RDPlanFinishDate": "2020-06-03T18:00:00",
+                                "FDPlanFinishDate": "2020-04-30T18:00:00",
+                                "QAPlanFinishDate": null,
+                                "PMUploadPath": null,
+                                "FDUploadPath": null,
+                                "RDUploadPath": null,
+                                "QAUploadPath": null,
+                                "FDWorkItems": "<p>FD 工作需求 Sample</p>\r\n",
+                                "RDWorkItems": "<p>RD 工作需求 Sample</p>\r\n",
+                                "QAWorkItems": "<p>QA 工作需求 Sample</p>\r\n",
+                                "ProjectDescription": null,
+                                "PMGitCommitID": null,
+                                "FDGitCommitID": null,
+                                "RDGitCommitID": null,
+                                "QAGitCommitID": null,
+                                "RD_Retail_NAS": null,
+                                "RD_Gaiji_NAS": null,
+                                "RD_IA_NAS": null,
+                                "RD_NTD_NAS": null,
+                                "FD_NAS": null,
+                                "QA_NAS": null,
+                                "IsFinish": false,
+                                "PreviousUserName": "詹正良",
+                                "PreviousUserID": "2005",
+                                "AssignedUserName": "樂仲珉",
+                                "AssignedUserID": "2004",
+                                "NotifyMailList": "",
+                                "FontInfos": [],
+                                "IsConfidential": true,
+                                "NasPathOrder": "",
+                                "IsTestOK": true,
+                                "IsQAPass": true,
+                                "IsFDPass": true,
+                                "IsRetailPass": true,
+                                "IsGaijiPass": true,
+                                "IsIAPass": true,
+                                "IsNTDPass": true,
+                                "IsApproved": false,
+                                "OriginID": 0,
+                                "StaffID": 2118,
+                                "Staff": "鄭力維",
+                                "DepartmentID": "Sample(Retail Department)",
+                                "DepartmentName": "NTD部門(多人執行)",
+                                "AppInstanceID": "WO-20180416-CBE6",
+                                "Remark": null,
+                                "AppliedDate": "2020-06-03T16:54:00.907"
+                            }]
+                        }
+                    }
+                },
+                components: {
+                    'running-list': httpVueLoader('main.vue')
+                }
+            })
+        });
     </script>
-</body>
-
-</html>
+</body></html>

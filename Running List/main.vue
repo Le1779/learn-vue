@@ -1,13 +1,13 @@
 <template>
     <div style="width: 100%;">
         <buttons-container :filter="filter" style="margin: 12px 0px;"></buttons-container>
-        <list-container :view_model="fakeData" :filter="filter"></list-container>
+        <list-container :view_model="view_model" :filter="filter"></list-container>
     </div>
 </template>
 
-
 <script scoped>
     module.exports = {
+        props: ["view_model"],
         data: () => ({
             fakeData: null,
             filter: {
@@ -24,13 +24,7 @@
         },
 
         created() {
-            var self = this;
-            axios.get('./data.json')
-                .then((res) => {
-                    self.fakeData = res.data;
-                }).catch((err) => {
-                    console.log(err);
-                })
+            console.log(this.view_model)
         },
 
         methods: {

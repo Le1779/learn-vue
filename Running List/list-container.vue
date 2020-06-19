@@ -16,7 +16,7 @@
                         <td>
                             <div v-if="subIndex==0" style="position:relative;">
                                 <div class="button-group">
-                                    <button :class="[order.StaffID == userID ? 'light' : 'dark']">{{order.StaffID == userID ? '編輯':'詳情'}}</button>
+                                    <button :class="[order.StaffID == view_model.userID ? 'light' : 'dark']">{{order.StaffID == view_model.userID ? '編輯':'詳情'}}</button>
                                     <button @click="expand(index)" :disabled="Object.keys(item.SubOrder).length == 1" class="expend-button">
                                         展開
                                         <div class="material-icons">{{isExpand.includes(index) ? 'expand_less' : 'expand_more'}}</div>
@@ -46,10 +46,8 @@
             orderList: [],
             isVisible: [],
             isExpand: [],
-
-            userID: '2118', //'2004',
-            departmentMemper: ["樂仲珉", "詹正良"],
-            readyListID: ['WO-20180416-205A', 'WO-20180416-5F2C'],
+            
+            readyListID: [],
 
             headerModel: {
                 column: [{
@@ -108,6 +106,7 @@
 
             'view_model': {
                 handler() {
+                    return
                     console.log(this.view_model);
                     this.organizeData()
                     this.orderBy()
@@ -125,16 +124,25 @@
             },
         },
 
-        created() {},
+        created() {
+            var self = this
+            this.view_model.departmentMember = Object.keys(this.view_model.departmentMember)
+            this.view_model.readyList.forEach(function(item, index) {
+                self.readyListID.push(item.AppInstanceID)
+            })
+            this.organizeData()
+            this.orderBy()
+            this.filtering();
+        },
 
         methods: {
             organizeData() {
                 var self = this
-                Object.keys(this.view_model).forEach((item, index) => {
+                Object.keys(this.view_model.orderData).forEach((item, index) => {
                     var orderObj = {}
                     orderObj['SubOrder'] = []
-                    var mainOrder = self.view_model[item].NewestWorkingOrder
-                    var subOrders = self.view_model[item].WorkingOrders
+                    var mainOrder = self.view_model.orderData[item].NewestWorkingOrder
+                    var subOrders = self.view_model.orderData[item].WorkingOrders
                     Object.keys(subOrders).forEach((subItem, subIndex) => {
                         orderObj['SubOrder'].push(subOrders[subItem])
                         if (mainOrder.SpendDays < subOrders[subItem].SpendDays) {
@@ -178,14 +186,14 @@
                     classStr += ' confidential'
                 }
 
-                if (this.userID == order.StaffID) {
+                if (this.view_model.userID == order.StaffID) {
                     classStr += ' related'
                 } else {
                     var self = this
                     var BreakException = {};
                     try {
                         newestOrder.ExtraInfo.forEach((item, subindex) => {
-                            if (self.userID == item.ChangedUserID || self.userID == item.NextUserID || self.userID == item.OperationUserID) {
+                            if (self.view_model.userID == item.ChangedUserID || self.view_model.userID == item.NextUserID || self.view_model.userID == item.OperationUserID) {
                                 classStr += ' related'
                                 throw BreakException;
                             }
@@ -255,13 +263,13 @@
             showRelated(order, newestOrder, index) {
                 var self = this;
                 this.setVisible(index, false);
-                if (this.userID == order.StaffID) {
+                if (this.view_model.userID == order.StaffID) {
                     this.setVisible(index, true);
                 } else {
                     var BreakException = {};
                     try {
                         newestOrder.ExtraInfo.forEach((item, subindex) => {
-                            if (self.userID == item.ChangedUserID || self.userID == item.NextUserID || self.userID == item.OperationUserID) {
+                            if (self.view_model.userID == item.ChangedUserID || self.view_model.userID == item.NextUserID || self.view_model.userID == item.OperationUserID) {
                                 self.setVisible(index, true);
                                 throw BreakException;
                             }
@@ -377,7 +385,7 @@
         color: black;
     }
 
-    .dark {
+    .button-group button.dark {
         background-color: #5E6169;
         color: white;
     }
