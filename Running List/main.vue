@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="width: 100%;">
         <buttons-container :filter="filter"></buttons-container>
         <list-container :view_model="fakeData" :filter="filter"></list-container>
     </div>

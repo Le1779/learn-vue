@@ -1,9 +1,8 @@
 <template>
     <thead>
         <tr>
-            <th v-for="(item, index) in model.column">
-                {{item}}
-                <button v-if="index<7" :class="[model.orderByIndex == index ? model.desc ? 'red' : 'green' : '']" @click="onOrderByButtonClick(index)">s</button>
+            <th v-for="(item, index) in model.column" @click="onOrderByButtonClick(index)" :class="[model.orderByIndex == index ? model.desc ? 'red' : 'green' : '']">
+                {{item.name}}
             </th>
         </tr>
     </thead>
@@ -29,11 +28,15 @@
 
         methods: {
             onOrderByButtonClick(index) {
+                if (index >= 7) {
+                    return
+                }
+                
                 if (index == this.model.orderByIndex) {
                     this.model.desc = !this.model.desc;
                 } else {
                     this.model.orderByIndex = index;
-                    this.model.desc = true;
+                    this.model.desc = false;
                 }
             }
         },
