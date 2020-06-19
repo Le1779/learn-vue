@@ -1,26 +1,38 @@
 <template>
-    <div class="custom_table">
+    <div class="custom-table">
         <list-header :model="headerModel"></list-header>
         <tbody>
             <template v-for="(item, index) in orderList">
                 <template v-for="(order, subIndex) in item.SubOrder">
                     <tr v-if="isVisible.includes(index)" :class="getClass(order, item.MainOrder, index, subIndex)">
-                        <td>{{order.AppInstanceID}}</td>
-                        <td>{{formatDate(order.AppliedDate, true)}}</td>
-                        <td>{{order.Staff}}</td>
-                        <td>{{order.ProjectName}}</td>
-                        <td>{{order.CustomerName}}</td>
-                        <td>{{formatDate(order.PlanFinishDate)}}</td>
+                        <td>{{subIndex==0 ? order.AppInstanceID : ''}}</td>
+                        <td>{{subIndex==0 ? formatDate(order.AppliedDate, true) : ''}}</td>
+                        <td>{{subIndex==0 ? order.Staff : ''}}</td>
+                        <td>{{subIndex==0 ? order.ProjectName : ''}}</td>
+                        <td>{{subIndex==0 ? order.CustomerName : ''}}</td>
+                        <td>{{subIndex==0 ? formatDate(order.PlanFinishDate) : ''}}</td>
                         <td>{{Math.round(order.SpendDays * 10) / 10}}</td>
                         <td>{{order.PreviousUserName}} > {{order.AssignedUserName}}</td>
                         <td>
-                            <button v-if="subIndex==0" @click="expand(index)" :disabled="Object.keys(item.SubOrder).length == 1">Expand</button>
+                            <div v-if="subIndex==0" style="position:relative;">
+                                <div class="button-group">
+                                    <button :class="[order.StaffID == userID ? 'light' : 'dark']">{{order.StaffID == userID ? '編輯':'詳情'}}</button>
+                                    <button @click="expand(index)" :disabled="Object.keys(item.SubOrder).length == 1" class="material-icons">
+                                        展開 {{isExpand.includes(index) ? 'expand_less' : 'expand_more'}}
+                                    </button>
+                                </div>
+                                <div class="tags">
+                                    <div class="tag blue">經</div>
+                                    <div class="tag pink">待</div>
+                                </div>
+                            </div>
+
+
                         </td>
                     </tr>
                 </template>
             </template>
         </tbody>
-        {{filter.current}} {{isVisible.length}}
     </div>
 </template>
 
@@ -33,8 +45,11 @@
             orderList: [],
             isVisible: [],
             isExpand: [],
-            userID: '2004',
+            
+            userID: '2118', //'2004',
             departmentMemper: ["樂仲珉", "詹正良"],
+            readyListID: ['WO-20180416-205A', 'WO-20180416-5F2C'],
+            
             headerModel: {
                 column: [{
                     name: '工單號碼',
@@ -164,30 +179,33 @@
 
                 if (this.userID == order.StaffID) {
                     classStr += ' related'
-                    return
+                } else {
+                    var self = this
+                    var BreakException = {};
+                    try {
+                        newestOrder.ExtraInfo.forEach((item, subindex) => {
+                            if (self.userID == item.ChangedUserID || self.userID == item.NextUserID || self.userID == item.OperationUserID) {
+                                classStr += ' related'
+                                throw BreakException;
+                            }
+                        })
+                    } catch (e) {
+                        if (e !== BreakException) throw e;
+                    }
                 }
 
-                var self = this
-                var BreakException = {};
-                try {
-                    newestOrder.ExtraInfo.forEach((item, subindex) => {
-                        if (self.userID == item.ChangedUserID || self.userID == item.NextUserID || self.userID == item.OperationUserID) {
-                            classStr += ' related'
-                            throw BreakException;
-                        }
-                    })
-                } catch (e) {
-                    if (e !== BreakException) throw e;
-                }
-                
                 if (subIndex > 0) {
                     classStr += ' subRow'
                 }
-                
+
                 if (this.isExpand.includes(index)) {
                     classStr += ' expand'
                 }
                 
+                if (this.readyListID.includes(order.AppInstanceID)) {
+                    classStr += ' shelved'
+                }
+
                 return classStr
             },
 
@@ -301,12 +319,14 @@
 </script>
 
 <style scoped>
-    .custom_table {
+    .custom-table {
         width: 100%;
         display: table;
         background-color: white;
         border: 1px solid #dddddd;
         margin-bottom: 20px;
+        border-collapse: collapse;
+        border-spacing: 0;
     }
 
     tr>th,
@@ -317,7 +337,7 @@
         text-align: center;
         vertical-align: middle;
     }
-    
+
     .confidential {
         background-color: #8E9199;
         border: 1px solid #8E9199;
@@ -330,6 +350,85 @@
 
     .expand.subRow {
         display: table-row;
+        background-color: lightgray;
+        color: black;
+    }
+
+    .button-group {
+        display: inline-flex;
+        position: relative;
+        vertical-align: middle;
+        border-radius: 5px;
+        border: 1px solid transparent;
+        border-collapse: collapse;
+        border-spacing: 0;
+        overflow: hidden;
+    }
+
+    .button-group button {
+        padding: 10px 24px;
+        cursor: pointer;
+        float: left;
+        border-radius: 0px;
+        border: 1px solid transparent;
+        transition: all 0.15s
+    }
+
+    .dark {
+        background-color: #5E6169;
+        color: white;
+    }
+
+    .light {
+        background-color: #FF4C64;
+        color: white;
+    }
+
+    button:hover {
+        background-color: #ADADAD;
+    }
+
+    button.dark:hover {
+        background-color: rgba(94, 97, 105, 0.18);
+        color: #FF4C64;
+    }
+
+    button.light:hover {
+        background-color: #FF4C64;
+        opacity: 0.7;
+        color: white;
+    }
+
+    button.material-icons,
+    th>div.material-icons {
+        font-size: 14px;
+    }
+
+    .tags {
+        position: absolute;
+        display: inline-block;
+        top: -12px;
+        right: -8px;
+        font-size: xx-small;
+        text-align: center;
+        z-index: 2;
+    }
+
+    .tag {
+        display: none;
+        padding: 2px 5px;
+        border-radius: 5px;
+        color: white;
+    }
+    
+    .related .tag.blue {
+        display: inline-block;
+        background-color: #428BCA;
+    }
+    
+    .shelved .tag.pink {
+        display: inline-block;
+        background-color: #FF4C64;
     }
 
 </style>

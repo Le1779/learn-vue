@@ -2,8 +2,7 @@
     <thead>
         <tr>
             <th v-for="(item, index) in model.column" @click="onOrderByButtonClick(index)">
-                {{item.name}}
-                <div class="material-icons">{{model.orderByIndex == index ? model.desc ? 'arrow_upward' : 'arrow_downward' : ''}}</div>
+                <div class="material-icons">{{item.name}} {{model.orderByIndex == index ? model.desc ? 'arrow_upward' : 'arrow_downward' : ''}}</div>
             </th>
         </tr>
     </thead>
@@ -32,7 +31,7 @@
                 if (index >= 7) {
                     return
                 }
-                
+
                 if (index == this.model.orderByIndex) {
                     this.model.desc = !this.model.desc;
                 } else {
@@ -50,5 +49,13 @@
 </script>
 
 <style scoped>
+    th {
+        cursor: pointer;
+    }
+
+    th>div.material-icons {
+        font-size: medium;
+        font-weight: bold;
+    }
 
 </style>

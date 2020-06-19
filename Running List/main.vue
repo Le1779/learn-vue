@@ -1,6 +1,6 @@
 <template>
     <div style="width: 100%;">
-        <buttons-container :filter="filter"></buttons-container>
+        <buttons-container :filter="filter" style="margin: 12px 0px;"></buttons-container>
         <list-container :view_model="fakeData" :filter="filter"></list-container>
     </div>
 </template>
