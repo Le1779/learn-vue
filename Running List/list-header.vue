@@ -1,8 +1,9 @@
 <template>
     <thead>
         <tr>
-            <th v-for="(item, index) in model.column" @click="onOrderByButtonClick(index)" :class="[model.orderByIndex == index ? model.desc ? 'red' : 'green' : '']">
+            <th v-for="(item, index) in model.column" @click="onOrderByButtonClick(index)">
                 {{item.name}}
+                <div class="material-icons">{{model.orderByIndex == index ? model.desc ? 'arrow_upward' : 'arrow_downward' : ''}}</div>
             </th>
         </tr>
     </thead>
@@ -49,12 +50,5 @@
 </script>
 
 <style scoped>
-    .red {
-        background-color: red;
-    }
-    
-    .green {
-        background-color: green;
-    }
 
 </style>

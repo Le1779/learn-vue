@@ -4,7 +4,7 @@
         <tbody>
             <template v-for="(item, index) in orderList">
                 <template v-for="(order, subIndex) in item.SubOrder">
-                    <tr v-if="isVisible.includes(index)" :class="[subIndex > 0 ? 'subRow' : '', isExpand.includes(index) ? 'expand' : '']">
+                    <tr v-if="isVisible.includes(index)" :class="getClass(order, item.MainOrder, index, subIndex)">
                         <td>{{order.AppInstanceID}}</td>
                         <td>{{formatDate(order.AppliedDate, true)}}</td>
                         <td>{{order.Staff}}</td>
@@ -156,6 +156,41 @@
                 }
             },
 
+            getClass(order, newestOrder, index, subIndex) {
+                var classStr = ''
+                if (order.IsConfidential) {
+                    classStr += ' confidential'
+                }
+
+                if (this.userID == order.StaffID) {
+                    classStr += ' related'
+                    return
+                }
+
+                var self = this
+                var BreakException = {};
+                try {
+                    newestOrder.ExtraInfo.forEach((item, subindex) => {
+                        if (self.userID == item.ChangedUserID || self.userID == item.NextUserID || self.userID == item.OperationUserID) {
+                            classStr += ' related'
+                            throw BreakException;
+                        }
+                    })
+                } catch (e) {
+                    if (e !== BreakException) throw e;
+                }
+                
+                if (subIndex > 0) {
+                    classStr += ' subRow'
+                }
+                
+                if (this.isExpand.includes(index)) {
+                    classStr += ' expand'
+                }
+                
+                return classStr
+            },
+
             filtering() {
                 var self = this;
 
@@ -269,7 +304,24 @@
     .custom_table {
         width: 100%;
         display: table;
-        background-color: gray;
+        background-color: white;
+        border: 1px solid #dddddd;
+        margin-bottom: 20px;
+    }
+
+    tr>th,
+    tr>td {
+        border: 1px solid #dddddd;
+        line-height: 1.5;
+        padding: 0.75em 0em;
+        text-align: center;
+        vertical-align: middle;
+    }
+    
+    .confidential {
+        background-color: #8E9199;
+        border: 1px solid #8E9199;
+        color: white;
     }
 
     .subRow {
