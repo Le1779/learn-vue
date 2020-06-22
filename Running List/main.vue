@@ -1,6 +1,6 @@
 <template>
     <div style="width: 100%;">
-        <buttons-container :filter="filter" style="margin: 12px 0px;"></buttons-container>
+        <buttons-container :filter="filter" :export_excel_url="view_model.exportExcelUrl" style="margin: 12px 0px;"></buttons-container>
         <list-container :view_model="view_model" :filter="filter"></list-container>
     </div>
 </template>
