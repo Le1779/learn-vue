@@ -16,7 +16,10 @@
                         <td>
                             <div v-if="subIndex==0" style="position:relative;">
                                 <div class="button-group">
-                                    <button :class="[order.StaffID == view_model.userID ? 'light' : 'dark']">{{order.StaffID == view_model.userID ? '編輯':'詳情'}}</button>
+                                    <button :class="[order.StaffID == view_model.userID ? 'light' : 'dark']">
+                                        {{order.StaffID == view_model.userID ? '編輯':'詳情'}}
+                                        <a href="getActionUrl(order)"></a>
+                                    </button>
                                     <button @click="expand(index)" :disabled="Object.keys(item.SubOrder).length == 1" class="expend-button">
                                         展開
                                         <div class="material-icons">{{isExpand.includes(index) ? 'expand_less' : 'expand_more'}}</div>
@@ -46,7 +49,7 @@
             orderList: [],
             isVisible: [],
             isExpand: [],
-            
+
             readyListID: [],
 
             headerModel: {
@@ -312,6 +315,10 @@
                     return 0;
                 }
             },
+
+            getActionUrl(order) {
+                return this.view_model.actionUrl + "/?appInstanceID=" + order.AppInstanceID + "&taskID=" + order.TaskID + "&previousUserID=" + order.PreviousUserID + "&previousUserName=" + order.PreviousUserName
+            }
         },
 
         components: {
@@ -369,6 +376,7 @@
     }
 
     .button-group button {
+        position: relative;
         padding: 6px 12px;
         cursor: pointer;
         float: left;
@@ -407,6 +415,14 @@
         background-color: #FF4C64;
         opacity: 0.7;
         color: white;
+    }
+
+    button>a {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
     }
 
     button.material-icons,
