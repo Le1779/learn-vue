@@ -116,7 +116,6 @@
 
             headerModel: {
                 handler() {
-                    console.log("headerModel change")
                     this.orderBy();
                     this.filtering();
                 },
@@ -225,23 +224,18 @@
                     item.SubOrder.forEach((subItem, subIndex) => {
                         switch (self.filter.current) {
                             case 'All':
-                                console.log("only show all.")
                                 self.showAll(index);
                                 break;
                             case 'Related':
-                                console.log("only show related.")
                                 self.showRelated(subItem, item.MainOrder, index);
                                 break;
                             case 'Department':
-                                console.log("only show department.")
                                 self.showDepartment(subItem, index);
                                 break;
                             case 'Confidential':
-                                console.log("only show confidential.")
                                 self.showConfidential(subItem, index);
                                 break;
                             default:
-                                console.log("show all.");
                                 break;
                         }
                     });
@@ -253,7 +247,7 @@
             },
 
             showDepartment(order, index) {
-                this.setVisible(index, this.departmentMemper.indexOf(order.AssignedUserName) != -1)
+                this.setVisible(index, this.view_model.departmentMemper.indexOf(order.AssignedUserName) != -1)
             },
 
             showConfidential(order, index) {
