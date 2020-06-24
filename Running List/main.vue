@@ -32,8 +32,9 @@
         },
 
         components: {
-            'buttons-container': httpVueLoader('buttons-container.vue'),
-            'list-container': httpVueLoader('list-container.vue'),
+            //'buttons-container': httpVueLoader('buttons-container.vue'),
+            //'list-container': httpVueLoader('list-container.vue'),
+            'list-container': httpVueLoader('list-container-card.vue'),
         }
     }
 
