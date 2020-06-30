@@ -82,6 +82,7 @@
 
     .filter-button.invisibility {
         opacity: 0.3;
+        cursor: pointer;
     }
 
     .filter-button .material-icons {

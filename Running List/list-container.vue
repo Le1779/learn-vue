@@ -4,7 +4,7 @@
         <tbody>
             <template v-for="(item, index) in orderList">
                 <template v-for="(order, subIndex) in item.SubOrder">
-                    <tr v-if="isVisible.includes(index)" :class="getClass(order, item.MainOrder, index, subIndex)">
+                    <tr v-if="isVisible.includes(index)" :class="getTableRowClass(order, item.MainOrder, index, subIndex)">
                         <td>{{subIndex==0 ? order.AppInstanceID : ''}}</td>
                         <td>{{subIndex==0 ? formatDate(order.AppliedDate, true) : ''}}</td>
                         <td>{{subIndex==0 ? order.Staff : ''}}</td>
@@ -182,7 +182,7 @@
                 }
             },
 
-            getClass(order, newestOrder, index, subIndex) {
+            getTableRowClass(order, newestOrder, index, subIndex) {
                 var classStr = ''
                 if (order.IsConfidential) {
                     classStr += ' confidential'
