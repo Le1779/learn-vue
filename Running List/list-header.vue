@@ -4,7 +4,8 @@
             <th v-for="(item, index) in model.column" @click="onOrderByButtonClick(index)">
                 <div>
                     {{item.name}}
-                    <div class="material-icons">{{model.orderByIndex == index ? model.desc ? 'arrow_upward' : 'arrow_downward' : ''}}</div>
+                    <div class="material-icons" style="opacity: 0.3;">{{model.orderByIndex == index ? model.desc ? 'arrow_upward' : 'arrow_downward' : index < 7 ? 'swap_vert' : ''}}
+                    </div>
                 </div>
             </th>
         </tr>
@@ -56,12 +57,12 @@
         cursor: pointer;
     }
 
-    th > div {
+    th>div {
         display: inline-grid;
         grid-template-columns: auto 24px;
     }
-    
-    th > .material-icons {
+
+    th>.material-icons {
         font-size: medium;
         font-weight: bold;
     }
