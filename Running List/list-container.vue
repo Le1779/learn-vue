@@ -128,7 +128,6 @@
 
         created() {
             var self = this
-            this.view_model.departmentMember = Object.keys(this.view_model.departmentMember)
             this.view_model.readyList.forEach(function(item, index) {
                 self.readyListID.push(item.AppInstanceID)
             })
@@ -222,7 +221,7 @@
 
             filtering() {
                 var self = this;
-
+                this.isVisible = []
                 this.orderList.forEach((item, index) => {
                     item.SubOrder.forEach((subItem, subIndex) => {
                         switch (self.filter.current) {
@@ -250,7 +249,11 @@
             },
 
             showDepartment(order, index) {
-                this.setVisible(index, this.view_model.departmentMemper.indexOf(order.AssignedUserName) != -1)
+                if (this.isVisible.includes(index)) {
+                    return;
+                }
+                
+                this.setVisible(index, this.view_model.departmentMember.indexOf(order.AssignedUserName) != -1)
             },
 
             showConfidential(order, index) {
