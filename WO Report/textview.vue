@@ -29,7 +29,7 @@
 
 </script>
 
-<style>
+<style scoped>
     .textview-container {
         display: inline-grid;
         grid-template-rows: auto 40px;

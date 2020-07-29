@@ -119,7 +119,7 @@
 
 </script>
 
-<style>
+<style scoped>
     table {
         width: 100%;
         border-collapse: collapse;
@@ -154,7 +154,7 @@
         background: #5F6169;
         color: white;
         padding: 5px 8px;
-        margin: 2px 0;
+        margin: 6px 0;
     }
 
 </style>

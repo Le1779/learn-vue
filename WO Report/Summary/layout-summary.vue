@@ -64,7 +64,6 @@
 
     .wo-list-container {
         grid-area: list;
-        height: 100px;
         margin: 48px 0;
     }
 
