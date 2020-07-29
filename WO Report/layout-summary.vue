@@ -2,20 +2,11 @@
     <div class="summary-container">
         <div class="chart-container card-container">
             <div class="formula">
-            <div class="value-container">
-                <div class="title">{{text.completed}}</div>
-                <div class="value">{{completed_count}}</div>
-            </div>
-            <div class="symbol">/</div>
-            <div class="value-container">
-                <div class="title">{{text.created}}</div>
-                <div class="value">{{created_count}}</div>
-            </div>
-            <div class="symbol">=</div>
-            <div class="value-container">
-                <div class="title">{{text.completed_rate}}</div>
-                <div class="value">{{completed_count/created_count}}</div>
-            </div>
+               <textview :model="completed_textview_model"></textview>
+                <div class="symbol">/</div>
+                <textview :model="created_textview_model"></textview>
+                <div class="symbol">=</div>
+                <textview :model="completed_rate_textview_model"></textview>
             </div>
         </div>
         <div class="principal-container card-container"></div>
@@ -32,9 +23,21 @@
                 created: '已建立',
                 completed_rate: '達成率'
             },
-            
+
             completed_count: 40,
-            created_count: 52
+            created_count: 52,
+            completed_textview_model: {
+                title: '已完成',
+                text: 40
+            },
+            created_textview_model: {
+                title: '已建立',
+                text: 52
+            },
+            completed_rate_textview_model: {
+                title: '達成率',
+                text: '76.9%'
+            },
         }),
 
         watch: {
@@ -46,14 +49,10 @@
         },
 
         components: {
-
+            'textview': httpVueLoader('textview.vue'),
         },
 
-        methods: {
-            getUserInfo() {
-
-            },
-        },
+        methods: {},
     }
 
 </script>
@@ -74,6 +73,7 @@
         height: 100%;
         border-radius: 2px;
         box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+        padding: 12px 24px;
     }
 
     .chart-container {
@@ -94,8 +94,18 @@
         margin: 48px 0;
     }
     
-    .value-container {
-        //mack componter
+    .formula {
+        display: inline-grid;
+        grid-template-columns: auto auto auto auto auto;
+    }
+    
+    .symbol {
+        display: inline;
+        color: #7E7E7E;
+        font-size: 24px;
+        margin: 8px 8px;
+        bottom: 0;
+        align-self: flex-end;
     }
 
 </style>

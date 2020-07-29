@@ -1,6 +1,7 @@
 <template>
     <div class="textview-container">
-        
+        <div v-if="model.text != null" class="textview-title">{{model.title}}</div>
+        <div class="textview-text">{{model.text}}</div>
     </div>
 </template>
 
@@ -8,14 +9,6 @@
     module.exports = {
         props: ["model"],
         data: () => ({
-            text: {
-                completed: '已完成',
-                created: '已建立',
-                completed_rate: '達成率'
-            },
-            
-            completed_count: 40,
-            created_count: 52
         }),
 
         watch: {
@@ -23,7 +16,7 @@
         },
 
         created() {
-            console.log("created summary");
+            
         },
 
         components: {
@@ -31,9 +24,6 @@
         },
 
         methods: {
-            getUserInfo() {
-
-            },
         },
     }
 
@@ -41,6 +31,19 @@
 
 <style>
     .textview-container {
-        
+        display: inline-grid;
+        grid-template-rows: auto 40px;
+        margin: 8px 12px;
+    }
+    
+    .textview-title {
+        color: #7E7E7E;
+        font-size: 12px;
+    }
+    
+    .textview-text {
+        color: #5F6169;
+        font-size: 40px;
+        line-height: 40px;
     }
 </style>
