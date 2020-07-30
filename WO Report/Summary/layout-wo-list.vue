@@ -20,7 +20,7 @@
                     <td>{{item.Date}}</td>
                     <td>{{item.State}}</td>
                     <td>
-                        <div class="material-icons" style="opacity: 0.3;">{{'search'}}</div>
+                        <router-link :to="{name:'Summary_WO_Detail', params: {id: item.AppInstanceID}}" class="material-icons" style="opacity: 0.3;">{{'search'}}</router-link>
                     </td>
                 </tr>
             </tbody>
@@ -115,7 +115,7 @@
         width: 100%;
         text-align: left;
     }
-    
+
     th>div>div {
         float: left;
         display: inline-block;
@@ -125,6 +125,7 @@
     td {
         text-align: left;
         padding: 12px 8px;
+        color: #555555;
     }
 
 </style>

@@ -16,9 +16,7 @@
 
 <body>
     <main-app id="app"></main-app>
-</body>
-
-</html>
+</body></html>
 <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
 <script src="../vue/js/vue-router.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -32,6 +30,17 @@
     }, {
         path: '/summary',
         component: httpVueLoader('Summary/layout-summary.vue')
+    }, {
+        path: '/summary/sub',
+        component: httpVueLoader('layout-subpage.vue'),
+        children: [{
+            path: 'detail',
+            name:'Summary_WO_Detail',
+            component: httpVueLoader('Summary/Subpage/layout-wo-detail.vue')
+        }]
+    }, {
+        path: '/edit',
+        component: httpVueLoader('Edit/layout-edit.vue')
     }]
 
     const router = new VueRouter({

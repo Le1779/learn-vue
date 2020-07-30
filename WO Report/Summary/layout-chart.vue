@@ -1,13 +1,13 @@
 <template>
     <div class="card-container">
-            <div class="formula">
-               <textview :model="completed_textview_model"></textview>
-                <div class="symbol">/</div>
-                <textview :model="created_textview_model"></textview>
-                <div class="symbol">=</div>
-                <textview :model="completed_rate_textview_model"></textview>
-            </div>
+        <div class="formula">
+            <textview :model="completed_textview_model"></textview>
+            <div class="symbol">/</div>
+            <textview :model="created_textview_model"></textview>
+            <div class="symbol">=</div>
+            <textview :model="completed_rate_textview_model"></textview>
         </div>
+    </div>
 </template>
 
 <script>
@@ -50,7 +50,7 @@
         display: inline-grid;
         grid-template-columns: auto auto auto auto auto;
     }
-    
+
     .symbol {
         display: inline;
         color: #7E7E7E;

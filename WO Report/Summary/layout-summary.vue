@@ -31,7 +31,7 @@
 
 </script>
 
-<style>
+<style scoped>
     .summary-container {
         margin: 48px 24px;
         display: grid;
@@ -40,7 +40,7 @@
             "chart principal"
             "list list";
     }
-
+    
     .card-container {
         display: inline-block;
         background: white;
