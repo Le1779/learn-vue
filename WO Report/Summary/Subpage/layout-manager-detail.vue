@@ -1,33 +1,75 @@
 <template>
-    <div class="card-container">
+    <div class="card-container page-container">
         <div class="card-head">
             <div class="material-icons back-button" @click="back">{{'keyboard_backspace'}}</div>
-            <textview :model="textview_model"></textview>
+            <textview :model="{
+                title: '負責人',
+                text: '章君豪',
+                class: 'md'
+            }"></textview>
         </div>
         <div class="detail-container">
-            <div>
-                <textview :model="project_name_textview_model"></textview>
-            </div>
-            <div>
-                <div class="formula">
-                    <textview :model="reject_count_textview_model"></textview>
-                    <div class="symbol">/</div>
-                    <textview :model="send_count_textview_model"></textview>
-                    <div class="symbol">=</div>
-                    <textview :model="reject_rate_textview_model"></textview>
+            <div class="formula-container">
+                <textview :model="{
+                    title: '負責數量',
+                    text: '10',
+                    class: 'md'
+                }" style="display: block;"></textview>
+                <textview :model="{
+                    title: '總送單數量',
+                    text: '21',
+                    class: 'md'
+                }" style="display: block;"></textview>
+                <div class="formula-1">
+                    <div class="formula">
+
+                        <div class="symbol">/</div>
+                        <textview :model="{
+                            title: '總編輯次數',
+                            text: '15',
+                            class: 'md'
+                        }"></textview>
+                        <div class="symbol">=</div>
+                        <textview :model="{
+                            title: '編輯率',
+                            text: '71%',
+                            class: 'md'
+                        }"></textview>
+                    </div>
+                    <div class="formula">
+
+                        <div class="symbol">/</div>
+                        <textview :model="{
+                            title: '總退單次數',
+                            text: '2',
+                            class: 'md red'
+                        }"></textview>
+                        <div class="symbol">=</div>
+                        <textview :model="{
+                            title: '退單率',
+                            text: '9.5%',
+                            class: 'md red'
+                        }"></textview>
+                    </div>
+                    <div class="formula">
+
+                        <div class="symbol">/</div>
+                        <textview :model="{
+                            title: '總重啟次數',
+                            text: '1',
+                            class: 'md red'
+                        }"></textview>
+                        <div class="symbol">=</div>
+                        <textview :model="{
+                            title: '重啟率',
+                            text: '4.7%',
+                            class: 'md red'
+                        }"></textview>
+                    </div>
                 </div>
             </div>
-            <div>
-                <div class="formula">
-                    <textview :model="total_working_hour_textview_model"></textview>
-                    <div class="symbol">/</div>
-                    <textview :model="participants_count_textview_model"></textview>
-                    <div class="symbol">x</div>
-                    <textview :model="labor_costs_textview_model"></textview>
-                    <div class="symbol">=</div>
-                    <textview :model="costs_textview_model"></textview>
-                </div>
-            </div>
+
+            <div class="chart-container"></div>
 
             <div class="card-container table-container">
                 <table>
@@ -53,23 +95,6 @@
                     </tbody>
                 </table>
             </div>
-
-            <div class="participants-list-container">
-                <div class="participants-container" v-for="(item, index) in participants">
-                    <div class="participant-name">{{item.Name}}</div>
-                    <textview :model="{title: '被指派', text: item.Assign, class: 'md'}"></textview>
-                    <textview :model="{title: '被退回', text: item.Reject, class: 'md red'}"></textview>
-                    <div>
-                        <div class="formula">
-                        <textview :model="{title: '總工時', text: item.WorkingHour, class: 'md'}"></textview>
-                        <div class="symbol">/</div>
-                        <textview :model="{title: '處理數量', text: item.Assign + item.Reject , class: 'md'}"></textview>
-                        <div class="symbol">=</div>
-                        <textview :model="{title: '平均處理時間', text: item.WorkingHour, class: 'md red'}"></textview>
-                    </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </template>
@@ -78,11 +103,6 @@
     module.exports = {
         props: ["model"],
         data: () => ({
-            textview_model: {
-                title: 'No.',
-                text: 'WO-20200729-FFFF',
-                class: 'md'
-            },
 
             project_name_textview_model: {
                 title: '專案名稱',
@@ -172,23 +192,6 @@
                 Next: '章君豪',
                 State: '2',
                 Costs: '1小時',
-            }],
-
-            participants: [{
-                Name: '章君豪',
-                Assign: 1,
-                Reject: 1,
-                WorkingHour: '19分鐘',
-            }, {
-                Name: '樂仲珉',
-                Assign: 2,
-                Reject: 1,
-                WorkingHour: '2天1小時',
-            }, {
-                Name: '樂仲珉',
-                Assign: 2,
-                Reject: 1,
-                WorkingHour: '2天1小時',
             }]
         }),
 
@@ -210,13 +213,11 @@
             }
         },
     }
-
 </script>
 
 <style scoped>
-    .card-container {
+    .page-container {
         width: 100%;
-        overflow: auto;
         display: grid;
         grid-template-rows: auto auto;
         padding: 0;
@@ -248,12 +249,34 @@
 
     .detail-container {
         margin: 12px 48px;
+        display: grid;
+        grid-template-columns: 50% 50%;
+        grid-template-areas:
+            "formula chart"
+            "list list";
+    }
+
+    .formula-container {
+        grid-area: formula;
+        display: grid;
+        grid-template-areas:
+            "handle send edit"
+            "empty empty reject"
+            "empty empty reopen";
+    }
+
+    .chart-container {
+        grid-area: chart;
+        background: black;
     }
 
     .formula {
         display: inline-grid;
-        grid-template-columns: auto auto auto auto auto auto auto;
-        margin: 12px 0;
+        grid-template-columns: auto auto auto auto auto;
+    }
+
+    .formula-1 {
+        display: block;
     }
 
     .symbol {
@@ -266,9 +289,11 @@
     }
 
     .table-container {
+        grid-area: list;
         width: 100%;
         padding: 24px 12px 48px 12px;
         margin: 48px 0;
+        height: auto;
     }
 
     table {
@@ -305,23 +330,4 @@
         padding: 12px 8px;
         color: #555555;
     }
-    
-    .participants-list-container {
-        display: grid;
-        grid-template-columns: 50% 50%;
-        margin-bottom: 48px;
-    }
-    
-    .participants-container {
-        border: 1px solid #C1C1C1;
-        border-radius: 8px;
-        margin: 8px 12px;
-        padding: 24px 12px;
-    }
-    
-    .participant-name {
-        margin-left: 12px;
-        color: #555555;
-    }
-
 </style>

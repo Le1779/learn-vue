@@ -52,6 +52,7 @@
 
 <style scoped>
     .app-container {
+        overflow: hidden;
         background:#F5F6F6;
         padding: 24px 24px;
     }

@@ -4,10 +4,7 @@
             <div class="material-icons back-button" @click="back">{{'keyboard_backspace'}}</div>
             <textview :model="textview_model"></textview>
         </div>
-
         <router-view></router-view>
-
-
     </div>
 </template>
 

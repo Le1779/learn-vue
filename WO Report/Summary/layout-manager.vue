@@ -15,9 +15,7 @@
             <tbody>
                 <tr v-for="(item, index) in table_data">
                     <td>
-                        <div class="chip">
-                            {{item.name}}
-                        </div>
+                       <router-link :to="{name:'SUMMARY_MANAGER_DETAIL', params: {id: item.name}}" class="chip">{{item.name}}</router-link>
                     </td>
                     <td>{{item.created_count}}</td>
                     <td>{{item.rate}}</td>
@@ -155,6 +153,7 @@
         color: white;
         padding: 5px 8px;
         margin: 6px 0;
+        text-decoration:none;
     }
 
 </style>

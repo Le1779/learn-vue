@@ -29,15 +29,23 @@
         redirect: '/summary'
     }, {
         path: '/summary',
-        component: httpVueLoader('Summary/layout-summary.vue')
+        component: httpVueLoader('layout-main.vue'),
+        children: [{
+            path: '',
+            name:'SUMMARY',
+            component: httpVueLoader('Summary/layout-summary.vue')
+        }, {
+            path: 'detail',
+            name:'SUMMARY_WO_DETAIL',
+            component: httpVueLoader('Summary/Subpage/layout-wo-detail.vue')
+        }, {
+            path: 'manager',
+            name:'SUMMARY_MANAGER_DETAIL',
+            component: httpVueLoader('Summary/Subpage/layout-manager-detail.vue')
+        }]
     }, {
         path: '/summary/sub',
-        component: httpVueLoader('layout-subpage.vue'),
-        children: [{
-            path: 'detail',
-            name:'Summary_WO_Detail',
-            component: httpVueLoader('Summary/Subpage/layout-wo-detail.vue')
-        }]
+        component: httpVueLoader('layout-subpage.vue')
     }, {
         path: '/edit',
         component: httpVueLoader('Edit/layout-edit.vue')

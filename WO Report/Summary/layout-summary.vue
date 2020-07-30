@@ -1,7 +1,7 @@
 <template>
     <div class="summary-container">
         <layout-chart class="chart-container"></layout-chart>
-        <layout-principal class="principal-container"></layout-principal>
+        <layout-manager class="manager-container"></layout-manager>
         <layout-wo-list class="wo-list-container"></layout-wo-list>
     </div>
 </template>
@@ -22,7 +22,7 @@
 
         components: {
             'layout-chart': httpVueLoader('Summary/layout-chart.vue'),
-            'layout-principal': httpVueLoader('Summary/layout-principal.vue'),
+            'layout-manager': httpVueLoader('Summary/layout-manager.vue'),
             'layout-wo-list': httpVueLoader('Summary/layout-wo-list.vue'),
         },
 
@@ -40,15 +40,6 @@
             "chart principal"
             "list list";
     }
-    
-    .card-container {
-        display: inline-block;
-        background: white;
-        height: 100%;
-        border-radius: 2px;
-        box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
-        padding: 12px 24px;
-    }
 
     .chart-container {
         grid-area: chart;
@@ -56,7 +47,7 @@
         margin-right: 20px;
     }
 
-    .principal-container {
+    .manager-container {
         grid-area: principal;
         margin-left: 20px;
         height: 100%;
