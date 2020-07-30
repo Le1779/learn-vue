@@ -16,7 +16,9 @@
 
 <body>
     <main-app id="app"></main-app>
-</body></html>
+</body>
+
+</html>
 <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
 <script src="../vue/js/vue-router.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -29,26 +31,43 @@
         redirect: '/summary'
     }, {
         path: '/summary',
-        component: httpVueLoader('layout-main.vue'),
-        children: [{
-            path: '',
-            name:'SUMMARY',
-            component: httpVueLoader('Summary/layout-summary.vue')
-        }, {
-            path: 'detail',
-            name:'SUMMARY_WO_DETAIL',
-            component: httpVueLoader('Summary/Subpage/layout-wo-detail.vue')
-        }, {
-            path: 'manager',
-            name:'SUMMARY_MANAGER_DETAIL',
-            component: httpVueLoader('Summary/Subpage/layout-manager-detail.vue')
-        }]
+        component: httpVueLoader('Summary/layout-summary.vue')
     }, {
-        path: '/summary/sub',
-        component: httpVueLoader('layout-subpage.vue')
+        path: '/flow',
+        component: httpVueLoader('Flow/layout-flow.vue')
     }, {
         path: '/edit',
         component: httpVueLoader('Edit/layout-edit.vue')
+    }, {
+        path: '/reject',
+        component: httpVueLoader('Reject/layout-reject.vue')
+    }, {
+        path: '/reopen',
+        component: httpVueLoader('Reopen/layout-reopen.vue')
+    }, {
+        path: '/manager',
+        name: 'MANAGER_OVERVIEW',
+        component: httpVueLoader('Subpage/layout-manager-detail.vue')
+    }, {
+        path: '/wo/overview',
+        name: 'WO_OVERVIEW',
+        component: httpVueLoader('Subpage/layout-wo-overview.vue')
+    }, {
+        path: '/wo/cost',
+        name: 'WO_COST',
+        component: httpVueLoader('Subpage/layout-wo-cost.vue')
+    }, {
+        path: '/wo/edit',
+        name: 'WO_EDIT',
+        component: httpVueLoader('Subpage/layout-wo-edit.vue')
+    }, {
+        path: '/wo/reject',
+        name: 'WO_REJECT',
+        component: httpVueLoader('Subpage/layout-wo-reject.vue')
+    }, {
+        path: '/wo/reopen',
+        name: 'WO_REOPEN',
+        component: httpVueLoader('Subpage/layout-wo-reopen.vue')
     }]
 
     const router = new VueRouter({

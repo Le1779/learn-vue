@@ -15,7 +15,7 @@
             <tbody>
                 <tr v-for="(item, index) in table_data">
                     <td>
-                       <router-link :to="{name:'SUMMARY_MANAGER_DETAIL', params: {id: item.name}}" class="chip">{{item.name}}</router-link>
+                       <router-link :to="{name:'MANAGER_OVERVIEW', params: {id: item.name}}" class="chip">{{item.name}}</router-link>
                     </td>
                     <td>{{item.created_count}}</td>
                     <td>{{item.rate}}</td>

@@ -1,6 +1,6 @@
 <template>
     <div>
-        Edit
+        Reject
     </div>
 </template>
 

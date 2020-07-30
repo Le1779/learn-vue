@@ -20,7 +20,7 @@
                     <td>{{item.Date}}</td>
                     <td>{{item.State}}</td>
                     <td>
-                        <router-link :to="{name:'SUMMARY_WO_DETAIL', params: {id: item.AppInstanceID}}" class="material-icons" style="opacity: 0.3;">{{'search'}}</router-link>
+                        <router-link :to="{name:'WO_OVERVIEW', params: {id: item.AppInstanceID}}" class="material-icons" style="opacity: 0.3;">{{'search'}}</router-link>
                     </td>
                 </tr>
             </tbody>

@@ -32,6 +32,10 @@
 </script>
 
 <style scoped>
+    .card-container {
+        padding: 12px 24px;
+    }
+    
     .summary-container {
         margin: 48px 24px;
         display: grid;
@@ -55,6 +59,9 @@
 
     .wo-list-container {
         grid-area: list;
+        margin: 48px 0;
+        height: auto;
+        padding: 24px 12px 48px 12px;
         margin: 48px 0;
     }
 

@@ -1,6 +1,6 @@
 <template>
     <div>
-        Edit
+        Flow
     </div>
 </template>
 
