@@ -122,7 +122,7 @@
         },
 
         created() {
-            console.log("created wo detail");
+            console.log("created wo overview");
         },
 
         components: {

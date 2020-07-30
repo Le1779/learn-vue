@@ -60,7 +60,7 @@ Created by Kevin Le on 2020/7/30.
         },
 
         created() {
-            console.log("created wo detail");
+            console.log("created wo reject");
         },
 
         components: {

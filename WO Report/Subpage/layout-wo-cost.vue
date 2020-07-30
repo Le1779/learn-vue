@@ -1,3 +1,8 @@
+<!--
+WorkOrder cost page
+
+Created by Kevin Le on 2020/7/30.
+-->
 <template>
     <div class="card-container subpage-container">
         <div class="card-head">
@@ -115,7 +120,7 @@
         },
 
         created() {
-            console.log("created wo detail");
+            console.log("created wo cost " + this.$route.params.id);
         },
 
         components: {

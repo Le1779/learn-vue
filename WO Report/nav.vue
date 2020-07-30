@@ -2,15 +2,13 @@
     <div class="nav-container">
         <div class="nav-item-container">
             <router-link to="/summary" class="nav-item black">
-
                 <div class="nav-item-value">{{model.wo_count}}</div>
                 <div class="nav-item-hint">{{wo_count_hint_text}}</div>
             </router-link>
         </div>
         
         <div class="nav-item-container">
-            <router-link to="/flow" class="nav-item black">
-
+            <router-link to="/cost" class="nav-item black">
                 <div class="nav-item-value">{{model.flow_count}}</div>
                 <div class="nav-item-hint">{{flow_count_hint_text}}</div>
             </router-link>
@@ -18,7 +16,6 @@
         
         <div class="nav-item-container">
             <router-link to="/edit" class="nav-item black">
-
                 <div class="nav-item-value">{{model.edit_flow_count}}</div>
                 <div class="nav-item-hint">{{edit_flow_count_hint_text}}</div>
             </router-link>
@@ -26,7 +23,6 @@
         
         <div class="nav-item-container">
             <router-link to="/reject" class="nav-item red">
-
                 <div class="nav-item-value">{{model.reject_flow_count}}</div>
                 <div class="nav-item-hint">{{reject_flow_count_hint_text}}</div>
             </router-link>
@@ -34,7 +30,6 @@
         
         <div class="nav-item-container">
             <router-link to="/reopen" class="nav-item red">
-
                 <div class="nav-item-value">{{model.reopen_wo_count}}</div>
                 <div class="nav-item-hint">{{reopen_wo_count_hint_text}}</div>
             </router-link>

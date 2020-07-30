@@ -1,5 +1,5 @@
 <!--
-Reject table page
+Cost table page
 
 Created by Kevin Le on 2020/7/30.
 -->
@@ -8,7 +8,7 @@ Created by Kevin Le on 2020/7/30.
         <div class="card-container table-container">
             <data-table :model="table_model">
                 <template v-slot:action="{item}">
-                    <router-link :to="{name:'WO_REJECT', params: {id: item.AppInstanceID}}" class="material-icons" style="opacity: 0.3;">{{'search'}}</router-link>
+                    <router-link :to="{name:'WO_COST', params: {id: item.AppInstanceID}}" class="material-icons" style="opacity: 0.3;">{{'search'}}</router-link>
                 </template>
             </data-table>
             <div class="table-hint">{{hint}}</div>
@@ -60,7 +60,7 @@ Created by Kevin Le on 2020/7/30.
                 isDes: true,
                 withAction: true,
             },
-            hint: '退回次數越高，代表送單的嚴謹程度越低'
+            hint: '運行的流程數量可以作為工單活耀度的依據'
         }),
 
         watch: {

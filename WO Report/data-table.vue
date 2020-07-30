@@ -22,11 +22,15 @@ Created by Kevin Le on 2020/7/30.
                         </div>
                     </div>
                 </th>
+                <th v-if="model.withAction"></th>
             </tr>
         </thead>
         <tbody>
             <tr v-for="(data_item, index) in model.data">
                 <td v-for="(head_item, i) in model.head">{{data_item[head_item.name]}}</td>
+                <td v-if="model.withAction">
+                    <slot name="action" v-bind:item="data_item"></slot>
+                </td>
             </tr>
         </tbody>
     </table>

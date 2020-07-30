@@ -1,3 +1,8 @@
+<!--
+Text View
+
+Created by Kevin Le on 2020/7/30.
+-->
 <template>
     <div class="textview-container" :class="model.class">
         <div v-if="model.text != null" class="textview-title">{{model.title}}</div>
