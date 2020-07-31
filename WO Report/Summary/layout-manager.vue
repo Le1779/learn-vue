@@ -15,10 +15,10 @@
             <tbody>
                 <tr v-for="(item, index) in table_data">
                     <td>
-                       <router-link :to="{name:'MANAGER_OVERVIEW', params: {id: item.name}}" class="chip">{{item.name}}</router-link>
+                       <router-link :to="{name:'MANAGER_OVERVIEW', params: {id: item.name}}" class="chip">{{item.Self.Name}}</router-link>
                     </td>
-                    <td>{{item.created_count}}</td>
-                    <td>{{item.rate}}</td>
+                    <td>{{item.Handled}}</td>
+                    <td>{{Math.floor(item.Rate * 1000)/10}}%</td>
                 </tr>
             </tbody>
         </table>
@@ -44,31 +44,7 @@
                 desc: true
             },
 
-            table_data: [{
-                name: '李鴻儒',
-                created_count: 11,
-                rate: 0.21
-            }, {
-                name: '陳以翔',
-                created_count: 7,
-                rate: 0.13
-            }, {
-                name: '章君豪',
-                created_count: 12,
-                rate: 0.23
-            }, {
-                name: '謝明憲',
-                created_count: 7,
-                rate: 0.13
-            }, {
-                name: '姚遠',
-                created_count: 7,
-                rate: 0.13
-            }, {
-                name: '鄭力維',
-                created_count: 7,
-                rate: 0.13
-            }]
+            table_data: []
         }),
 
         watch: {
@@ -77,8 +53,7 @@
 
         created() {
             console.log("created principal");
-
-            this.sortData(1);
+            this.getData();
         },
 
         components: {},
@@ -103,14 +78,26 @@
                 this.table_data.sort(compare);
 
                 function compare(a, b) {
-                    if (a.created_count < b.created_count) {
+                    if (a.Handled < b.Handled) {
                         return self.header.desc ? 1 : -1
-                    } else if (a.created_count > b.created_count) {
+                    } else if (a.Handled > b.Handled) {
                         return self.header.desc ? -1 : 1
                     }
 
                     return 0;
                 }
+            },
+            
+            getData() {
+                var self = this;
+                axios.get('TestFile/manager.json')
+                .then(function (response) {
+                    console.log(response.data)
+                    self.table_data = response.data;
+                    self.sortData(1);
+                }).catch(function (error) {
+                    console.log(error);
+                });
             }
         },
     }

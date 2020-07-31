@@ -9,8 +9,7 @@
 <script>
     module.exports = {
         props: ["model"],
-        data: () => ({
-        }),
+        data: () => ({}),
 
         watch: {
 
@@ -35,7 +34,7 @@
     .card-container {
         padding: 12px 24px;
     }
-    
+
     .summary-container {
         margin: 48px 24px;
         display: grid;

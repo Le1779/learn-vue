@@ -19,13 +19,13 @@ Created by Kevin Le on 2020/7/30.
             </thead>
             <tbody>
                 <tr v-for="(item, index) in table_data">
-                    <td>{{item.AppInstanceID}}</td>
-                    <td>{{item.ProjectName}}</td>
-                    <td>{{item.Staff}}</td>
-                    <td>{{item.Date}}</td>
-                    <td>{{item.State}}</td>
+                    <td>{{item.ID}}</td>
+                    <td>{{item.Name}}</td>
+                    <td>{{item.Manager.Name}}</td>
+                    <td>{{item.Description}}</td>
+                    <td>{{item.CreationDateStr}}</td>
                     <td>
-                        <router-link :to="{name:'WO_OVERVIEW', params: {id: item.AppInstanceID}}" class="material-icons" style="opacity: 0.3;">{{'search'}}</router-link>
+                        <router-link :to="{name:'WO_OVERVIEW', params: {id: item.ID}}" class="material-icons" style="opacity: 0.3;">{{'search'}}</router-link>
                     </td>
                 </tr>
             </tbody>
@@ -61,25 +61,7 @@ Created by Kevin Le on 2020/7/30.
                 desc: true
             },
 
-            table_data: [{
-                AppInstanceID: 'WO-20200729-FFFF',
-                ProjectName: 'Order1',
-                Staff: '章君豪',
-                Date: '2020/07/29 12:01',
-                State: 1
-            }, {
-                AppInstanceID: 'WO-20200729-EEEE',
-                ProjectName: 'Order2',
-                Staff: '章君豪',
-                Date: '2020/07/29 12:01',
-                State: 1
-            }, {
-                AppInstanceID: 'WO-20200729-DDDD',
-                ProjectName: 'Order3',
-                Staff: '章君豪',
-                Date: '2020/07/29 12:01',
-                State: 1
-            }]
+            table_data: []
         }),
 
         watch: {
@@ -88,11 +70,23 @@ Created by Kevin Le on 2020/7/30.
 
         created() {
             console.log("created wo list");
+            this.getData();
         },
 
         components: {},
 
-        methods: {},
+        methods: {
+            getData() {
+                var self = this;
+                axios.get('TestFile/wo.json')
+                .then(function (response) {
+                    console.log(response.data)
+                    self.table_data = response.data;
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            }
+        },
     }
 
 </script>

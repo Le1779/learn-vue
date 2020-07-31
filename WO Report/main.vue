@@ -21,13 +21,7 @@
             quarter: {
                 value: 1
             },
-            nav: {
-                wo_count: 10,
-                flow_count: 20,
-                edit_flow_count: 30,
-                reject_flow_count: 40,
-                reopen_wo_count: 5
-            }
+            nav: {}
         }),
 
         watch: {
@@ -36,6 +30,7 @@
 
         created() {
             console.log("created main");
+            this.updateNav();
         },
 
         components: {
@@ -44,8 +39,14 @@
         },
 
         methods: {
-            getUserInfo() {
-
+            updateNav() {
+                var self = this;
+                axios.get('TestFile/nav.json')
+                .then(function (response) {
+                    self.nav = response.data
+                }).catch(function (error) {
+                    console.log(error);
+                });
             },
         },
     }
