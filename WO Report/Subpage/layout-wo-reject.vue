@@ -12,21 +12,21 @@ Created by Kevin Le on 2020/7/30.
         <div class="detail-container">
             <div>
                 <div class="formula">
-                    <textview :model="{ title: '退單次數', text: 1, class: 'md red' }"></textview>
+                    <textview :model="{ title: '退單次數', text: viewModel.RejectedTimes, class: 'md red' }"></textview>
                     <div class="symbol">/</div>
-                    <textview :model="{ title: '送單數量', text: 5, class: 'md' }"></textview>
+                    <textview :model="{ title: '送單數量', text: viewModel.SendedTimes, class: 'md' }"></textview>
                     <div class="symbol">=</div>
-                    <textview :model="{ title: '退單率', text: '20%', class: 'md red' }"></textview>
+                    <textview :model="{ title: '退單率', text: viewModel.rejectRate, class: 'md red' }"></textview>
                 </div>
             </div>
             <div class="reject-history">
-                <div v-for="(item, index) in history" class="history-item-container">
+                <div v-for="(item, index) in viewModel.ListData" class="history-item-container">
                     <div class="history-item">
                         <div class="history-line" :class="{first: index == 0}"></div>
                         <div class="history-card card-container">
-                            <div class="history-column-name">{{item.from}}</div>
-                            <div class="history-value" v-html="item.reason"></div>
-                            <div class="history-date">{{item.date}}</div>
+                            <div class="history-column-name">{{item.PreviousUser.Name}}</div>
+                            <div class="history-value" v-html="item.Remark"></div>
+                            <div class="history-date">{{item.RejectTime}}</div>
                         </div>
                     </div>
 
@@ -40,19 +40,7 @@ Created by Kevin Le on 2020/7/30.
     module.exports = {
         props: ["model"],
         data: () => ({
-            history: [{
-                from: '樂仲珉',
-                reason: '需求2有誤',
-                date: '2020/07/30 13:04'
-            }, {
-                from: '樂仲珉',
-                reason: '需求3有誤',
-                date: '2020/07/30 13:04'
-            }, {
-                from: '樂仲珉',
-                reason: '結案日期有誤',
-                date: '2020/07/30 13:04'
-            }]
+            viewModel: {}
         }),
 
         watch: {
@@ -61,6 +49,7 @@ Created by Kevin Le on 2020/7/30.
 
         created() {
             console.log("created wo reject");
+            this.getData();
         },
 
         components: {
@@ -70,6 +59,34 @@ Created by Kevin Le on 2020/7/30.
         methods: {
             back() {
                 this.$router.back(-1)
+            },
+            
+            getData() {
+                var self = this;
+                axios.get('TestFile/reject.json')
+                    .then(function(response) {
+                        console.log(response.data)
+                        self.viewModel = response.data;
+                        self.viewModel.rejectRate = getRateText(self.viewModel.RejectedTimes / self.viewModel.SendedTimes)
+                    }).catch(function(error) {
+                        console.log(error);
+                    });
+
+                function getRateText(value) {
+                    return Math.floor(value * 1000) / 10 + '%'
+                }
+
+                function getWorkingHourText(seconds) {
+                    if (seconds < 60) {
+                        return seconds + '秒';
+                    } else if (seconds < 3600) {
+                        return Math.floor(seconds / 60 * 10) / 10 + '分鐘';
+                    } else if (seconds < 216000) {
+                        return Math.floor(seconds / 3600 * 10) / 10 + '小時';
+                    } else if (seconds < 5184000) {
+                        return Math.floor(seconds / 216000 * 10) / 10 + '天';
+                    }
+                }
             }
         },
     }

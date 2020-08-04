@@ -23,39 +23,21 @@ Created by Kevin Le on 2020/7/30.
             table_model: {
                 head: [{
                     text: 'No.',
-                    name: 'AppInstanceID'
+                    name: 'ID'
                 }, {
                     text: '專案名稱',
                     name: 'ProjectName'
                 }, {
                     text: '負責人',
-                    name: 'Staff'
+                    name: 'managerName'
                 }, {
-                    text: '建立日期',
-                    name: 'Date'
+                    text: '重啟次數',
+                    name: 'ReopenedTimes'
                 }, {
-                    text: '狀態',
-                    name: 'State'
+                    text: '重啟率',
+                    name: 'ReopenRate'
                 }],
-                data: [{
-                    AppInstanceID: 'WO-20200729-FFFF',
-                    ProjectName: 'Order1',
-                    Staff: '章君豪',
-                    Date: '2020/07/29 12:01',
-                    State: 1
-                }, {
-                    AppInstanceID: 'WO-20200729-EEEE',
-                    ProjectName: 'Order2',
-                    Staff: '章君豪',
-                    Date: '2020/07/29 12:01',
-                    State: 1
-                }, {
-                    AppInstanceID: 'WO-20200729-DDDD',
-                    ProjectName: 'Order3',
-                    Staff: '章君豪',
-                    Date: '2020/07/29 12:01',
-                    State: 1
-                }],
+                data: [],
                 orderByIndex: 1,
                 isDes: true,
                 withAction: true,
@@ -68,14 +50,31 @@ Created by Kevin Le on 2020/7/30.
         },
 
         created() {
-
+            this.getData();
         },
 
         components: {
             'data-table': httpVueLoader('data-table.vue'),
         },
 
-        methods: {},
+        methods: {
+            getData() {
+                var self = this;
+                axios.get('TestFile/ReopenInfo.json')
+                    .then(function(response) {
+                        console.log(response.data);
+                        self.table_model.data = response.data;
+                        self.table_model.data.forEach(function(item, index, array) {
+                            item.ReopenRate = getRateText(item.ReopenRate);
+                        });
+                    }).catch(function(error) {
+                        console.log(error);
+                    });
+                function getRateText(value) {
+                    return Math.floor(value * 1000)/10 + '%'
+                }
+            }
+        },
     }
 
 </script>

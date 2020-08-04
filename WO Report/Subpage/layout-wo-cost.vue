@@ -165,7 +165,7 @@ Created by Kevin Le on 2020/7/30.
                         return Math.floor(seconds / 60 * 10) / 10 + '分鐘';
                     } else if (seconds < 216000) {
                         return Math.floor(seconds / 3600 * 10) / 10 + '小時';
-                    } else if (seconds < 5184000) {
+                    } else {
                         return Math.floor(seconds / 216000 * 10) / 10 + '天';
                     }
                 }
