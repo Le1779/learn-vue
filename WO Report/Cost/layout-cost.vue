@@ -7,6 +7,9 @@ Created by Kevin Le on 2020/7/30.
     <div class="page-container">
         <div class="card-container table-container">
             <data-table :model="table_model">
+               <template v-slot:working_hours="{item}">
+                    {{getWorkingHourText(item)}}
+                </template>
                 <template v-slot:action="{item}">
                     <router-link :to="{name:'WO_COST', params: {id: item.AppInstanceID}}" class="material-icons" style="opacity: 0.3;">{{'search'}}</router-link>
                 </template>
@@ -35,10 +38,11 @@ Created by Kevin Le on 2020/7/30.
                     name: 'QuantityOfFlow'
                 }, {
                     text: '參與人數',
-                    name: 'managerName'
+                    name: 'NumberOfParticipants'
                 }, {
                     text: '總工時',
-                    name: 'workingHours'
+                    name: 'WorkingSeconds',
+                    slot: 'working_hours'
                 }],
                 data: [],
                 orderByIndex: 1,
@@ -69,13 +73,13 @@ Created by Kevin Le on 2020/7/30.
                         self.table_model.data = response.data;
                         self.table_model.data.forEach(function(item, index, array) {
                             item.managerName = item.Manager.Name
-                            item.workingHours = getWorkingHourText(item.WorkingSeconds)
                         });
                     }).catch(function(error) {
                         console.log(error);
                     });
-
-                function getWorkingHourText(seconds) {
+            },
+            
+            getWorkingHourText(seconds) {
                     if (seconds < 60) {
                         return seconds + '秒';
                     } else if (seconds < 3600) {
@@ -86,7 +90,6 @@ Created by Kevin Le on 2020/7/30.
                         return Math.floor(seconds / 216000 * 10) / 10 + '天';
                     }
                 }
-            }
         },
     }
 

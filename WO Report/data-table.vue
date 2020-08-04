@@ -27,7 +27,12 @@ Created by Kevin Le on 2020/7/30.
         </thead>
         <tbody>
             <tr v-for="(data_item, index) in model.data">
-                <td v-for="(head_item, i) in model.head">{{data_item[head_item.name]}}</td>
+                <td v-for="(head_item, i) in model.head">
+                    <slot :name="head_item.slot" v-bind:item="data_item[head_item.name]">
+                        {{data_item[head_item.name]}}
+                    </slot>
+                    
+                </td>
                 <td v-if="model.withAction">
                     <slot name="action" v-bind:item="data_item"></slot>
                 </td>
@@ -39,8 +44,7 @@ Created by Kevin Le on 2020/7/30.
 <script>
     module.exports = {
         props: ["model"],
-        data: () => ({
-        }),
+        data: () => ({}),
 
         watch: {
 
@@ -54,13 +58,37 @@ Created by Kevin Le on 2020/7/30.
 
         },
 
-        methods: {},
+        methods: {
+            onOrderByButtonClick(index) {
+                if (this.model.orderByIndex == index) {
+                    this.model.isDes = !this.model.isDes;
+                } else {
+                    this.model.orderByIndex = index;
+                }
+                this.sortData(index, this.model.head[index].name);
+            },
+
+            sortData(index, key) {
+                var self = this;
+                this.model.data.sort(compare);
+
+                function compare(a, b) {
+                    if (a[key] < b[key]) {
+                        return self.model.isDes ? 1 : -1
+                    } else if (a[key] > b[key]) {
+                        return self.model.isDes ? -1 : 1
+                    }
+
+                    return 0;
+                }
+            },
+        },
     }
 
 </script>
 
 <style scoped>
-table {
+    table {
         width: 100%;
         border-collapse: collapse;
     }
@@ -94,4 +122,5 @@ table {
         padding: 12px 8px;
         color: #555555;
     }
+
 </style>

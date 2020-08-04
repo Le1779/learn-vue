@@ -7,6 +7,9 @@ Created by Kevin Le on 2020/7/30.
     <div class="page-container">
         <div class="card-container table-container">
             <data-table :model="table_model">
+                <template v-slot:reopen_rate="{item}">
+                    {{getRateText(item)}}
+                </template>
                 <template v-slot:action="{item}">
                     <router-link :to="{name:'WO_REOPEN', params: {id: item.AppInstanceID}}" class="material-icons" style="opacity: 0.3;">{{'search'}}</router-link>
                 </template>
@@ -35,7 +38,8 @@ Created by Kevin Le on 2020/7/30.
                     name: 'ReopenedTimes'
                 }, {
                     text: '重啟率',
-                    name: 'ReopenRate'
+                    name: 'ReopenRate',
+                    slot: 'reopen_rate'
                 }],
                 data: [],
                 orderByIndex: 1,
@@ -65,7 +69,7 @@ Created by Kevin Le on 2020/7/30.
                         console.log(response.data);
                         self.table_model.data = response.data;
                         self.table_model.data.forEach(function(item, index, array) {
-                            item.ReopenRate = getRateText(item.ReopenRate);
+                            item.managerName = item.Manager.Name;
                         });
                     }).catch(function(error) {
                         console.log(error);
@@ -73,6 +77,10 @@ Created by Kevin Le on 2020/7/30.
                 function getRateText(value) {
                     return Math.floor(value * 1000)/10 + '%'
                 }
+            },
+            
+            getRateText(value) {
+                return Math.floor(value * 1000) / 10 + '%'
             }
         },
     }
