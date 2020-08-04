@@ -12,25 +12,29 @@ Created by Kevin Le on 2020/7/30.
         <div class="detail-container">
             <div>
                 <div class="formula">
-                    <textview :model="{ title: '編輯次數', text: 1, class: 'md red' }"></textview>
+                    <textview :model="{ title: '編輯次數', text: viewModel.EditedTimes, class: 'md red' }"></textview>
                     <div class="symbol">/</div>
-                    <textview :model="{ title: '送單數量', text: 5, class: 'md' }"></textview>
+                    <textview :model="{ title: '送單數量', text: viewModel.SendedTimes, class: 'md' }"></textview>
                     <div class="symbol">=</div>
-                    <textview :model="{ title: '編輯率', text: '20%', class: 'md red' }"></textview>
+                    <textview :model="{ title: '編輯率', text: viewModel.editRate, class: 'md red' }"></textview>
                 </div>
             </div>
             <div class="edit-history">
-                <div v-for="(item, index) in history" class="history-item-container">
+                <div v-for="(item, index) in viewModel.ListData" class="history-item-container">
                     <div class="history-item">
                         <div class="history-line" :class="{first: index == 0}"></div>
                         <div class="history-card card-container">
-                            <div class="history-column-name">{{item.columnName}}</div>
-                            <div class="history-value">
-                                <div v-html="item.beforeValue"></div>
-                                <div class="material-icons">{{'keyboard_arrow_right'}}</div>
-                                <div v-html="item.afterValue"></div>
+                            <div class="history-remark" v-html="item.Remark"></div>
+                            <div v-for="(child_item, child_index) in item.UpdatedColumns">
+                                <div class="history-column-name">{{child_item.Name}}</div>
+                                <div class="history-value">
+                                    <div v-html="child_item.BeforeValue"></div>
+                                    <div class="material-icons">{{'keyboard_arrow_right'}}</div>
+                                    <div v-html="child_item.AfterValue"></div>
+                                </div>
+                                
                             </div>
-                            <div class="history-edit-date">{{item.editDate}}</div>
+                            <div class="history-edit-date">{{item.UpdateTime}}</div>
                         </div>
                     </div>
 
@@ -44,22 +48,7 @@ Created by Kevin Le on 2020/7/30.
     module.exports = {
         props: ["model"],
         data: () => ({
-            history: [{
-                columnName: '工單名稱',
-                beforeValue: '0號工單',
-                afterValue: '一號工單',
-                editDate: '2020/07/30 13:04'
-            }, {
-                columnName: 'RD完成日期',
-                beforeValue: '2020/09/30',
-                afterValue: '2020/08/30',
-                editDate: '2020/07/30 12:04'
-            }, {
-                columnName: 'RD需求',
-                beforeValue: '1. Something…<br>2. Something…',
-                afterValue: '1. Something…</br>2. Something…</br>3. Something…',
-                editDate: '2020/07/30 11:04'
-            }]
+            viewModel: {}
         }),
 
         watch: {
@@ -68,6 +57,7 @@ Created by Kevin Le on 2020/7/30.
 
         created() {
             console.log("created wo edit");
+            this.getData();
         },
 
         components: {
@@ -77,6 +67,34 @@ Created by Kevin Le on 2020/7/30.
         methods: {
             back() {
                 this.$router.back(-1)
+            },
+
+            getData() {
+                var self = this;
+                axios.get('TestFile/edited.json')
+                    .then(function(response) {
+                        console.log(response.data)
+                        self.viewModel = response.data;
+                        self.viewModel.editRate = getRateText(self.viewModel.EditedTimes / self.viewModel.SendedTimes)
+                    }).catch(function(error) {
+                        console.log(error);
+                    });
+
+                function getRateText(value) {
+                    return Math.floor(value * 1000) / 10 + '%'
+                }
+
+                function getWorkingHourText(seconds) {
+                    if (seconds < 60) {
+                        return seconds + '秒';
+                    } else if (seconds < 3600) {
+                        return Math.floor(seconds / 60 * 10) / 10 + '分鐘';
+                    } else if (seconds < 216000) {
+                        return Math.floor(seconds / 3600 * 10) / 10 + '小時';
+                    } else if (seconds < 5184000) {
+                        return Math.floor(seconds / 216000 * 10) / 10 + '天';
+                    }
+                }
             }
         },
     }
@@ -153,15 +171,22 @@ Created by Kevin Le on 2020/7/30.
         color: #7E7E7E;
         font-size: 12px;
     }
-    
+
     .history-edit-date {
         text-align: right;
     }
-    
+
     .history-value {
         display: inline-grid;
         grid-template-columns: auto auto auto;
         margin: 8px 0 12px;
+    }
+    
+    .history-remark {
+        border: 1px solid #C1C1C1;
+        border-radius: 8px;
+        margin: 8px 12px;
+        padding: 24px 12px;
     }
 
 </style>

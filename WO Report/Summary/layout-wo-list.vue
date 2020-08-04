@@ -80,7 +80,6 @@ Created by Kevin Le on 2020/7/30.
                 var self = this;
                 axios.get('TestFile/wo.json')
                 .then(function (response) {
-                    console.log(response.data)
                     self.table_data = response.data;
                 }).catch(function (error) {
                     console.log(error);
