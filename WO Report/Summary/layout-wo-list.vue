@@ -5,31 +5,11 @@ Created by Kevin Le on 2020/7/30.
 -->
 <template>
     <div class="card-container">
-        <table>
-            <thead>
-                <tr>
-                    <th v-for="(item, index) in header.column" @click="onOrderByButtonClick(index)">
-                        <div>
-                            <div>{{item.name}}</div>
-                            <div v-if="index != 5" class="material-icons" style="opacity: 0.3;">{{header.orderByIndex == index ? header.desc ? 'arrow_upward' : 'arrow_downward' : 'swap_vert'}}
-                            </div>
-                        </div>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(item, index) in table_data">
-                    <td>{{item.ID}}</td>
-                    <td>{{item.Name}}</td>
-                    <td>{{item.Manager.Name}}</td>
-                    <td>{{item.Description}}</td>
-                    <td>{{item.CreationDateStr}}</td>
-                    <td>
-                        <router-link :to="{name:'WO_OVERVIEW', params: {id: item.ID}}" class="material-icons" style="opacity: 0.3;">{{'search'}}</router-link>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <data-table :model="table_model">
+                <template v-slot:action="{item}">
+                    <router-link :to="{name:'WO_OVERVIEW', params: {id: item.AppInstanceID}}" class="material-icons" style="opacity: 0.3;">{{'search'}}</router-link>
+                </template>
+            </data-table>
     </div>
 </template>
 
@@ -37,31 +17,28 @@ Created by Kevin Le on 2020/7/30.
     module.exports = {
         props: ["model"],
         data: () => ({
-            header: {
-                column: [{
-                    name: 'No.',
-                    value: 'AppInstanceID'
+            table_model: {
+                head: [{
+                    text: 'No.',
+                    name: 'ID'
                 }, {
-                    name: '專案名稱',
-                    value: 'AppInstanceID'
+                    text: '專案名稱',
+                    name: 'Name'
                 }, {
-                    name: '負責人',
-                    value: 'AppInstanceID'
+                    text: '負責人',
+                    name: 'managerName'
                 }, {
-                    name: '建單日期',
-                    value: 'AppInstanceID'
+                    text: '建單日期',
+                    name: 'CreationDateStr'
                 }, {
-                    name: '狀態',
-                    value: 'AppInstanceID'
-                }, {
-                    name: '詳情',
-                    value: 'AppInstanceID'
+                    text: '狀態',
+                    name: 'Description'
                 }],
+                data: [],
                 orderByIndex: 1,
-                desc: true
-            },
-
-            table_data: []
+                isDes: true,
+                withAction: true,
+            }
         }),
 
         watch: {
@@ -73,14 +50,19 @@ Created by Kevin Le on 2020/7/30.
             this.getData();
         },
 
-        components: {},
+        components: {
+            'data-table': httpVueLoader('data-table.vue'),
+        },
 
         methods: {
             getData() {
                 var self = this;
                 axios.get('TestFile/wo.json')
                 .then(function (response) {
-                    self.table_data = response.data;
+                    self.table_model.data = response.data;
+                    self.table_model.data.forEach(function(item, index, array) {
+                            item.managerName = item.Manager.Name
+                        });
                 }).catch(function (error) {
                     console.log(error);
                 });
