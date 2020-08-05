@@ -31,7 +31,7 @@ Created by Kevin Le on 2020/7/30.
                     <slot :name="head_item.slot" v-bind:item="data_item[head_item.name]">
                         {{data_item[head_item.name]}}
                     </slot>
-                    
+
                 </td>
                 <td v-if="model.withAction">
                     <slot name="action" v-bind:item="data_item"></slot>
@@ -47,7 +47,10 @@ Created by Kevin Le on 2020/7/30.
         data: () => ({}),
 
         watch: {
-
+            "model.orderByIndex": function(newVal, oldVal){
+                var index = this.model.orderByIndex;
+                this.sortData(index, this.model.head[index].name);
+            },
         },
 
         created() {
@@ -69,6 +72,7 @@ Created by Kevin Le on 2020/7/30.
             },
 
             sortData(index, key) {
+                console.log(key)
                 var self = this;
                 this.model.data.sort(compare);
 

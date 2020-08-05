@@ -42,7 +42,7 @@ Created by Kevin Le on 2020/7/30.
                     slot: 'edit_rate'
                 }],
                 data: [],
-                orderByIndex: 1,
+                orderByIndex: 0,
                 isDes: true,
                 withAction: true,
             },
@@ -71,6 +71,7 @@ Created by Kevin Le on 2020/7/30.
                         self.table_model.data.forEach(function(item, index, array) {
                             item.managerName = item.Manager.Name;
                         });
+                        self.table_model.orderByIndex = 4;
                     }).catch(function(error) {
                         console.log(error);
                     });
