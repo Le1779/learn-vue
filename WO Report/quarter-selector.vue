@@ -61,6 +61,11 @@
         font-size: x-large;
     }
     
-    .quarter-selector {}
+    .quarter-selector {
+        margin-left: 16px;
+        padding: 8px 24px;
+        border-radius: 20px;
+        border: 1px solid #C1C1C1;
+    }
 
 </style>

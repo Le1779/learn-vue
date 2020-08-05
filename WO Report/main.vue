@@ -1,7 +1,6 @@
 <template>
     <div class="app-container">
         <quarter-selector :model="quarter"></quarter-selector>
-        {{quarter.value}}
         <nav-list :model="nav"></nav-list>
         <transition name="fade" mode="out-in">
         <router-view></router-view>
@@ -19,17 +18,21 @@
                 text: '#5F6169'
             },
             quarter: {
-                value: 1
+                value: 0
             },
             nav: {}
         }),
 
         watch: {
-
+            "quarter.value": function() {
+                console.log(this.quarter.value)
+            }
         },
 
         created() {
             console.log("created main");
+            var m = new Date().getMonth();
+            this.quarter.value = parseInt(m / 3);
             this.updateNav();
         },
 
