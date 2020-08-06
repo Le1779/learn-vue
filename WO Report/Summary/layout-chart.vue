@@ -1,12 +1,6 @@
 <template>
     <div class="card-container">
-        <div class="formula">
-            <textview :model="completed_textview_model"></textview>
-            <div class="symbol">/</div>
-            <textview :model="created_textview_model"></textview>
-            <div class="symbol">=</div>
-            <textview :model="completed_rate_textview_model"></textview>
-        </div>
+        <canvas id="myChart"></canvas>
     </div>
 </template>
 
@@ -14,18 +8,7 @@
     module.exports = {
         props: ["model"],
         data: () => ({
-            completed_textview_model: {
-                title: '已完成',
-                text: 40
-            },
-            created_textview_model: {
-                title: '已建立',
-                text: 52
-            },
-            completed_rate_textview_model: {
-                title: '達成率',
-                text: '76.9%'
-            },
+            viewModel: {}
         }),
 
         watch: {
@@ -35,12 +18,63 @@
         created() {
             console.log("created chart");
         },
+        
+        mounted() {
+            this.getData();
+        },
 
         components: {
             'textview': httpVueLoader('textview.vue'),
+            'chart': httpVueLoader('chart.vue'),
         },
 
-        methods: {},
+        methods: {
+            initChart() {
+                var self = this;
+                var ctx = document.getElementById('myChart');
+                var myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: self.viewModel.Month,
+                        datasets: [{
+                            label: '傳送',
+                            backgroundColor: 'rgb(61,204,153, 0.3)',
+                            borderColor: 'rgb(61,204,153)',
+                            fill: false,
+                            data: self.viewModel.SendedTimes
+                        }, {
+                            label: '編輯',
+                            backgroundColor: 'rgb(57,118,244, 0.3)',
+                            borderColor: 'rgb(57,118,244)',
+                            fill: false,
+                            data: self.viewModel.EditedTimes
+                        }, {
+                            label: '退回',
+                            backgroundColor: 'rgb(255,99,132, 0.3)',
+                            borderColor: 'rgb(255,99,132)',
+                            fill: false,
+                            data: self.viewModel.RejectedTimes
+                        }, {
+                            label: '重啟',
+                            fill: false,
+                            data: self.viewModel.ReopenedTimes
+                        }]
+                    }
+                });
+            }, 
+            
+            getData() {
+                var self = this;
+                axios.get('TestFile/FlowChart.json')
+                .then(function (response) {
+                    console.log(response.data)
+                    self.viewModel = response.data
+                    self.initChart();
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            }
+        },
     }
 
 </script>
