@@ -18,15 +18,30 @@
                 text: '#5F6169'
             },
             quarter: {
-                value: 0
+                value: 0,
+                refresh: function() {}
             },
             nav: {}
         }),
 
         watch: {
-            "quarter.value": function() {
+            "quarter.value": function () {   
                 console.log(this.quarter.value)
-            }
+                var year = new Date().getFullYear();
+                if (this.quarter.value == 1) {
+                    this.$START_DATE = year + '-01-01';
+                    this.$END_DATE = year + '-03-31';
+                } else if (this.quarter.value == 2) {
+                    this.$START_DATE = year + '-04-01';
+                    this.$END_DATE = year + '-06-30';
+                } else if (this.quarter.value == 3) {
+                    this.$START_DATE = year + '-07-01';
+                    this.$END_DATE = year + '-09-30';
+                } else if (this.quarter.value == 4) {
+                    this.$START_DATE = year + '-10-01';
+                    this.$END_DATE = year + '-12-31';
+                }
+            },
         },
 
         created() {
