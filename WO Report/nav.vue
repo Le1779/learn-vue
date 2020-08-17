@@ -22,6 +22,13 @@
         </div>
         
         <div class="nav-item-container">
+            <router-link to="/unfinished" class="nav-item red">
+                <div class="nav-item-value">{{model.ExpiredTimes}}</div>
+                <div class="nav-item-hint">{{expired_flow_count_hint_text}}</div>
+            </router-link>
+        </div>
+        
+        <div class="nav-item-container">
             <router-link to="/reject" class="nav-item red">
                 <div class="nav-item-value">{{model.RejectedTimes}}</div>
                 <div class="nav-item-hint">{{reject_flow_count_hint_text}}</div>
@@ -49,6 +56,7 @@
             edit_flow_count_hint_text: '編輯次數',
             reject_flow_count_hint_text: '退回次數',
             reopen_wo_count_hint_text: '重啟次數',
+            expired_flow_count_hint_text: '逾期工單',
         }),
 
         computed: {
@@ -77,7 +85,7 @@
         margin: 48px 0;
         height: 100px;
         display: grid;
-        grid-template-columns: 20% 20% 20% 20% 20%;
+        grid-template-columns: 16% 16% 16% 16% 16% 16%;
     }
 
     .nav-item-container {
@@ -91,7 +99,7 @@
         display: grid;
         grid-template-rows: auto 30%;
         height: 100%;
-        margin: 0 16px;
+        margin: 0 8px;
         border-radius: 8px;
         color: white;
         text-decoration:none;

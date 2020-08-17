@@ -28,7 +28,7 @@ Created by Kevin Le on 2020/7/30.
         <tbody>
             <tr v-for="(data_item, index) in model.data">
                 <td v-for="(head_item, i) in model.head">
-                    <slot :name="head_item.slot" v-bind:item="data_item[head_item.name]">
+                    <slot :name="head_item.slot" v-bind:item="data_item">
                         {{data_item[head_item.name]}}
                     </slot>
 
