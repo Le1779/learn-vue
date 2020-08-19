@@ -81,7 +81,6 @@
             },
 
             sortData(index) {
-                console.log(this.header.desc)
                 var self = this;
                 this.model.sort(compare);
 

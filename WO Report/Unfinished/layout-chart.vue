@@ -8,7 +8,8 @@
     module.exports = {
         props: ["model"],
         data: () => ({
-            viewModel: []
+            viewModel: [],
+            chart: null
         }),
 
         watch: {
@@ -20,6 +21,11 @@
                         return;
                     }
                     
+                    this.initChart();
+                    if (this.chart == null) {
+                        return;
+                    }
+                    console.log(this.chart)
                     this.viewModel = [];
                     var self = this;
                     this.model.forEach(function(item, index) {
@@ -30,7 +36,7 @@
                         });
                     });
                     
-                    this.initChart();
+                    this.updateChart();
                 }
             }
         },
@@ -41,16 +47,25 @@
 
         methods: {
             initChart() {
-                var self = this;
+                if (this.chart != null) {
+                    return;
+                }
+                
                 var ctx = document.getElementById('barChart');
-                var myChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: [""],
-                        datasets: self.viewModel
-                    }
+                if (ctx == null) {
+                    return;
+                }
+                
+                this.chart = new Chart(ctx, {
+                    type: 'bar'
                 });
+                
             },
+            
+            updateChart() {
+                this.chart.config.data.datasets = this.viewModel;
+                this.chart.update();
+            }
         },
     }
 
