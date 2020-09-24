@@ -1,18 +1,13 @@
 [
     {
-        ID: 0,
-        Name: 'Product1',
-        Language: '韓文',
-        FontName: '',
-        Spec: '',
-        Border: '',
-        FontOutline: '',
-        VerticalPointSize: '',
-        HorzPointSize: '',
-        FontNumber: '',
-        FilePath: '',
-        Remark: '',
-        IsQAPass: '',
-        UserName: ''
+        "Department": "RD-Retail",
+        "DepartmentID": "HQ-01",
+        "Member": [
+            {
+                "ID": 2001,
+                "Name": "Keivn Le",
+                "Email": "kevin_le@dynacw.com"
+            }
+        ]
     }
 ]

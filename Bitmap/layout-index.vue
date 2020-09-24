@@ -4,19 +4,11 @@ Edit history table page
 Created by Kevin Le on 2020/7/30.
 -->
 <template>
-    <div>
-        index
-        <div class="page-container">
-            <div class="card-container table-container">
-                <data-table :model="table_model">
-                    <template v-slot:edit_rate="{item}">
-                        {{getRateText(item)}}
-                    </template>
-                    <template v-slot:action="{item}">
-                        <router-link :to="{name:'WO_EDIT', params: {id: item.AppInstanceID}}" class="material-icons" style="opacity: 0.3;">{{'search'}}</router-link>
-                    </template>
-                </data-table>
-                <div class="table-hint">{{hint}}</div>
+    <div class="page-container">
+        <div v-for="(d) in listData">
+            {{d.Department}}
+            <div v-for="(m) in d.Member">
+                {{m}}
             </div>
         </div>
     </div>
@@ -26,30 +18,7 @@ Created by Kevin Le on 2020/7/30.
     module.exports = {
         props: ["model"],
         data: () => ({
-            table_model: {
-                head: [{
-                    text: 'No.',
-                    name: 'ID'
-                }, {
-                    text: '專案名稱',
-                    name: 'ProjectName'
-                }, {
-                    text: '負責人',
-                    name: 'managerName'
-                }, {
-                    text: '編輯次數',
-                    name: 'EditedTimes'
-                }, {
-                    text: '編輯率',
-                    name: 'EditRate',
-                    slot: 'edit_rate'
-                }],
-                data: [],
-                orderByIndex: 0,
-                isDes: true,
-                withAction: true,
-            },
-            hint: '編輯次數越高，代表最終需求與初始規劃需求差異越大'
+            listData: [],
         }),
 
         watch: {
@@ -57,16 +26,59 @@ Created by Kevin Le on 2020/7/30.
         },
 
         created() {
-
+            this.getData();
         },
 
         components: {
-            'data-table': httpVueLoader('data-table.vue')
+
         },
 
         methods: {
+            getData() {
+                var self = this;
+                axios.get('JIS0201')
+                    .then(function(response) {
+                        console.log(response.data.length);
+                        console.log(response.data);
+                        //self.drawFont(28, 28, response.data)
+                        //return;
+                        //const blob = new Blob([response.data])
+                        //var reader = new FileReader();
+                        //reader.addEventListener('load', function() {
+                        //    console.log(reader.result)
+                        //    // reader.result contains the contents of blob as a typed array
+                        //    self.drawFont(28, 28, new Uint8Array(reader.result))
+                        //});
+                        //reader.readAsArrayBuffer(blob);
+                    }).catch(function(error) {
+                        console.log(error);
+                    });
+            },
 
+            drawFont(width, height, date) {
+                var result = ""
+                for (var h = 0; h < height; h++) {
+                    for (var w = 0; w < width; w++) {
+                        var index = 45024 + Math.round(w / 8) + h * 4;
+                        //console.log(index)
+                        console.log(date[index].charCodeAt(0))
+                        var ret = (date[index].charCodeAt(0) & (0x80 >> (w % 8))) > 0;
+                        //var ret = date[index].charCodeAt(0) == 65533
+                        result += ret ? "@@" : "__"
+                    }
+                    result += '\n'
+                }
+                console.log(result);
+            }
         },
+    }
+
+    function string2Bin(str) {
+        var result = [];
+        for (var i = 0; i < str.length; i++) {
+            result.push(str.charCodeAt(i).toString(2));
+        }
+        return parseInt(result, 2);
     }
 
 </script>
@@ -75,17 +87,6 @@ Created by Kevin Le on 2020/7/30.
     .page-container {
         margin: 48px 24px;
         display: grid;
-    }
-
-    .table-container {
-        padding: 24px 24px 48px 24px;
-        margin: 48px 0;
-    }
-
-    .table-hint {
-        margin-top: 24px;
-        color: #7E7E7E;
-        font-size: 12px;
     }
 
 </style>
