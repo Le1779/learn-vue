@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Notification</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: #EDEDED
+        }
+    </style>
+</head>
+<body>
+    <main-app id="app"></main-app>
+</body>
+</html>
+<script src="../../vue/js/vue.js"></script>
+<script src="../../vue/js/vue-router.js"></script>
+<script src="../../vue/js/httpVueLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    const routes = [{
+        path: '/',
+        redirect: '/history'
+    }, {
+        path: '/rules',
+        component: httpVueLoader('layout-rules.vue')
+    }, {
+        path: '/template',
+        component: httpVueLoader('layout-template.vue')
+    }, {
+        path: '/history',
+        component: httpVueLoader('layout-history.vue')
+    }]
+
+    const router = new VueRouter({
+        routes
+    })
+
+    new Vue({
+        el: '#app',
+        router,
+        vuetify: new Vuetify(),
+        components: {
+            'main-app': httpVueLoader('main.vue'),
+        }
+    })
+</script>
