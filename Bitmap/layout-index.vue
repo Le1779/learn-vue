@@ -5,12 +5,10 @@ Created by Kevin Le on 2020/7/30.
 -->
 <template>
     <div class="page-container">
-        <div v-for="(d) in listData">
-            {{d.Department}}
-            <div v-for="(m) in d.Member">
-                {{m}}
-            </div>
-        </div>
+        <input type="text" v-model="demoText">
+        <canvas id="canvas" :width="canvasWidth" :height="canvasHeight" style="border:1px solid #c3c3c3;">
+            Your browser does not support the canvas element.
+        </canvas>
     </div>
 </template>
 
@@ -18,15 +16,44 @@ Created by Kevin Le on 2020/7/30.
     module.exports = {
         props: ["model"],
         data: () => ({
-            listData: [],
+            demoText: '樂',
+            fontData: [],
+            scale: 5,
+            canvas: null,
+            ctx: null,
+            canvasWidth: 500,
+            canvasHeight: 500,
+            fontWidth: 16,
+            fontHeight: 16,
+            codeMap: new Map(),
         }),
 
         watch: {
+            demoText: {
+                handler() {
+                    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                    var fontCode = []
+                    for (var i = 0; i < this.demoText.length; i++) {
+                        var code = this.demoText.charCodeAt(i).toString(16);
+                        code = this.paddingLeft(code, 4);
+                        fontCode.push(code)
+                        console.log(code)
+                        console.log(this.codeMap.get(code))
+                        this.drawFont(this.codeMap.get(code), i * this.fontWidth * this.scale)
+                    }
+                }
+            }
+        },
 
+        mounted() {
+            this.canvas = document.getElementById("canvas");
+            this.ctx = this.canvas.getContext('2d');
+            this.readCodeMap();
+            this.getData();
         },
 
         created() {
-            this.getData();
+
         },
 
         components: {
@@ -34,51 +61,79 @@ Created by Kevin Le on 2020/7/30.
         },
 
         methods: {
-            getData() {
+            readCodeMap() {
                 var self = this;
-                axios.get('JIS0201')
+                var codeMapFileName = 'Big5-Full-Unicode';
+                this.codeMap = new Map();
+                axios.get(codeMapFileName)
                     .then(function(response) {
-                        console.log(response.data.length);
-                        console.log(response.data);
-                        //self.drawFont(28, 28, response.data)
-                        //return;
-                        //const blob = new Blob([response.data])
-                        //var reader = new FileReader();
-                        //reader.addEventListener('load', function() {
-                        //    console.log(reader.result)
-                        //    // reader.result contains the contents of blob as a typed array
-                        //    self.drawFont(28, 28, new Uint8Array(reader.result))
-                        //});
-                        //reader.readAsArrayBuffer(blob);
+                        var array = response.data.split('\r\n')
+                        for (var i = 0; i < array.length; i++) {
+                            var a = array[i].split('\t0X');
+                            //console.log(a);
+                            if (a[1]) {
+                                self.codeMap.set(a[1].toLowerCase(), a[0])
+                            }
+                            
+                        }
+                        console.log(self.codeMap);
+                    }).catch(function(error) {
+                        console.log(error);
+                    });
+
+            },
+
+            getData() {
+                var fontFileName = 'Big5-Hei_16x16';
+
+                var self = this;
+                axios.get(fontFileName, {
+                        responseType: 'blob'
+                    })
+                    .then(function(response) {
+                        var blob = new Blob([response.data]);
+
+                        var reader = new FileReader();
+                        reader.onload = function() {
+                            self.fontData = new Uint8Array(this.result)
+                            self.drawFont(4355, 0)
+                        }
+                        reader.readAsArrayBuffer(blob);
                     }).catch(function(error) {
                         console.log(error);
                     });
             },
 
-            drawFont(width, height, date) {
+            drawFont(index, startPixel) {
+                var rowBytes = Math.floor(this.fontWidth / 8);
+                var startIndex = index * this.fontHeight * rowBytes;
                 var result = ""
-                for (var h = 0; h < height; h++) {
-                    for (var w = 0; w < width; w++) {
-                        var index = 45024 + Math.round(w / 8) + h * 4;
-                        //console.log(index)
-                        console.log(date[index].charCodeAt(0))
-                        var ret = (date[index].charCodeAt(0) & (0x80 >> (w % 8))) > 0;
-                        //var ret = date[index].charCodeAt(0) == 65533
-                        result += ret ? "@@" : "__"
+                for (var h = 0; h < this.fontHeight; h++) {
+                    for (var w = 0; w < this.fontWidth; w++) {
+                        var index = Math.floor(w / 8) + h * rowBytes + startIndex;
+                        var ret = (this.fontData[index] & (0x80 >> (w % 8))) > 0;
+                        result += ret ? "▉▉" : "  "
+                        if (ret) {
+                            this.drawPixel(w, h, startPixel);
+                        }
                     }
                     result += '\n'
                 }
                 console.log(result);
-            }
-        },
-    }
+            },
 
-    function string2Bin(str) {
-        var result = [];
-        for (var i = 0; i < str.length; i++) {
-            result.push(str.charCodeAt(i).toString(2));
-        }
-        return parseInt(result, 2);
+            drawPixel(x, y, startPixel) {
+                this.ctx.fillRect(x * this.scale + startPixel, y * this.scale, this.scale, this.scale);
+            },
+
+            paddingLeft(str, lenght) {
+                if (str.length >= lenght)
+                    return str;
+                else
+                    return this.paddingLeft('0' + str, lenght);
+            }
+
+        },
     }
 
 </script>
