@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Calendar</title>
+    <style>
+        body {
+            background: #EDEDED
+        }
+    </style>
+</head>
+
+<body>
+    <main-app id="app"></main-app>
+</body>
+
+</html>
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<script src="https://unpkg.com/http-vue-loader"></script>
+<script src="https://unpkg.com/v-calendar@2.1.3/lib/v-calendar.umd.min.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        components: {
+            'main-app': httpVueLoader('main.vue'),
+        }
+    })
+</script>
