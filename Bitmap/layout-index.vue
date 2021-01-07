@@ -31,6 +31,8 @@ Created by Kevin Le on 2020/7/30.
         watch: {
             demoText: {
                 handler() {
+                    this.canvas.width = this.demoText.length * this.fontWidth * this.scale;
+                    this.canvas.height = this.fontWidth * this.scale;
                     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
                     var fontCode = []
                     for (var i = 0; i < this.demoText.length; i++) {
@@ -70,7 +72,6 @@ Created by Kevin Le on 2020/7/30.
                         var array = response.data.split('\r\n')
                         for (var i = 0; i < array.length; i++) {
                             var a = array[i].split('\t0X');
-                            //console.log(a);
                             if (a[1]) {
                                 self.codeMap.set(a[1].toLowerCase(), a[0])
                             }
@@ -84,7 +85,7 @@ Created by Kevin Le on 2020/7/30.
             },
 
             getData() {
-                var fontFileName = 'Big5-Hei_16x16';
+                var fontFileName = 'Big5_DFYuan-W5-16x16';
 
                 var self = this;
                 axios.get(fontFileName, {
