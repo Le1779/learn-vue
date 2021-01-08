@@ -114,9 +114,9 @@ Created by Kevin Le on 2021/01/08.
             },
 
             reDraw() {
+                console.log("w: " + this.fontWidth + " ,h: " + this.fontHeight)
                 var fontWidth = this.fontWidth * this.scale;
                 var oneLineWords = Math.floor(this.canvasWidth / fontWidth);
-                console.log("oneLineWords: " + oneLineWords)
 
                 this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
                 var col = 0;
@@ -134,8 +134,7 @@ Created by Kevin Le on 2021/01/08.
             },
 
             drawFont(index, col, row) {
-                console.log(col + " ," + row)
-                var rowBytes = Math.floor(this.fontWidth / 8);
+                var rowBytes = Math.ceil(this.fontWidth / 8);
                 var startIndex = index * this.fontHeight * rowBytes;
                 for (var h = 0; h < this.fontHeight; h++) {
                     for (var w = 0; w < this.fontWidth; w++) {
