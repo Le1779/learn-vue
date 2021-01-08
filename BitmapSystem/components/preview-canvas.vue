@@ -44,17 +44,18 @@ Created by Kevin Le on 2021/01/08.
                     console.log(this.model.text);
                     this.generateFontCodeList();
                     this.canvasHeight = this.getCanvasHeight();
-                    var self = this;
-                    setTimeout(function() {
-                        self.reDraw();
-                    }, 50);
-                    
+                    this.onScreenResize();
+
                 }
             }
         },
 
         created() {
+            window.addEventListener("resize", this.onScreenResize);
+        },
 
+        destroyed() {
+            window.removeEventListener("resize", this.onScreenResize);
         },
 
         components: {},
@@ -173,6 +174,15 @@ Created by Kevin Le on 2021/01/08.
                 var oneLineWords = Math.floor(this.canvasWidth / fontWidth);
                 var lines = Math.ceil(this.model.text.length / oneLineWords);
                 return lines * lineHeight;
+            },
+
+            onScreenResize() {
+                var container = document.getElementById("canvasContainer")
+                this.canvasWidth = container.clientWidth - 2;
+                var self = this;
+                setTimeout(function() {
+                    self.reDraw();
+                }, 50);
             }
         },
     }
