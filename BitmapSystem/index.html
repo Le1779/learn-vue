@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Bitmap System</title>
+    <style>
+        @font-face {
+            font-family: TestFont;
+            src: url(TestFont.otf);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #EDEDED;
+            color: #333333;
+            font-family: TestFont, 'Microsoft JhengHei', Arial, "Droid Sans", sans-serif;
+            font-size: 15px;
+            font-weight: 400;
+            line-height: 1.471;
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <main-app id="app"></main-app>
+</body>
+
+</html>
+<script src="../vue/js/vue.js"></script>
+<script src="../vue/js/vue-router.js"></script>
+<script src="../vue/js/httpVueLoader.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    const routes = [{
+        path: '/',
+        component: httpVueLoader('layout-preview.vue')
+    }, {
+        path: '/auth',
+        component: httpVueLoader('layout-auth.vue')
+    }]
+
+    const router = new VueRouter({
+        routes
+    })
+
+    //router.beforeEach((to, from, next) => {
+    //    const token = localStorage.getItem('token');
+    //    if (token != null) {
+    //        next();
+    //    } else {
+    //        if (to.path !== '/auth')
+    //            next('/auth');
+    //        else
+    //            next();
+    //    }
+    //});
+
+    new Vue({
+        el: '#app',
+        router,
+        components: {
+            'main-app': httpVueLoader('main.vue'),
+        }
+    })
+</script>
