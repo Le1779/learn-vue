@@ -56,11 +56,13 @@ Created by Kevin Le on 2021/01/08.
         margin-bottom: 8px;
         overflow: hidden;
         text-align: center;
+        cursor: pointer;
     }
 
     .item-container.selected {
         background: #000000;
         color: #FFFFFF;
+        border: 1px #000000 solid;
     }
 
     .id {
@@ -75,6 +77,10 @@ Created by Kevin Le on 2021/01/08.
     .image img {
         width: 60px;
         height: 60px;
+    }
+    
+    .item-container.selected img {
+        filter: invert(1);
     }
 
     .title {

@@ -13,7 +13,7 @@ Created by Kevin Le on 2021/01/08.
 
 <script>
     module.exports = {
-        props: ["model"],
+        props: ["model", "toolbar_model"],
         data: () => ({
             canvas: null,
             ctx: null,
@@ -47,6 +47,16 @@ Created by Kevin Le on 2021/01/08.
                     this.onScreenResize();
 
                 }
+            },
+            
+            toolbar_model: {
+                handler() {
+                    this.generateFontCodeList();
+                    this.canvasHeight = this.getCanvasHeight();
+                    this.onScreenResize();
+
+                },
+                deep: true
             }
         },
 
@@ -116,7 +126,7 @@ Created by Kevin Le on 2021/01/08.
 
             reDraw() {
                 console.log("w: " + this.fontWidth + " ,h: " + this.fontHeight)
-                var fontWidth = this.fontWidth * this.scale;
+                var fontWidth = this.fontWidth * this.toolbar_model.scale;
                 var oneLineWords = Math.floor(this.canvasWidth / fontWidth);
 
                 this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -142,14 +152,14 @@ Created by Kevin Le on 2021/01/08.
                         var index = Math.floor(w / 8) + h * rowBytes + startIndex;
                         var ret = (this.fontData[index] & (0x80 >> (w % 8))) > 0;
                         if (ret) {
-                            this.drawPixel(w, h, col * this.fontWidth * this.scale, row * this.fontHeight * this.scale);
+                            this.drawPixel(w, h, col * this.fontWidth * this.toolbar_model.scale, row * this.fontHeight * this.toolbar_model.scale);
                         }
                     }
                 }
             },
 
             drawPixel(x, y, sx, sy) {
-                this.ctx.fillRect(x * this.scale + sx, y * this.scale + sy, this.scale, this.scale);
+                this.ctx.fillRect(x * this.toolbar_model.scale + sx, y * this.toolbar_model.scale + sy, this.toolbar_model.scale, this.toolbar_model.scale);
             },
 
             paddingLeft(str, lenght) {
@@ -169,8 +179,8 @@ Created by Kevin Le on 2021/01/08.
             },
 
             getCanvasHeight() {
-                var lineHeight = this.fontHeight * this.scale;
-                var fontWidth = this.fontWidth * this.scale;
+                var lineHeight = this.fontHeight * this.toolbar_model.scale;
+                var fontWidth = this.fontWidth * this.toolbar_model.scale;
                 var oneLineWords = Math.floor(this.canvasWidth / fontWidth);
                 var lines = Math.ceil(this.model.text.length / oneLineWords);
                 return lines * lineHeight;

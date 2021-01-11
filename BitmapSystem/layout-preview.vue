@@ -11,12 +11,13 @@ Created by Kevin Le on 2020/12/11.
         <div class="page-body">
             <div class="preview-container">
                 <input type="text" v-model="previewModel.text" class="preview-text">
-                <preview-canvas :model="previewModel" class="preview-canvas"></preview-canvas>
+                <preview-canvas :model="previewModel" :toolbar_model="toolbarModel" class="preview-canvas"></preview-canvas>
             </div>
             <div class="list-container">
                 <product-list :click_callback="onListClick"></product-list>
             </div>
         </div>
+        <toolbar :model="toolbarModel"></toolbar>
     </div>
 </template>
 
@@ -27,6 +28,11 @@ Created by Kevin Le on 2020/12/11.
             previewModel: {
                 product: null,
                 text: "そっか這是第一段測試點陣文字，そっか這是第二段測試點陣文字"
+            },
+            
+            toolbarModel: {
+                scale: 5,
+                spacing: 0,
             }
         }),
 
@@ -41,6 +47,7 @@ Created by Kevin Le on 2020/12/11.
         components: {
             'product-list': httpVueLoader('components/product-list.vue'),
             'preview-canvas': httpVueLoader('components/preview-canvas.vue'),
+            'toolbar': httpVueLoader('components/toolbar.vue'),
         },
 
         mounted() {
@@ -62,7 +69,7 @@ Created by Kevin Le on 2020/12/11.
         width: 100vw;
         height: 100vh;
         display: grid;
-        grid-template-rows: 64px auto;
+        grid-template-rows: 64px auto 96px;
     }
 
     .page-head {
