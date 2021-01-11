@@ -149,8 +149,8 @@ Created by Kevin Le on 2021/01/08.
                         var index = Math.floor(w / 8) + h * rowBytes + startIndex;
                         var ret = (this.fontData[index] & (0x80 >> (w % 8))) > 0;
                         if (ret) {
-                            var spacingX = this.toolbar_model.spacing * (col + 1);
-                            var spacingY = this.toolbar_model.spacing * (row + 1)
+                            var spacingX = this.toolbar_model.spacing * (col*2 + 1);
+                            var spacingY = this.toolbar_model.spacing * (row*2 + 1)
                             
                             var x = w + col * this.fontWidth
                             var y = h + row * this.fontHeight
@@ -184,7 +184,7 @@ Created by Kevin Le on 2021/01/08.
             },
 
             getCanvasHeight() {
-                var lineHeight = this.fontHeight * this.toolbar_model.scale + this.toolbar_model.spacing * 1;
+                var lineHeight = this.fontHeight * this.toolbar_model.scale + this.toolbar_model.spacing * 2;
                 var lines = Math.ceil(this.model.text.length / this.getOneLineWords());
                 return lines * lineHeight;
             },
@@ -199,7 +199,7 @@ Created by Kevin Le on 2021/01/08.
             },
             
             getOneLineWords() {
-                var fontWidth = this.fontWidth * this.toolbar_model.scale + this.toolbar_model.spacing * 1;
+                var fontWidth = this.fontWidth * this.toolbar_model.scale + this.toolbar_model.spacing * 2;
                 return Math.floor(this.canvasWidth / fontWidth);
                 
             }
