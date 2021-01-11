@@ -79,7 +79,12 @@ Created by Kevin Le on 2021/01/08.
 
         methods: {
             getCodeMap() {
-                var fileName = this.$HOST + '/Document/CodePage/' + this.model.product.Spec + '-Full-Unicode'
+                var fileName = this.$HOST + '/Document/CodePage/' + this.model.product.Spec + '-Full-Unicode';
+                
+                if (this.model.product.Spec == 'Unicode') {
+                    fileName = this.$HOST + '/Document/CodePage/' + this.model.product.Language + '-Unicode-Full';
+                }
+                
                 var self = this;
                 this.codeMap = new Map();
                 axios.get(fileName)
@@ -167,13 +172,6 @@ Created by Kevin Le on 2021/01/08.
                 this.ctx.fillRect(px, py, scale, scale);
             },
 
-            paddingLeft(str, lenght) {
-                if (str.length >= lenght)
-                    return str;
-                else
-                    return this.paddingLeft('0' + str, lenght);
-            },
-
             generateFontCodeList() {
                 this.fontCodeList = []
                 for (var i = 0; i < this.model.text.length; i++) {
@@ -181,6 +179,13 @@ Created by Kevin Le on 2021/01/08.
                     code = this.paddingLeft(code, 4);
                     this.fontCodeList.push(this.codeMap.get(code))
                 }
+            },
+            
+            paddingLeft(str, lenght) {
+                if (str.length >= lenght)
+                    return str;
+                else
+                    return this.paddingLeft('0' + str, lenght);
             },
 
             getCanvasHeight() {
