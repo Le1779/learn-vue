@@ -22,7 +22,6 @@ Created by Kevin Le on 2021/01/08.
             codeMap: new Map(),
             fontData: [],
             fontCodeList: [4355],
-            scale: 5,
             fontWidth: 16,
             fontHeight: 16,
         }),
@@ -31,8 +30,8 @@ Created by Kevin Le on 2021/01/08.
             "model.product": {
                 handler() {
                     var border = this.model.product.Border.split('x');
-                    this.fontWidth = border[0];
-                    this.fontHeight = border[1];
+                    this.fontWidth = parseInt(border[0]);
+                    this.fontHeight = parseInt(border[1]);
                     this.canvasHeight = this.getCanvasHeight();
 
                     this.getCodeMap();
@@ -125,9 +124,7 @@ Created by Kevin Le on 2021/01/08.
             },
 
             reDraw() {
-                console.log("w: " + this.fontWidth + " ,h: " + this.fontHeight)
-                var fontWidth = this.fontWidth * this.toolbar_model.scale;
-                var oneLineWords = Math.floor(this.canvasWidth / fontWidth);
+                var oneLineWords = this.getOneLineWords();
 
                 this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
                 var col = 0;
@@ -152,14 +149,22 @@ Created by Kevin Le on 2021/01/08.
                         var index = Math.floor(w / 8) + h * rowBytes + startIndex;
                         var ret = (this.fontData[index] & (0x80 >> (w % 8))) > 0;
                         if (ret) {
-                            this.drawPixel(w, h, col * this.fontWidth * this.toolbar_model.scale, row * this.fontHeight * this.toolbar_model.scale);
+                            var spacingX = this.toolbar_model.spacing * (col + 1);
+                            var spacingY = this.toolbar_model.spacing * (row + 1)
+                            
+                            var x = w + col * this.fontWidth
+                            var y = h + row * this.fontHeight
+                            this.drawPixel(x, y, spacingX, spacingY, this.toolbar_model.scale);
                         }
                     }
                 }
             },
 
-            drawPixel(x, y, sx, sy) {
-                this.ctx.fillRect(x * this.toolbar_model.scale + sx, y * this.toolbar_model.scale + sy, this.toolbar_model.scale, this.toolbar_model.scale);
+            drawPixel(x, y, spacingX, spacingY , scale) {
+                var px = x * scale + spacingX;
+                var py = y * scale + spacingY;
+                
+                this.ctx.fillRect(px, py, scale, scale);
             },
 
             paddingLeft(str, lenght) {
@@ -179,10 +184,8 @@ Created by Kevin Le on 2021/01/08.
             },
 
             getCanvasHeight() {
-                var lineHeight = this.fontHeight * this.toolbar_model.scale;
-                var fontWidth = this.fontWidth * this.toolbar_model.scale;
-                var oneLineWords = Math.floor(this.canvasWidth / fontWidth);
-                var lines = Math.ceil(this.model.text.length / oneLineWords);
+                var lineHeight = this.fontHeight * this.toolbar_model.scale + this.toolbar_model.spacing * 1;
+                var lines = Math.ceil(this.model.text.length / this.getOneLineWords());
                 return lines * lineHeight;
             },
 
@@ -193,6 +196,12 @@ Created by Kevin Le on 2021/01/08.
                 setTimeout(function() {
                     self.reDraw();
                 }, 50);
+            },
+            
+            getOneLineWords() {
+                var fontWidth = this.fontWidth * this.toolbar_model.scale + this.toolbar_model.spacing * 1;
+                return Math.floor(this.canvasWidth / fontWidth);
+                
             }
         },
     }

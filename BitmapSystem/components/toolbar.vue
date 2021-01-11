@@ -14,7 +14,8 @@ Created by Kevin Le on 2021/01/11.
             <div class="material-icons backButton" @click="onBackButtonClick">
                 navigate_before
             </div>
-            <scale :model="model"></scale>
+            <scale v-if="subViewId == 'scale'" :model="model"></scale>
+            <spacing v-if="subViewId == 'spacing'" :model="model"></spacing>
         </div>
     </div>
 </template>
@@ -38,6 +39,7 @@ Created by Kevin Le on 2021/01/11.
 
         components: {
             'scale': httpVueLoader('components/toolbar/item-scale.vue'),
+            'spacing': httpVueLoader('components/toolbar/item-spacing.vue'),
         },
 
         mounted() {

@@ -6,9 +6,9 @@ Created by Kevin Le on 2021/01/11.
 <template>
     <div class="item-container">
         <div>
-            {{title}}&ensp;x{{model.scale}}
+            {{title}}&ensp;x{{model.spacing}}
         </div>
-        <input type="range" min="1" max="10" v-model="model.scale">
+        <input type="range" min="0" max="64" v-model="model.spacing">
     </div>
 </template>
 
@@ -16,7 +16,7 @@ Created by Kevin Le on 2021/01/11.
     module.exports = {
         props: ["model"],
         data: () => ({
-            title: 'Scale'
+            title: 'Spacing'
         }),
 
         watch: {
