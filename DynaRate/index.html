@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+   <main-app id="app"></main-app>
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-app.js"></script>
+
+    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-analytics.js"></script>
+
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-firestore.js"></script>
+</body></html>
+
+<script src="../vue/js/vue.js"></script>
+<script src="../vue/js/vue-router.js"></script>
+<script src="../vue/js/httpVueLoader.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    const routes = [{
+        path: '/',
+        component: httpVueLoader('layout/layout-main.vue')
+    }, {
+        path: '/result',
+        component: httpVueLoader('layout/layout-result.vue')
+    }]
+
+    const router = new VueRouter({
+        routes
+    })
+
+    new Vue({
+        el: '#app',
+        router,
+        components: {
+            'main-app': httpVueLoader('main.vue'),
+        }
+    })
+
+</script>
