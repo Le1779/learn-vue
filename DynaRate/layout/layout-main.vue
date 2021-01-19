@@ -5,18 +5,50 @@ Created by Kevin Le on 2020/01/12.
 -->
 <template>
     <div class="container">
+        <div class="show-selector-container" style="display: none;">
+            <select class="show-selector">
+                <option selected>表演節目1</option>
+                <option>表演節目2</option>
+            </select>
+        </div>
+
+        <div class="rate" style="display: none;">
+            <div class="rate-text">
+                評分
+            </div>
+        </div>
+
         <div v-if="uid == null" class="loading-view">Loading...</div>
+
         <div class="show-list" v-if="userRateData != null">
             <div v-for="(item, key, index) in showList" class="show-list-item">
-                {{item.data.name}}
-                <select v-model="item.rate" :disabled="userRateData.hasOwnProperty(item.id)">
-                    <option selected>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                </select>
-                <button @click="onSendButtonClick(item)" :disabled="userRateData.hasOwnProperty(item.id)">Send</button>
+                <div class="show-name">
+                    {{item.data.name}}
+                </div>
+
+                <div style="margin: auto; display: table;">
+                    <div class="show-rate">
+                        評分
+                        <select v-model="item.rate" :disabled="userRateData.hasOwnProperty(item.id)">
+                            <option selected>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                            <option>7</option>
+                            <option>8</option>
+                            <option>9</option>
+                            <option>10</option>
+                        </select>
+                    </div>
+
+
+
+                    <button @click="onSendButtonClick(item)" :disabled="userRateData.hasOwnProperty(item.id)" class="show-rate-send">送出</button>
+                </div>
+
+
             </div>
         </div>
     </div>
@@ -160,5 +192,145 @@ Created by Kevin Le on 2020/01/12.
 
 <style scoped>
     .loading-view {}
+
+    .container {
+        position: absolute;
+        width: 100vw;
+        height: 100vh;
+        padding: 6.4rem 0;
+        overflow: hidden;
+    }
+
+    .show-list {
+        height: 100%;
+        overflow: auto;
+    }
+
+    .show-list-item {
+        margin-bottom: 2rem;
+    }
+
+    .show-name {
+        background: url('../images/show-bg.png') no-repeat;
+        background-position: center center;
+        background-size: contain;
+        position: relative;
+        margin: auto;
+        width: 24rem;
+        height: 6.4rem;
+        top: 0;
+        margin: auto;
+        max-width: 100%;
+
+        padding-top: 1.4rem;
+        padding-left: 8.4rem;
+        padding-right: 0.4rem;
+        font-size: 1.4rem;
+    }
+
+    .show-rate {
+        background: url('../images/rate.png') no-repeat;
+        background-position: center center;
+        background-size: contain;
+        position: relative;
+        width: 12rem;
+        height: 4rem;
+        font-size: 2.4rem;
+        line-height: 4rem;
+        display: inline-grid;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        grid-template-columns: auto auto;
+    }
+
+    .show-rate select {
+        background: none;
+        border: none;
+        height: 4rem;
+        font-size: 2.4rem;
+    }
+
+    .show-rate-send {
+        background: url('../images/rate.png') no-repeat;
+        background-position: center center;
+        background-size: contain;
+        position: relative;
+        width: 12rem;
+        height: 4rem;
+        font-size: 2.4rem;
+        line-height: 4rem;
+        display: inline-block;
+        border: none;
+        cursor: pointer;
+        text-align: center;
+    }
+
+    .show-selector-container {
+        background: url('../images/show-bg.png') no-repeat;
+        background-position: center center;
+        background-size: contain;
+        position: relative;
+        margin: auto;
+        width: 24rem;
+        height: 6.4rem;
+        top: 0;
+        margin: auto;
+        max-width: 100%;
+    }
+
+    .show-selector {
+        background: none;
+        border: none;
+        height: 6.4rem;
+        font-size: 2.4rem;
+        margin-left: 8.4rem;
+    }
+
+    .rate {
+        display: grid;
+        grid-template-columns: 12rem auto;
+    }
+
+    .rate-text {
+        background: url('../images/rate.png') no-repeat;
+        background-position: center center;
+        background-size: contain;
+        position: relative;
+        width: 12rem;
+        height: 4rem;
+        font-size: 2.4rem;
+        text-align: center;
+        line-height: 4rem;
+        display: inline-block;
+    }
+
+    .rate-item {
+        background: url('../images/rate-item.png') no-repeat;
+        background-position: center center;
+        background-size: contain;
+        position: relative;
+        width: 3rem;
+        height: 4rem;
+        font-size: 2.4rem;
+        text-align: center;
+        line-height: 4rem;
+        display: inline-block;
+    }
+
+    @media only screen and (max-width: 768px) {
+        .container {
+            padding: 4.8rem 0 !important;
+        }
+
+        .show-selector-container {
+            height: 4.8rem !important;
+        }
+
+        .show-selector {
+            height: 4.8rem !important;
+            font-size: 1.6rem !important;
+            margin-left: 6.8rem !important;
+        }
+    }
 
 </style>

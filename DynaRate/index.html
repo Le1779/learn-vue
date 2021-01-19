@@ -2,12 +2,26 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
     <title>Document</title>
+    <style>
+        @font-face {
+            font-family: DFT;
+            src: url(font/DFT_LX9.ttc);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: DFT, "Times New Roman", serif;
+            background: none;
+        }
+    </style>
 </head>
 
 <body>
-   <main-app id="app"></main-app>
+    <main-app id="app"></main-app>
     <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-app.js"></script>
 
