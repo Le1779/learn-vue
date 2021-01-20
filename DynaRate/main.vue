@@ -6,6 +6,10 @@
         <div class="corner rt"></div>
         <div class="corner lb"></div>
         <div class="corner rb"></div>
+        <div class="line l"></div>
+        <div class="line t"></div>
+        <div class="line r"></div>
+        <div class="line b"></div>
         <router-view></router-view>
     </div>
 </template>
@@ -91,8 +95,33 @@
         transform: scaleX(-1) scaleY(-1);
     }
     
-    .title {
-        font-size: 1.6rem;
+    .line {
+        position: fixed;
+        background-color: #D2A76A;
+    }
+    
+    .line.l {
+        height: 100vh;
+        width: 0.2rem;
+        left: 0.2rem;
+    }
+    
+    .line.t {
+        height: 0.2rem;
+        width: 100vw;
+        top: 0.2rem;
+    }
+    
+    .line.r {
+        height: 100vh;
+        width: 0.2rem;
+        right: 0.2rem;
+    }
+    
+    .line.b {
+        height: 0.2rem;
+        width: 100vw;
+        bottom: 0.2rem;
     }
 
 </style>
