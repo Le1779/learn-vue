@@ -18,28 +18,29 @@ Created by Kevin Le on 2020/01/12.
             </div>
         </div>
 
-        <div v-if="uid == null" class="loading-view">Loading...</div>
+        <div v-if="Object.keys(showList).length == 0" class="loading-view">Loading...</div>
 
         <div class="show-list" v-if="userRateData != null">
             <div v-for="(item, key, index) in showList" class="show-list-item">
                 <div class="show-name">
-                    {{item.data.name}}
+                    節目{{index+1}}:{{item.data.name}}
+                    <div class="player">{{item.data.player}}</div>
                 </div>
 
                 <div style="margin: auto; display: table;">
                     <div class="show-rate">
                         評分
                         <select v-model="item.rate" :disabled="userRateData.hasOwnProperty(item.id)">
-                            <option selected>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                            <option>6</option>
-                            <option>7</option>
-                            <option>8</option>
+                            <option selected>10</option>
                             <option>9</option>
-                            <option>10</option>
+                            <option>8</option>
+                            <option>7</option>
+                            <option>6</option>
+                            <option>5</option>
+                            <option>4</option>
+                            <option>3</option>
+                            <option>2</option>
+                            <option>1</option>
                         </select>
                     </div>
 
@@ -147,7 +148,7 @@ Created by Kevin Le on 2020/01/12.
                         Vue.set(self.showList, doc.id, {
                             id: doc.id,
                             data: doc.data(),
-                            rate: 1
+                            rate: 10
                         })
 
                         //listen rate collection
@@ -191,7 +192,12 @@ Created by Kevin Le on 2020/01/12.
 </script>
 
 <style scoped>
-    .loading-view {}
+    .loading-view {
+        font-size: 2rem;
+        color: #D2A76A;
+        text-align: center;
+        line-height: 20vh;
+    }
 
     .container {
         position: absolute;
@@ -233,7 +239,7 @@ Created by Kevin Le on 2020/01/12.
         background-position: center center;
         background-size: contain;
         position: relative;
-        width: 12rem;
+        width: 11rem;
         height: 4rem;
         font-size: 2.4rem;
         line-height: 4rem;
@@ -247,7 +253,7 @@ Created by Kevin Le on 2020/01/12.
         background: none;
         border: none;
         height: 4rem;
-        font-size: 2.4rem;
+        font-size: 1.8rem;
     }
 
     .show-rate-send {
@@ -255,7 +261,7 @@ Created by Kevin Le on 2020/01/12.
         background-position: center center;
         background-size: contain;
         position: relative;
-        width: 12rem;
+        width: 11rem;
         height: 4rem;
         font-size: 2.4rem;
         line-height: 4rem;
@@ -264,6 +270,8 @@ Created by Kevin Le on 2020/01/12.
         cursor: pointer;
         text-align: center;
     }
+
+    .player {}
 
     .show-selector-container {
         background: url('../images/show-bg.png') no-repeat;
