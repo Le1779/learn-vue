@@ -6,24 +6,24 @@ Created by Kevin Le on 2021/3/4.
 <template>
     <div class="main">
         <div class="header">
-            <div v-if="displayFirstPage" class="forward button material-icons" :class="{active: excelFile && fontFile && !loading}" @click="onForwardButtonClick">keyboard_arrow_right</div>
-            <div v-else class="back button material-icons" @click="onBackButtonClick">keyboard_arrow_left</div>
+            <loading-button v-if="displayFirstPage && excelFile && fontFile" :model="loadingButtonModel" class="forward" @action="onForwardButtonClick"></loading-button>
+            <div v-if="!displayFirstPage" class="back button material-icons" @click="onBackButtonClick">keyboard_arrow_left</div>
             <div class="error-message">{{errorMessage}}</div>
             <div class="loader" :class="{active: excelFile && fontFile && loading}"></div>
         </div>
         <div class="content">
             <div v-if="displayFirstPage" class="first-page">
-                <div class="upload-file-block left" :class="{active: excelFile && !loading}">
+                <div class="upload-file-block left" :class="{active: excelFile && !loadingButtonModel.loading}">
                     <div class="material-icons">insert_drive_file</div>
                     <div v-if="!excelFile" class="text">上傳 Excel</div>
                     <div v-else class="selected-file-name">{{excelFile.name}}</div>
-                    <input class="file" type="file" @change="tirggerExcelFile($event)" :disabled="loading">
+                    <input class="file" type="file" @change="tirggerExcelFile($event)" :disabled="loadingButtonModel.loading">
                 </div>
-                <div class="upload-file-block" :class="{active: fontFile && !loading}">
+                <div class="upload-file-block" :class="{active: fontFile && !loadingButtonModel.loading}">
                     <div class="material-icons">title</div>
                     <div v-if="!fontFile" class="text">上傳 Font</div>
                     <div v-else class="selected-file-name">{{fontFile.name}}</div>
-                    <input class="file" type="file" @change="tirggerFontFile($event)" :disabled="loading">
+                    <input class="file" type="file" @change="tirggerFontFile($event)" :disabled="loadingButtonModel.loading">
                 </div>
             </div>
             <div v-else class="second-page">
@@ -39,6 +39,10 @@ Created by Kevin Le on 2021/3/4.
     module.exports = {
         props: ["model"],
         data: () => ({
+            loadingButtonModel: {
+                icon: 'keyboard_arrow_right',
+                loading: false
+            },
             displayFirstPage: true,
             errorMessage: "",
             loading: false,
@@ -59,7 +63,7 @@ Created by Kevin Le on 2021/3/4.
         created() {},
 
         components: {
-
+            'loading-button': httpVueLoader('loading-button.vue'),
         },
 
         methods: {
@@ -75,8 +79,7 @@ Created by Kevin Le on 2021/3/4.
 
             onForwardButtonClick() {
                 this.errorMessage = "";
-                this.loading = true;
-                //this.uploadAndVerifyFile();
+                this.uploadAndVerifyFile();
             },
 
             onBackButtonClick() {
@@ -92,7 +95,12 @@ Created by Kevin Le on 2021/3/4.
             },
 
             uploadAndVerifyFile() {
-                this.goToSecondPage();
+                var self = this;
+                setTimeout(()=>{
+                    self.loadingButtonModel.loading = false;
+                    self.goToSecondPage();
+                }, 1000)
+                
             }
         },
     }
@@ -134,10 +142,10 @@ Created by Kevin Le on 2021/3/4.
         margin-left: 12px;
     }
 
-    .button.forward {
+    .forward {
         float: right;
+        margin-top: 8px;
         margin-right: 12px;
-        display: none;
     }
 
     .button.forward.active {
@@ -192,47 +200,6 @@ Created by Kevin Le on 2021/3/4.
         width: 100%;
         opacity: 0;
         cursor: pointer;
-    }
-
-    .loader {
-        border: 4px solid #f3f3f3;
-        border-radius: 50%;
-        border-top: 4px solid #383838;
-        width: 32px;
-        height: 32px;
-        -webkit-animation: spin 2s linear infinite;
-        /* Safari */
-        animation: spin 2s linear infinite;
-        float: right;
-        margin-top: 12px;
-        margin-right: 12px;
-        display: none;
-        cursor: pointer;
-    }
-    
-    .loader.active {
-        display: inline-block;
-    }
-
-    /* Safari */
-    @-webkit-keyframes spin {
-        0% {
-            -webkit-transform: rotate(0deg);
-        }
-
-        100% {
-            -webkit-transform: rotate(360deg);
-        }
-    }
-
-    @keyframes spin {
-        0% {
-            transform: rotate(0deg);
-        }
-
-        100% {
-            transform: rotate(360deg);
-        }
     }
 
 </style>
