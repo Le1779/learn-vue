@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
+    <main-app id="app"></main-app>
+</body>
+
+</html>
+<script src="../vue/js/vue.js"></script>
+<script src="../vue/js/vue-router.js"></script>
+<script src="../vue/js/httpVueLoader.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    const routes = [{
+        path: '/',
+        redirect: '/main'
+    }, {
+        path: '/main',
+        component: httpVueLoader('layout-main.vue')
+    }]
+
+    const router = new VueRouter({
+        routes
+    })
+
+    new Vue({
+        el: '#app',
+        router,
+        components: {
+            'main-app': httpVueLoader('main.vue'),
+        }
+    })
+</script>
