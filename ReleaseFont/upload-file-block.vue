@@ -8,7 +8,7 @@ Created by Kevin Le on 2021/3/5.
         <div class="material-icons">{{model.icon}}</div>
         <div v-if="!file" class="text">{{model.text}}</div>
         <div v-else class="selected-file-name">{{file.name}}</div>
-        <input class="file" type="file" @change="tirgger($event)" :disabled="model.disabled" :multiple="model.multiple">
+        <input class="file" type="file" @change="tirgger($event)" :disabled="model.disabled" :multiple="model.multiple" :accept="model.accept">
     </div>
 </template>
 

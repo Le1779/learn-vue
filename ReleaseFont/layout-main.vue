@@ -13,12 +13,8 @@ Created by Kevin Le on 2021/3/4.
         </div>
         <div class="content">
             <div v-if="displayFirstPage" class="first-page">
-                <div class="upload-file-block left" :class="{active: excelFile && !loadingButtonModel.loading}">
-                    <div class="material-icons">insert_drive_file</div>
-                    <div v-if="!excelFile" class="text">上傳 Excel</div>
-                    <div v-else class="selected-file-name">{{excelFile.name}}</div>
-                    <input class="file" type="file" @change="tirggerExcelFile($event)" :disabled="loadingButtonModel.loading">
-                </div>
+               <upload-file-block :model="uploadFileBlockModel" @tirgger="tirggerExcelFile" class="upload-file-block left"></upload-file-block>
+                
                 <div class="upload-file-block" :class="{active: fontFile && !loadingButtonModel.loading}">
                     <div class="material-icons">title</div>
                     <div v-if="!fontFile" class="text">上傳 Font</div>
@@ -43,6 +39,13 @@ Created by Kevin Le on 2021/3/4.
                 icon: 'keyboard_arrow_right',
                 loading: false
             },
+            uploadFileBlockModel: {
+                icon: 'insert_drive_file',
+                text: '上傳 Excel',
+                multiple: false,
+                accept: '.xlsx, .xls, .csv',
+                disabled: false
+            },
             displayFirstPage: true,
             errorMessage: "",
             loading: false,
@@ -64,6 +67,7 @@ Created by Kevin Le on 2021/3/4.
 
         components: {
             'loading-button': httpVueLoader('loading-button.vue'),
+            'upload-file-block': httpVueLoader('upload-file-block.vue')
         },
 
         methods: {
@@ -95,9 +99,11 @@ Created by Kevin Le on 2021/3/4.
             },
 
             uploadAndVerifyFile() {
+                this.uploadFileBlockModel.disabled = true;
                 var self = this;
                 setTimeout(()=>{
                     self.loadingButtonModel.loading = false;
+                this.uploadFileBlockModel.disabled = false;
                     self.goToSecondPage();
                 }, 1000)
                 

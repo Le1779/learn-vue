@@ -21,6 +21,7 @@ Created by Kevin Le on 2021/3/5.
             uploadFileBlockModel: {
                 icon: 'insert_drive_file',
                 text: '上傳 Excel',
+                accept: '',
                 multiple: true,
                 disabled: false
             }
