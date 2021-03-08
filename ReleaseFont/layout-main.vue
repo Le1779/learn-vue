@@ -6,7 +6,7 @@ Created by Kevin Le on 2021/3/4.
 <template>
     <div class="main">
         <div class="header">
-            <loading-button v-if="isUploadAllFontFile" :model="loadingButtonModel" class="forward" @action="onForwardButtonClick"></loading-button>
+            <loading-button v-if="isUploadAllFontFile && displayFirstPage" :model="loadingButtonModel" class="forward" @action="onForwardButtonClick"></loading-button>
             <div v-if="!displayFirstPage" class="back button material-icons" @click="onBackButtonClick">keyboard_arrow_left</div>
             <div class="error-message">{{errorMessage}}</div>
         </div>
@@ -85,6 +85,11 @@ Created by Kevin Le on 2021/3/4.
 
         methods: {
             tirggerExcelFile(event) {
+                this.fontList = [];
+                if (!event.target.files[0]) {
+                    return;
+                }
+                
                 var self = this;
                 this.excelFile = event.target.files[0];
                 console.log(this.excelFile);
@@ -107,8 +112,7 @@ Created by Kevin Le on 2021/3/4.
                     var workbook = XLSX.read(data, {
                         type: 'binary'
                     });
-
-                    self.fontList = [];
+                    
                     workbook.SheetNames.forEach(function(sheetName) {
                         var roa = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
                         if (roa.length > 0) {
