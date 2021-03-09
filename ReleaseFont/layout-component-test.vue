@@ -7,6 +7,7 @@ Created by Kevin Le on 2021/3/5.
     <div>
         <loading-button :model="loadingButtonModel" class="loading-button" @action="onLoadingButtonClick"></loading-button>
         <upload-file-block :model="uploadFileBlockModel" @tirgger="tirggerFile" class="upload-file-block"></upload-file-block>
+        <font-list :model="fontListModel"></font-list>
     </div>
 </template>
 
@@ -24,12 +25,28 @@ Created by Kevin Le on 2021/3/5.
                 accept: '',
                 multiple: true,
                 disabled: false
+            },
+
+            fontListModel: {
+                fontList: [{
+                        Font_Name: 'ＤＦ華康明朝体 Pro-5 W3 OpenType for Mac',
+                        Font_FileName: 'DFMinchoPPro5-W3',
+                        Font_FileType: 'otf',
+                        notTheSame: false,
+                        file: null
+                    },
+                    {
+                        Font_Name: 'ＤＦ華康明朝体 Pro-5 W5 OpenType for Mac',
+                        Font_FileName: 'DFMinchoPPro5-W5',
+                        Font_FileType: 'otf',
+                        notTheSame: false,
+                        file: null
+                    }
+                ]
             }
         }),
 
-        watch: {
-
-        },
+        watch: {},
 
         mounted() {},
 
@@ -37,7 +54,8 @@ Created by Kevin Le on 2021/3/5.
 
         components: {
             'loading-button': httpVueLoader('loading-button.vue'),
-            'upload-file-block': httpVueLoader('upload-file-block.vue')
+            'upload-file-block': httpVueLoader('upload-file-block.vue'),
+            'font-list': httpVueLoader('font-list.vue')
         },
 
         methods: {
@@ -48,10 +66,9 @@ Created by Kevin Le on 2021/3/5.
 
             tirggerFile(event) {
                 console.log(event.target.files[0]);
-            },
+            }
         },
     }
-
 </script>
 
 <style scoped>
@@ -62,7 +79,6 @@ Created by Kevin Le on 2021/3/5.
     .upload-file-block {
         margin: 12px;
         padding: 24px 8px;
-        width: 25%;
+        width: 15%;
     }
-
 </style>
