@@ -16,8 +16,10 @@ Created by Kevin Le on 2021/3/4.
                 <font-list :model="fontListModel"></font-list>
             </div>
             <div v-else class="second-page">
-                <div>處理中...</div>
-                <div class="loading"></div>
+                <div>{{isProcessing ? processing : isComplete ? completed : failed}}</div>
+                <div v-if="isProcessing" class="loading"></div>
+                <div v-else class="back button material-icons" @click="onBackButtonClick">keyboard_arrow_left</div>
+                <div v-if="!isProcessing && !isComplete" class="failedMessage">{{failedMessage}}</div>
             </div>
         </div>
         <div class="footer"></div>
@@ -39,13 +41,19 @@ Created by Kevin Le on 2021/3/4.
                 accept: '.xlsx, .xls, .csv',
                 disabled: false
             },
-            displayFirstPage: true,
             errorMessage: "",
             loading: false,
             excelFile: null,
             fontListModel: {
                 fontList: []
-            }
+            },
+            displayFirstPage: true,
+            isProcessing: true,
+            isComplete: false,
+            processing: '處理中...',
+            completed: '已完成！',
+            failed: '失敗',
+            failedMessage: '這是失敗訊息'
         }),
 
         computed: {
@@ -117,6 +125,7 @@ Created by Kevin Le on 2021/3/4.
             },
 
             onBackButtonClick() {
+                this.fontListModel.fontList = [];
                 this.goToFirstPage();
             },
 
@@ -142,8 +151,9 @@ Created by Kevin Le on 2021/3/4.
             uploadExcelAndFonts() {
                 var self = this;
                 setTimeout(() => {
-                    self.fontListModel.fontList = [];
-                    self.displayFirstPage = true;
+                    self.isProcessing = false;
+                    self.isComplete = false;
+                    self.failedMessage = "這是測試模式";
                 }, 3000);
             }
         },
@@ -187,7 +197,6 @@ Created by Kevin Le on 2021/3/4.
     }
 
     .button.back {
-        margin-left: 12px;
     }
 
     .forward {
@@ -204,6 +213,11 @@ Created by Kevin Le on 2021/3/4.
         float: right;
         line-height: 64px;
         margin-right: 12px;
+        color: #FF8584;
+    }
+    
+    .failedMessage {
+        margin-top: 12px;
         color: #FF8584;
     }
 
