@@ -16,8 +16,7 @@ Created by Kevin Le on 2021/3/4.
             </div>
             <div v-else class="second-page">
                 <div>{{isProcessing ? processing : isComplete ? completed : failed}}</div>
-                <div v-if="isProcessing" class="loading"></div>
-                <loading-button v-else :model="backButtonModel" class="back" @action="onBackButtonClick"></loading-button>
+                <loading-button :model="backButtonModel" class="back" @action="onBackButtonClick"></loading-button>
                 <div v-if="!isProcessing && !isComplete" class="failedMessage">{{failedMessage}}</div>
             </div>
         </div>
@@ -94,7 +93,6 @@ Created by Kevin Le on 2021/3/4.
 
                 function readFile(file) {
                     var reader = new FileReader();
-                    var name = file.name;
 
                     reader.onload = function(e) {
                         var data = e.target.result;
@@ -124,10 +122,16 @@ Created by Kevin Le on 2021/3/4.
 
             onForwardButtonClick() {
                 this.errorMessage = "";
-                this.uploadAndVerifyFile();
+                this.loadingButtonModel.loading = false;
+                this.backButtonModel.loading = true;
+                this.goToSecondPage();
+                this.uploadExcelAndFonts();
             },
 
             onBackButtonClick() {
+                this.isProcessing = true;
+                this.isComplete = false;
+                this.failedMessage = '';
                 this.excelFile = null;
                 this.fontListModel.fontList = [];
                 this.goToFirstPage();
@@ -141,27 +145,19 @@ Created by Kevin Le on 2021/3/4.
                 this.displayFirstPage = false;
             },
 
-            uploadAndVerifyFile() {
-                this.uploadFileBlockModel.disabled = true;
-                var self = this;
-                setTimeout(() => {
-                    self.loadingButtonModel.loading = false;
-                    this.uploadFileBlockModel.disabled = false;
-                    self.goToSecondPage();
-                    self.uploadExcelAndFonts();
-                }, 1000);
-            },
-
             uploadExcelAndFonts() {
+
                 var self = this;
                 setTimeout(() => {
                     self.isProcessing = false;
                     self.isComplete = false;
                     self.failedMessage = "這是測試模式";
+                    self.backButtonModel.loading = false;
                 }, 3000);
             }
         },
     }
+
 </script>
 
 <style scoped>
@@ -194,7 +190,7 @@ Created by Kevin Le on 2021/3/4.
         margin-right: 12px;
         color: #FF8584;
     }
-    
+
     .failedMessage {
         margin-top: 12px;
         color: #FF8584;
@@ -242,4 +238,5 @@ Created by Kevin Le on 2021/3/4.
             transform: rotate(360deg);
         }
     }
+
 </style>
