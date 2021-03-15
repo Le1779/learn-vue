@@ -7,7 +7,6 @@ Created by Kevin Le on 2021/3/4.
     <div class="main">
         <div class="header">
             <loading-button v-if="isUploadAllFontFile && displayFirstPage" :model="loadingButtonModel" class="forward" @action="onForwardButtonClick"></loading-button>
-            <div v-if="false" class="back button material-icons" @click="onBackButtonClick">keyboard_arrow_left</div>
             <div class="error-message">{{errorMessage}}</div>
         </div>
         <div class="content">
@@ -18,7 +17,7 @@ Created by Kevin Le on 2021/3/4.
             <div v-else class="second-page">
                 <div>{{isProcessing ? processing : isComplete ? completed : failed}}</div>
                 <div v-if="isProcessing" class="loading"></div>
-                <div v-else class="back button material-icons" @click="onBackButtonClick">keyboard_arrow_left</div>
+                <loading-button v-else :model="backButtonModel" class="back" @action="onBackButtonClick"></loading-button>
                 <div v-if="!isProcessing && !isComplete" class="failedMessage">{{failedMessage}}</div>
             </div>
         </div>
@@ -32,6 +31,10 @@ Created by Kevin Le on 2021/3/4.
         data: () => ({
             loadingButtonModel: {
                 icon: 'keyboard_arrow_right',
+                loading: false
+            },
+            backButtonModel: {
+                icon: 'keyboard_arrow_left',
                 loading: false
             },
             uploadFileBlockModel: {
@@ -125,6 +128,7 @@ Created by Kevin Le on 2021/3/4.
             },
 
             onBackButtonClick() {
+                this.excelFile = null;
                 this.fontListModel.fontList = [];
                 this.goToFirstPage();
             },
@@ -178,35 +182,10 @@ Created by Kevin Le on 2021/3/4.
         padding: 24px 8px;
     }
 
-    .button {
-        display: inline-block;
-        margin-top: 8px;
-        height: 48px;
-        width: 48px;
-        line-height: 48px;
-        font-size: 32px;
-        border-radius: 48px;
-        text-align: center;
-        cursor: pointer;
-        color: #FFF;
-        background-color: #383838;
-    }
-
-    .button:hover {
-        background-color: #585858;
-    }
-
-    .button.back {
-    }
-
     .forward {
         float: right;
         margin-top: 8px;
         margin-right: 12px;
-    }
-
-    .button.forward.active {
-        display: inline-block;
     }
 
     .error-message {
