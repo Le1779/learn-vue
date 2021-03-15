@@ -15,9 +15,26 @@ Created by Kevin Le on 2021/3/4.
                 <font-list :model="fontListModel"></font-list>
             </div>
             <div v-else class="second-page">
-                <div>{{isProcessing ? processing : isComplete ? completed : failed}}</div>
+                <h1>{{isProcessing ? processing : isComplete ? completed : failed}}</h1>
                 <loading-button :model="backButtonModel" class="back" @action="onBackButtonClick"></loading-button>
-                <div v-if="!isProcessing && !isComplete" class="failedMessage">{{failedMessage}}</div>
+                <div v-if="!isProcessing && !isComplete" class="failed-message">{{failedMessage}}</div>
+                <div v-if="!isProcessing && isComplete" class="next-step">
+                    <h1>接下來...</h1>
+                    <h4>修改官網的WebEditor的javascript檔。</h4>
+                    <div class="subtext">
+                        <p>1. 前往官網的主機。</p>
+                        <p>2. 開啟官網WebEditor的目錄。</p>
+                        <p>3. 編輯plugin.js檔案。(台灣站的目錄:F:\WebSites\test.dynacw.com.tw\backend\asset\js\ckeditor\plugins\dfo\plugin.js)</p>
+                        <p>4. 將新的字型加入下拉選單的選項中。</p>
+                    </div>
+                    <h4>是多國語嗎？ 果是的話請依照以下步驟：</h4>
+                    <div class="subtext">
+                        <p>1. 前往官網的主機。</p>
+                        <p>2. 開啟DFO Web Service的目錄。</p>
+                        <p>3. 編輯web.config檔案。</p>
+                        <p>4. 找到"appSettings"標籤下，key="MutiLang"，新增字體檔的檔案名稱至value的最後面。</p>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="footer"></div>
@@ -54,7 +71,7 @@ Created by Kevin Le on 2021/3/4.
             isComplete: false,
             processing: '處理中...',
             completed: '已完成！',
-            failed: '失敗',
+            failed: '失敗 :(',
             failedMessage: '這是失敗訊息'
         }),
 
@@ -196,6 +213,10 @@ Created by Kevin Le on 2021/3/4.
         margin-top: 8px;
         margin-right: 12px;
     }
+    
+    .back {
+        margin-top: 12px;
+    }
 
     .error-message {
         float: right;
@@ -204,8 +225,8 @@ Created by Kevin Le on 2021/3/4.
         color: #FF8584;
     }
 
-    .failedMessage {
-        margin-top: 12px;
+    .failed-message {
+        margin-top: 60px;
         color: #FF8584;
     }
 
@@ -216,5 +237,16 @@ Created by Kevin Le on 2021/3/4.
 
     .second-page {
         text-align: center;
+    }
+    
+    .next-step {
+        margin-top: 60px;
+        margin-left: 60px;
+        text-align: left;
+    }
+    
+    .subtext {
+        margin-left: 12px;
+        color: #787878;
     }
 </style>
