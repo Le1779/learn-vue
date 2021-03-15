@@ -146,14 +146,27 @@ Created by Kevin Le on 2021/3/4.
             },
 
             uploadExcelAndFonts() {
-
-                var self = this;
+                var postObj = new FormData();
+                postObj.set('excel', this.excelFile);
+                postObj.set('fonts', this.fontListModel.fontList);
+                
                 setTimeout(() => {
+                    success();
+                }, 3000);
+                
+                var self = this;
+                function success(response) {
+                    self.isProcessing = false;
+                    self.isComplete = true;
+                    self.backButtonModel.loading = false;
+                }
+
+                function fail(error) {
                     self.isProcessing = false;
                     self.isComplete = false;
                     self.failedMessage = "這是測試模式";
                     self.backButtonModel.loading = false;
-                }, 3000);
+                }
             }
         },
     }
