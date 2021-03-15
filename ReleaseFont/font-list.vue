@@ -6,7 +6,7 @@ Created by Kevin Le on 2021/3/8.
 <template>
     <div class="font-list">
         <div v-for="(item, i) in model.fontList" class="font-list-item" :class="{active: item.file && !item.notTheSame}">
-            <div class="font-list-item-icon material-icons">task</div>
+            <div class="font-list-item-icon material-icons">insert_drive_file</div>
             <div class="font-list-item-font-name">{{item.Font_Name}}</div>
             <div class="font-list-item-font-filename">{{item.Font_FileName}}.{{item.Font_FileType}}</div>
             <div v-if="item.file && item.notTheSame" class="font-list-item-not-the-same-filename">上傳的檔案名稱不符合</div>
@@ -92,6 +92,7 @@ Created by Kevin Le on 2021/3/8.
         width: 100%;
         height: 100%;
         opacity: 0;
+        cursor: pointer;
     }
 
     .font-list-item.active {
