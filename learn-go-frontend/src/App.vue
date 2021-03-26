@@ -12,13 +12,16 @@
 <style>
 * {
   color: #383838;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 #app {
   margin: 24px 48px;
 }
 
-#header h1{
+#header h1 {
   display: inline-block;
 }
 
