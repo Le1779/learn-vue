@@ -28,25 +28,28 @@ export default {
 
 <style scoped>
 #container {
-  background: #e8e8e8;
+  width: 100%;
   height: 2.5rem;
-  border-radius: 1.25rem;
-  padding: 0 1.25rem;
   line-height: 2.5rem;
+  border-radius: 1.25rem;
+  background: #e8e8e8;
 }
 
 input {
+  padding: 0 1.25rem;
   width: 100%;
+  height: 2.5rem;
+  border-radius: 1.25rem;
   background: transparent;
   border: none;
 }
 
 input:focus {
   outline: none;
+  border: 2px #383838 solid;
 }
 
 input:-webkit-autofill {
   transition: background-color 5000s ease-in-out 0s;
 }
 </style>
-
