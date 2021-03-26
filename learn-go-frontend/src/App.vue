@@ -1,19 +1,30 @@
 <template>
-<h1>Learn Go</h1>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/auth">Auth</router-link>
+  <div id="header">
+    <h1>Learn Go</h1>
+    <div id="nav">
+      <router-link to="/">Home</router-link> |
+      <router-link to="/auth">Auth</router-link>
+    </div>
   </div>
-  <router-view/>
+  <router-view />
 </template>
 
 <style>
-h1 {
-    color: #383838;
+* {
+  color: #383838;
+}
+
+#app {
+  margin: 24px 48px;
+}
+
+#header h1{
+  display: inline-block;
 }
 
 #nav {
-  padding: 30px;
+  display: inline-block;
+  margin-left: 24px;
 }
 
 #nav a {
