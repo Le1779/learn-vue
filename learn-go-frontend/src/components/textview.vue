@@ -50,6 +50,6 @@ input:focus {
 }
 
 input:-webkit-autofill {
-  transition: background-color 5000s ease-in-out 0s;
+  -webkit-box-shadow: 0 0 0px 100px #e8e8e8 inset;
 }
 </style>
