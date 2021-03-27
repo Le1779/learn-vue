@@ -19,6 +19,7 @@
         v-model:value="confirmPassword"
         v-model:model="confirmPasswordTextviewModel"
       />
+      <ErrorMessage v-if="errorMsg != null && errorMsg != ''" v-model:msg="errorMsg" class="error-message"/>
       <Button class="button" v-model:loading="loading" @click="onButtonClick" />
     </div>
   </div>
@@ -28,6 +29,7 @@
 import AuthNav from "../components/auth/auth-nav.vue";
 import Textview from "../components/textview.vue";
 import Button from "../components/auth/button.vue";
+import ErrorMessage from "../components/auth/error-message.vue";
 export default {
   data() {
     return {
@@ -51,12 +53,14 @@ export default {
       password: "",
       confirmPassword: "",
       loading: false,
+      errorMsg: ""
     };
   },
   components: {
     AuthNav,
     Textview,
     Button,
+    ErrorMessage
   },
   methods: {
     onButtonClick() {
@@ -64,10 +68,12 @@ export default {
         return;
       }
 
+      this.errorMsg = "";
       this.loading = true;
       var self = this;
       setInterval(() => {
-        self.loading = false
+        self.loading = false;
+        self.errorMsg = "Debugging.";
       }, 3000);
     },
   },
@@ -92,10 +98,14 @@ export default {
   margin-bottom: 1rem;
 }
 
+.error-message {
+  margin-top: 1rem;
+}
+
 .button {
   display: inline;
   width: 5rem;
-  margin-top: 4rem;
+  margin-top: 1rem;
   float: right;
 }
 </style>
