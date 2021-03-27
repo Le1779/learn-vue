@@ -19,7 +19,7 @@
         v-model:value="confirmPassword"
         v-model:model="confirmPasswordTextviewModel"
       />
-      <button>Login</button>
+      <Button class="button" v-model:loading="loading" @click="onButtonClick" />
     </div>
   </div>
 </template>
@@ -27,6 +27,7 @@
 <script>
 import AuthNav from "../components/auth/auth-nav.vue";
 import Textview from "../components/textview.vue";
+import Button from "../components/auth/button.vue";
 export default {
   data() {
     return {
@@ -49,11 +50,26 @@ export default {
       email: "",
       password: "",
       confirmPassword: "",
+      loading: false,
     };
   },
   components: {
     AuthNav,
     Textview,
+    Button,
+  },
+  methods: {
+    onButtonClick() {
+      if (this.loading) {
+        return;
+      }
+
+      this.loading = true;
+      var self = this;
+      setInterval(() => {
+        self.loading = false
+      }, 3000);
+    },
   },
 };
 </script>
@@ -74,6 +90,13 @@ export default {
 
 .textview {
   margin-bottom: 1rem;
+}
+
+.button {
+  display: inline;
+  width: 5rem;
+  margin-top: 4rem;
+  float: right;
 }
 </style>
 
