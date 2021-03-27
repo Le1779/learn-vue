@@ -50,6 +50,6 @@ input:focus {
 }
 
 input:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0px 100px #e8e8e8 inset;
+  box-shadow: 0 0 0px 100px #e8e8e8 inset;
 }
 </style>
