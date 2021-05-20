@@ -1,6 +1,9 @@
 <template>
     <v-app>
         <v-main>
+           <v-btn color="gray lighten-2" dark @click="dialogViewModel.show = true">
+                Click Me
+            </v-btn>
             <detail-dialog :view_model="dialogViewModel"></detail-dialog>
         </v-main>
     </v-app>
@@ -13,7 +16,7 @@
         },
         data: () => ({
             dialogViewModel: {
-                show: true
+                show: false
             }
         }),
 
