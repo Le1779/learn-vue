@@ -1,9 +1,5 @@
 <template>
     <v-row>
-        <v-col cols="12">
-            <v-text-field v-model="search_item.Name" label="購買帳號"></v-text-field>
-        </v-col>
-
         <v-col cols="6">
             <v-menu v-model="date_from_menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
                 <template v-slot:activator="{ on }">
