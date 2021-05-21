@@ -15,6 +15,7 @@ export default {
   }),
 
   created() {
+    this.$TOKEN = "DEBUG"
     //this.$vuetify.theme.dark = false;
   },
 };

@@ -1,5 +1,5 @@
 <template>
-    <v-navigation-drawer v-model="app.nav_drawer_expand" app clipped>
+    <v-navigation-drawer v-model="app.nav_drawer_expand" app clipped hide-overlay>
         <template v-slot:prepend>
             <v-list-item two-line v-if="$USER != null">
                 <v-list-item-avatar color="red">
@@ -56,8 +56,8 @@
             selected_view: 0,
             items: [{
                     icon: 'account',
-                    text: '使用者',
-                    link: '/user'
+                    text: '顧客列表',
+                    link: '/customer'
                 },
                 {
                     icon: 'shopping_cart',

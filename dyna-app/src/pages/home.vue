@@ -8,7 +8,7 @@
       <v-toolbar-title>Dyna App</v-toolbar-title>
     </v-app-bar>
     <v-main>
-      
+      <router-view></router-view>
     </v-main>
   </div>
 </template>
