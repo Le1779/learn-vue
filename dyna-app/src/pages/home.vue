@@ -14,10 +14,10 @@
 </template>
 
 <script>
-import Nav from "../components/navigation-drawer.vue";
+import Nav from "../components/nav/navigation-drawer.vue";
 export default {
   name: "Home",
-  
+
   components: {
     Nav,
   },
@@ -25,6 +25,34 @@ export default {
   data: () => ({
     app: {
       nav_drawer_expand: null,
+      items: [
+        {
+          id: 1,
+          icon: "account",
+          text: "顧客列表",
+          link: "/customer",
+          children: []
+        },
+        {
+          id: 2,
+          icon: "barcode",
+          text: "交易查詢",
+          link: "",
+          children: [
+            {
+              id: 21,
+              icon: "",
+              text: "顧客交易列表",
+              link: "/purchase",
+            },{
+              id: 22,
+              icon: "",
+              text: "顧客交列表",
+              link: "/app-store-response",
+            },
+          ],
+        },
+      ],
     },
   }),
 };
