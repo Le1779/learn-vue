@@ -1,0 +1,127 @@
+<template>
+  <div>
+    <div class="business-card">
+      <div class="field-container">
+        <div class="business-card-text caption">No. {{ id }}</div>
+        <div class="business-card-text title">樂仲珉</div>
+        <div class="business-card-text subtitle">Kevin Le</div>
+        <div>
+          <div class="business-card-text subtitle inline">NTD部</div>
+          <div class="business-card-text subtitle inline" style="margin-left: 8px;">華康-職員</div>
+        </div>
+        <div class="business-card-text subtitle">kevinle@dynacw.com</div>
+      </div>
+      <div class="right-block"></div>
+      <div class="bottom-block">
+        <div class="color-block"></div>
+        <div class="employee-country">
+          <div class="zh-TW selected" value>台灣<br />Taipei</div>
+          <div class="ja-JP">日本<br />Japan</div>
+          <div class="zh-CN">中國<br />China</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+module.exports = {
+  components: {},
+
+  data: () => ({
+    id: 2004,
+  }),
+
+  methods: {},
+};
+</script>
+
+<style scoped>
+.business-card-text {
+    color: #383838;
+}
+
+.business-card-text.title {
+    font-size: 1.5rem;
+}
+
+.business-card-text.subtitle {
+    font-size: 0.925rem;
+}
+
+.business-card-text.caption {
+    font-size: 0.75rem;
+    color: #787878;
+}
+
+.business-card-text.inline {
+    display: inline-block;
+}
+
+.business-card {
+  position: relative;
+  display: inline-grid;
+  grid-template-rows: auto 21%;
+  height: 220px;
+  width: 360px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.2);
+  transition: transform 0.1s;
+  overflow: hidden;
+  cursor: pointer;
+  font-family: "DFP King Gothic TC Regular", "Microsoft YaHei";
+}
+
+.field-container {
+  display: grid;
+  padding: 24px 36px 8px 36px;
+  grid-template-rows: 1rem 2rem auto 1.3rem 1.3rem;
+}
+
+.business-card:hover {
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1), 0 2px 10px rgba(0, 0, 0, 0.1);
+  transform: scale(1.005, 1.005);
+}
+
+.business-card .right-block {
+  width: 30%;
+  height: 25%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: gainsboro;
+  border-bottom-left-radius: 18px;
+}
+
+.business-card .bottom-block {
+  width: 100%;
+  height: 21%;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  display: grid;
+  grid-template-columns: 45% 55%;
+}
+
+.business-card .bottom-block .color-block {
+  background-image: linear-gradient(to left, #7f57a1, #2d71b8);
+  border-top-right-radius: 18px;
+  height: 100%;
+}
+
+.business-card .employee-country {
+  height: 100%;
+  padding-left: 8px;
+}
+
+.business-card .employee-country div {
+  display: inline-block;
+  font-size: 0.75rem;
+  margin-left: 8px;
+  color: #ccc;
+}
+
+.business-card .employee-country div.selected {
+  color: #7f57a1;
+}
+</style>
