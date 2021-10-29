@@ -3,35 +3,14 @@
     <div class="overlay" :class="{ show: value }" @click="onOverlayClick"></div>
     <div class="dialog" :class="{ show: value }">
       <div class="dialog-content">
-        <div class="dialog-header">建立</div>
+        <div class="dialog-header">代理人列表</div>
         <div class="dialog-body">
-          <div class="account-input">
-            <input
-              type="text"
-              placeholder="帳號"
-              aria-label="帳號"
-              :class="{ error: accountError }"
-              v-model="account"
-              autofocus
-              autocomplete="off"
-            />
-            <div class="input-hint">
-              *此為登入帳號<br />*允許輸入小寫英文數字與底線
-            </div>
-          </div>
           <div class="business-card-row">
-            <BusinessCard v-model="businessCardModel" style="display: inline-block"></BusinessCard>
+            <BusinessCard style="display: inline-block"></BusinessCard>
           </div>
         </div>
         <div class="dialog-footer">
           <div class="spacer"></div>
-          <div
-            class="button cancel"
-            style="margin-right: 8px"
-            @click="onCancelButtonClick"
-          >
-            取消
-          </div>
           <div class="button confirm" @click="onConfirmButtonClick">確定</div>
         </div>
       </div>
@@ -55,7 +34,7 @@ module.exports = {
   },
 
   components: {
-    businesscard: httpVueLoader("../business-card/edit.vue"),
+    businesscard: httpVueLoader("../business-card/detail.vue"),
   },
 
   data: () => ({
@@ -80,14 +59,6 @@ module.exports = {
 
   methods: {
     onConfirmButtonClick() {
-      if (this.valid()) {
-        //TODO: Create accoune.
-      } else {
-        //TODO: Show error.
-      }
-    },
-
-    onCancelButtonClick() {
       this.finish();
     },
 
@@ -95,27 +66,8 @@ module.exports = {
       this.finish();
     },
 
-    valid() {
-      var validated = true;
-      this.accountError = this.isNullOrEmpty(this.account);
-      validated &= this.accountError;
-      this.businessCardModel.inputError.name = this.isNullOrEmpty(this.businessCardModel.name);
-      validated &= this.businessCardModel.inputError.name;
-      this.businessCardModel.inputError.engName = this.isNullOrEmpty(this.businessCardModel.engName);
-      validated &= this.businessCardModel.inputError.engName;
-      this.businessCardModel.inputError.role = this.isNullOrEmpty(this.businessCardModel.role);
-      validated &= this.businessCardModel.inputError.role;
-      this.businessCardModel.inputError.email = this.isNullOrEmpty(this.businessCardModel.email);
-      validated &= this.businessCardModel.inputError.email;
-      return validated;
-    },
-
     finish() {
       this.$emit("input", false);
-    },
-
-    isNullOrEmpty(value) {
-      return !value || value == "";
     }
   },
 };
@@ -242,41 +194,22 @@ module.exports = {
   justify-content: center;
 }
 
-.account-input {
-  margin: 0 48px;
-}
-
-.account-input::before {
-  content: "Account:";
-  font-size: small;
-  color: #a8a8a8;
-  display: block;
-}
-
-.account-input input {
-  color: #383838;
-  font-size: 1.5rem;
-}
-
-input[type="text"] {
-  border: none;
-  background-color: transparent;
-  border-bottom: 1px solid #A8A8A8;
-}
-
-input[type="text"]:focus {
-  outline: none;
-  border-bottom: 1px solid #2d71b8;
-}
-
-input[type="text"].error {
-  border-bottom: 1px solid red;
-}
-
-.input-hint {
-  margin-top: 8px;
-  font-size: small;
-  color: red;
-  display: flex;
+.business-card::after {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    font-size: 2rem;
+    line-height: 220px;
+    content: "設定代理人";
+    background-color: #FFFFFF;
+    border: 2px solid #444;
+    border-style: dashed;
+    opacity: 0.8;
+    position: absolute;
+    left: 0;
+    top: 0;
+    text-align: center;
+    display: inline-block;
+    vertical-align: middle;
 }
 </style>

@@ -2,14 +2,14 @@
   <div>
     <div class="business-card">
       <div class="field-container">
-        <div class="business-card-text caption">No. {{ id }}</div>
-        <div class="business-card-text title">樂仲珉</div>
-        <div class="business-card-text subtitle">Kevin Le</div>
+        <div class="business-card-text caption">No. {{ value.id }}</div>
+        <div class="business-card-text title">{{value.name}}</div>
+        <div class="business-card-text subtitle">{{value.engName}}</div>
         <div>
-          <div class="business-card-text subtitle inline">NTD部</div>
-          <div class="business-card-text subtitle inline" style="margin-left: 8px;">華康-職員</div>
+          <div class="business-card-text subtitle inline">{{value.department}}</div>
+          <div class="business-card-text subtitle inline" style="margin-left: 8px;">{{value.role}}</div>
         </div>
-        <div class="business-card-text subtitle">kevinle@dynacw.com</div>
+        <div class="business-card-text subtitle">{{value.email}}</div>
       </div>
       <div class="right-block"></div>
       <div class="bottom-block">
@@ -27,10 +27,12 @@ module.exports = {
       type: Object,
       default: function () {
         return {
-          name: "",
-          engName: "",
-          department: "",
-          email: "",
+          id: "0001",
+          name: "User Name",
+          engName: "English Name",
+          department: "Department",
+          role: "Role",
+          email: "email@dynacw.com",
           country: "zh-TW",
           isAtWork: false,
         };

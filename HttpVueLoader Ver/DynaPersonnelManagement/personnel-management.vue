@@ -16,6 +16,9 @@
     </div>
 
     <CreateDialog v-model="showCreateDialog"></CreateDialog>
+    <AgentListDialog v-model="showAgentListDialog"/>
+
+    
   </div>
 </template>
 
@@ -24,12 +27,14 @@ module.exports = {
   components: {
     businesscard: httpVueLoader("business-card/detail.vue"),
     businesscardedit: httpVueLoader("business-card/edit.vue"),
-    createdialog: httpVueLoader("dialog/create.vue"),
     countryselector: httpVueLoader("business-card/country-selector.vue"),
+    createdialog: httpVueLoader("dialog/create.vue"),
+    agentlistdialog: httpVueLoader("dialog/agent-list.vue"),
   },
 
   data: () => ({
-    showCreateDialog: true,
+    showCreateDialog: false,
+    showAgentListDialog: false,
     userData: {
       name: "",
       engName: "",
