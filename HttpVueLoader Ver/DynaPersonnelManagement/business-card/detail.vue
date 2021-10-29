@@ -14,11 +14,7 @@
       <div class="right-block"></div>
       <div class="bottom-block">
         <div class="color-block"></div>
-        <div class="employee-country">
-          <div class="zh-TW selected" value>台灣<br />Taipei</div>
-          <div class="ja-JP">日本<br />Japan</div>
-          <div class="zh-CN">中國<br />China</div>
-        </div>
+        <CountrySelector v-model="value.country" />
       </div>
     </div>
   </div>
@@ -26,7 +22,25 @@
 
 <script>
 module.exports = {
-  components: {},
+  props: {
+    value: {
+      type: Object,
+      default: function () {
+        return {
+          name: "",
+          engName: "",
+          department: "",
+          email: "",
+          country: "zh-TW",
+          isAtWork: false,
+        };
+      },
+    },
+  },
+
+  components: {
+    countryselector: httpVueLoader("business-card/country-selector.vue"),
+  },
 
   data: () => ({
     id: 2004,
@@ -65,11 +79,10 @@ module.exports = {
   height: 220px;
   width: 360px;
   background-color: #fff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%);
   transition: transform 0.1s;
   overflow: hidden;
   cursor: pointer;
-  font-family: "DFP King Gothic TC Regular", "Microsoft YaHei";
 }
 
 .field-container {
