@@ -569,8 +569,9 @@ module.exports = {
     addNewItem(at, type) {
       console.log(at);
       console.log(type);
+      var obj;
       if (type == "Div") {
-        this.displayList.Elements.splice(at, 0, {
+        obj = {
           TableManagerId: 0,
           Elements: [],
           TableName: null,
@@ -578,9 +579,11 @@ module.exports = {
           ElmentType: "Div",
           DisplayOrder: 1,
           Name: "",
-        });
+        };
+
+        this.displayList.Elements.splice(at, 0, obj);
       } else {
-        this.displayList.Elements.splice(at, 0, {
+        obj = {
           ItemId: 0,
           CheckCond: "",
           ElmentType: "Item",
@@ -590,7 +593,10 @@ module.exports = {
           Type: "int",
           Name: "",
           Unit: "",
-        });
+        };
+
+        this.displayList.Elements.splice(at, 0, obj);
+        this.restoreItemId(this.list, 1);
       }
     },
 
@@ -606,6 +612,20 @@ module.exports = {
 
     deleteItem(index) {
       this.displayList.Elements.splice(index, 1);
+      this.restoreItemId(this.list, 1);
+    },
+
+    restoreItemId(root, currentId) {
+      for (var i = 0; i < root.Elements.length; i++) {
+        var item = root.Elements[i];
+        if (item.ElmentType == "Div") {
+          currentId = this.restoreItemId(item, currentId);
+        } else {
+          item.ItemId = currentId++;
+        }
+      }
+
+      return currentId;
     },
   },
 };
