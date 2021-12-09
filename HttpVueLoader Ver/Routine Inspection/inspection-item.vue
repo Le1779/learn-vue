@@ -26,6 +26,10 @@
       <span>Description: </span>
       <input v-model="item_data.Description" type="text" />
     </div>
+    <div class="item-name-row">
+      <span>Unit: </span>
+      <input v-model="item_data.Unit" type="text" />
+    </div>
     <div>
       <button @click.stop="onDeleteButtonClick">Delete</button>
     </div>
