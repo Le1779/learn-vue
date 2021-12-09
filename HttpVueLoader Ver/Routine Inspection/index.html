@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <style>
+    *,
+    :after,
+    :before {
+      background-repeat: no-repeat;
+      box-sizing: inherit;
+    }
+
+    * {
+      padding: 0;
+      margin: 0;
+      font-family: "Microsoft YaHei", "DFP King Gothic TC Regular";
+    }
+  </style>
+</head>
+
+<body>
+  <main-app id="app"></main-app>
+</body>
+
+</html>
+
+<script src="../vue/js/vue.js"></script>
+<script src="../vue/js/vue-router.js"></script>
+<script src="../vue/js/httpVueLoader.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script>
+  new Vue({
+    el: "#app",
+    components: {
+      "main-app": httpVueLoader("main.vue"),
+    },
+  });
+</script>
