@@ -1,28 +1,34 @@
 <template>
-  <div>
+  <div class="table_container">
     <div>
-      <button v-if="rootData == list" @click="onBackButtonClick">Back</button>
-    </div>
-    <AddItem :index="0" @action="addNewItem"></AddItem>
-    <div v-for="(item, index) in displayList.Elements" :key="index">
-      <Group
-        v-if="'Div' == item.ElmentType"
-        :index="index"
-        :group_data="item"
-        :root_data="displayList"
-        @action="onGroupSelect"
-        @delete="deleteItem"
-      ></Group>
-      <Item
-        v-if="'Item' == item.ElmentType"
-        :index="index"
-        :item_data="item"
-        @delete="deleteItem"
-      ></Item>
-      <AddItem :index="index + 1" @action="addNewItem"></AddItem>
+      <div>
+        <button v-if="displayList.TableName == null" @click="onBackButtonClick">
+          Back
+        </button>
+      </div>
+      <AddItem :index="0" @action="addNewItem"></AddItem>
+      <div v-for="(item, index) in displayList.Elements" :key="index">
+        <Group
+          v-if="'Div' == item.ElmentType"
+          :index="index"
+          :group_data="item"
+          :root_data="displayList"
+          @action="onGroupSelect"
+          @delete="deleteItem"
+        ></Group>
+        <Item
+          v-if="'Item' == item.ElmentType"
+          :index="index"
+          :item_data="item"
+          @delete="deleteItem"
+        ></Item>
+        <AddItem :index="index + 1" @action="addNewItem"></AddItem>
+      </div>
     </div>
     <div>
-      {{ list }}
+      <v-json-tree
+        :json-data="displayList"
+      ></v-json-tree>
     </div>
   </div>
 </template>
@@ -632,4 +638,8 @@ module.exports = {
 </script>
 
 <style scoped>
+.table_container {
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
 </style>
