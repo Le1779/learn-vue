@@ -2,7 +2,7 @@
   <div class="item-container">
     <div class="item-name-row">
       <span>ID: </span>
-      {{item_data.ItemId}}
+      {{ item_data.ItemId }}
     </div>
     <div class="item-name-row">
       <span>Name: </span>
@@ -11,6 +11,14 @@
     <div class="item-name-row">
       <span>Condition: </span>
       <input v-model="item_data.CheckCond" type="text" />
+    </div>
+    <div class="item-name-row">
+      <span>Description: </span>
+      <input v-model="item_data.Description" type="text" />
+    </div>
+    <div class="item-name-row">
+      <span>Unit: </span>
+      <input v-model="item_data.Unit" type="text" />
     </div>
     <div class="item-name-row">
       <span>Type: </span>
@@ -22,16 +30,10 @@
         <option value="char(16)">char(16)</option>
       </select>
     </div>
-    <div class="item-name-row">
-      <span>Description: </span>
-      <input v-model="item_data.Description" type="text" />
-    </div>
-    <div class="item-name-row">
-      <span>Unit: </span>
-      <input v-model="item_data.Unit" type="text" />
-    </div>
     <div>
-      <button @click.stop="onDeleteButtonClick">Delete</button>
+      <button class="delete-button" @click.stop="onDeleteButtonClick">
+        刪除
+      </button>
     </div>
   </div>
 </template>
@@ -74,11 +76,6 @@ module.exports = {
 </script>
 
 <style scoped>
-.item-container {
-  border: 2px #585858 solid;
-  padding: 12px;
-}
-
 .item-name-row {
   padding: 8px 0;
 }

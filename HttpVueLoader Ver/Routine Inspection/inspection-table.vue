@@ -642,4 +642,41 @@ module.exports = {
   display: grid;
   grid-template-columns: 50% 50%;
 }
+
+.item-container {
+  overflow: hidden;
+  background-color: #ffffff;
+  border-radius: 8px;
+  border: 2px #585858 solid;
+  padding: 12px;
+}
+
+.item-container span {
+  color: #787878;
+  font-size: 0.85rem;
+  margin-right: 8px;
+}
+
+.item-container input, select {
+  color: #383838;
+  font-size: 0.85rem;
+  border: 0px solid;
+  border-bottom: 1px #585858 solid;
+  padding: 5px 8px;
+}
+
+.item-container .delete-button {
+  float: right;
+  background-color: #fbe9e7;
+  color: #d32f2f;
+  padding: 8px 12px;
+  border: 0px solid;
+  border-radius: 5px;
+  margin-top: 8px;
+  cursor: pointer;
+}
+
+.item-container .delete-button:hover {
+  background-color: #ffcdd2;
+}
 </style>
