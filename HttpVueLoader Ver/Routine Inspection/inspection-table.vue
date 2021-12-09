@@ -2,9 +2,10 @@
   <div class="table_container">
     <div>
       <div>
-        <button v-if="displayList.TableName == null" @click="onBackButtonClick">
-          Back
+        <button class="back-button" v-if="displayList.TableName == null" @click="onBackButtonClick">
+          {{backButtonText}}
         </button>
+        <span class="group-name">{{displayList.Name}}</span>
       </div>
       <AddItem :index="0" @action="addNewItem"></AddItem>
       <div v-for="(item, index) in displayList.Elements" :key="index">
@@ -43,6 +44,7 @@ module.exports = {
   },
 
   data: () => ({
+    backButtonText: "< 返回",
     list: {
       TableManagerId: 0,
       Elements: [
@@ -669,7 +671,7 @@ module.exports = {
   float: right;
   background-color: #fbe9e7;
   color: #d32f2f;
-  padding: 8px 12px;
+  padding: 8px 16px;
   border: 0px solid;
   border-radius: 5px;
   margin-top: 8px;
@@ -678,5 +680,23 @@ module.exports = {
 
 .item-container .delete-button:hover {
   background-color: #ffcdd2;
+}
+
+.back-button {
+  background-color: #E0E0E0;
+  color: #383838;
+  padding: 8px 12px;
+  border: 0px solid;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.back-button:hover {
+  background-color: #BDBDBD;
+}
+
+.group-name {
+  color: #383838;
+  margin-left: 8px;
 }
 </style>
