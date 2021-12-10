@@ -665,6 +665,7 @@ module.exports = {
   border: 0px solid;
   border-bottom: 1px #585858 solid;
   padding: 5px 8px;
+  background-color: transparent;
 }
 
 .item-container .delete-button {

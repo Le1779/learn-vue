@@ -63,6 +63,10 @@ module.exports = {
   cursor: pointer;
 }
 
+.item-container.group:hover {
+  background-color: #F8F8F8;
+}
+
 .title {
   color: #787878;
   font-size: 0.85rem;
